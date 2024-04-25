@@ -6,7 +6,7 @@
 @import 'typography';
 
 #app {
-  height: 100%;
+  background-color: $background;
 }
 
 .main {
@@ -18,3 +18,4 @@
 .page {
   flex: 1 1 auto;
 }
+

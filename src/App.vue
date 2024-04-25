@@ -1,7 +1,8 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import {useRoute} from 'vue-router'
 import VLoader from '@/components/VLoader.vue'
-import { useStateStore } from '@/store/stateStore'
+import {useStateStore} from '@/store/stateStore'
+import SelectSourceModal from "./components/modules/modals/select-source/SelectSourceModal.vue";
 
 const route = useRoute()
 const stateStore = useStateStore()
@@ -9,6 +10,11 @@ const stateStore = useStateStore()
 
 <template>
   <main class="main">
+    <Teleport to="body">
+      <Transition name="fade">
+        <SelectSourceModal v-if="stateStore.modals.selectSource.show"/>
+      </Transition>
+    </Teleport>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <transition name="fade-page" mode="out-in">
@@ -18,7 +24,7 @@ const stateStore = useStateStore()
         </transition>
       </template>
     </RouterView>
-    <VLoader v-if="stateStore.isLoading" />
+    <VLoader v-if="stateStore.isLoading"/>
   </main>
 </template>
 

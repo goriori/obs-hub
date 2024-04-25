@@ -1,0 +1,79 @@
+<script setup>
+
+import Card from "../Card.vue";
+import IconCard from "../../icon-card/IconCard.vue";
+import Camera from "../../../icons/Camera.vue";
+import Screen from "../../../icons/Screen.vue";
+import Sound from "../../../icons/Sound.vue";
+import {onMounted, ref} from "vue";
+
+const props = defineProps({
+  name: {
+    type: String,
+    default: 'Firstscript.py'
+  },
+  targetType: {
+    type: String,
+    default: 'camera'
+  }
+})
+
+const typeScript = {
+  camera: {
+    title: 'захват веб-камер',
+    color: '#000',
+    component: Camera
+  },
+  screen: {
+    title: 'закват экрана',
+    color: '#000',
+    component: Screen
+  },
+  sound: {
+    title: 'захват звука',
+    color: '#000',
+    component: Sound
+  }
+}
+</script>
+
+<template>
+  <Card class="script" is-script>
+    <template #icon>
+      <IconCard icon-type="screen"/>
+    </template>
+    <template #title>
+      <div class="script-content">
+        <h3>{{ name }}</h3>
+        <div class="script-type">
+          <component :is="typeScript[targetType].component" :color="typeScript[targetType].color"/>
+          <p> {{ typeScript[targetType].title }}</p>
+        </div>
+      </div>
+    </template>
+  </Card>
+</template>
+
+<style scoped lang="scss">
+.script {
+  &-content {
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &-type {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+  }
+}
+
+svg {
+  max-width: 15px;
+}
+</style>
