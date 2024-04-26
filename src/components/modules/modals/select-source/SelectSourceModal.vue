@@ -1,19 +1,24 @@
 <script setup>
 import {onUpdated, ref, shallowRef} from "vue";
-
+import {useStateStore} from "../../../../store/stateStore.js";
+import {CardScriptFactory} from "@/factory/card-script-factory/index.js";
 import Popup from "../../../ui/popup/Popup.vue";
 import SelectSource from "../../../ui/select-source/SelectSource.vue";
 import ConfirmButton from "../../../ui/buttons/confirm/ConfirmButton.vue";
 import Source from "../../../ui/source/Source.vue";
-import {useStateStore} from "../../../../store/stateStore.js";
+import {useScriptStore} from "@/store/scriptStore.js";
+import {ScriptDto} from "@/dto/script-dto/index.js";
 
 
 const stateStore = useStateStore()
+const scriptStore = useScriptStore()
+const cardScriptFactory = new CardScriptFactory()
 const ACTION_TYPES = ['script', 'source']
 const sourcesForUse = ref([
   {
     id: 1,
     'icon-type': 'sound',
+    type: 'sound',
     isActive: false,
     component: shallowRef(Source),
     title: 'Аудио'
@@ -21,6 +26,7 @@ const sourcesForUse = ref([
   {
     id: 2,
     'icon-type': 'camera',
+    type: 'camera',
     isActive: false,
     component: shallowRef(Source),
     title: 'Видео'
@@ -30,6 +36,7 @@ const sourcesForCapture = ref([
   {
     id: 1,
     'icon-type': 'screen',
+    type: 'screen',
     isActive: false,
     component: shallowRef(Source),
     title: 'Захват веб-камеры'
@@ -37,6 +44,7 @@ const sourcesForCapture = ref([
   {
     id: 2,
     'icon-type': 'camera',
+    type: 'webcam',
     isActive: false,
     component: shallowRef(Source),
     title: 'Захват камеры'
@@ -44,6 +52,7 @@ const sourcesForCapture = ref([
   {
     id: 3,
     'icon-type': 'screen',
+    type: 'screen',
     isActive: false,
     component: shallowRef(Source),
     title: 'Захват веб-камеры и экрана'
@@ -66,6 +75,15 @@ const actions = [
     action: ConfirmButton,
     onClick: function () {
       console.log('click action')
+      const targetSourceForUse = sourcesForUse.value.find(source => source.isActive)
+      const targetSourceForCapture = sourcesForCapture.value.find((source => source.isActive))
+      const card = cardScriptFactory.getScriptCard(targetSourceForCapture.type)
+      const script = new ScriptDto({
+        targetForUse: targetSourceForUse,
+        targetForCapture: targetSourceForCapture,
+        card: card
+      }).getScript()
+      scriptStore.addScript(script)
       stateStore.modals.selectSource.show = false
     }
   }

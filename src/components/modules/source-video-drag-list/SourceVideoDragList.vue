@@ -10,10 +10,12 @@ const screenStore = useScreenStore()
 
 const sources = computed(() => screenStore.screens)
 const changeList = (list) => {
+  console.log('updated list: ', list)
   screenStore.updateScreenList(list)
 }
 onUpdated(() => {
   console.log('update list')
+  console.log('updated list after hook update:', sources.value)
 })
 </script>
 

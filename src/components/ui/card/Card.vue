@@ -1,5 +1,9 @@
 <script setup>
-defineProps({
+const props = defineProps({
+  isActive: {
+    type: Boolean,
+    default: false
+  },
   isScript: {
     type: Boolean,
     default: false
@@ -9,12 +13,14 @@ defineProps({
 
 <template>
   <article class="card" v-ripple>
-    <section class="card-icon">
-      <slot name="icon"/>
-    </section>
-    <section class="card-title">
-      <slot name="title"/>
-    </section>
+    <div :class="['card-container', {'is-script':isScript, active:isActive}]">
+      <section class="card-icon">
+        <slot name="icon"/>
+      </section>
+      <section class="card-title">
+        <slot name="title"/>
+      </section>
+    </div>
     <section class="card-script" v-if="isScript">
       Активировать
     </section>
@@ -34,23 +40,37 @@ defineProps({
   position: relative;
   overflow: hidden;
   display: flex;
+  align-content: center;
   justify-content: flex-start;
-  align-items: center;
-  gap: 10px;
   width: 100%;
-  padding: 10px 20px;
-  background-color: #898989;
-  border: 1px solid transparent;
+  border: 1px solid #898989;
   border-radius: 55px;
   font-size: 16px;
   color: #000;
+  background-color: #000;
 
-  &:hover {
-    @include changeColor()
+  &-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: #898989;
+    border-radius: 55px;
+
+    &:hover {
+      @include changeColor()
+    }
+
+    &.is-script {
+      width: 60%;
+    }
   }
 
   &-script {
     position: absolute;
+    z-index: 1;
     right: 0;
     width: 40%;
     height: 100%;
@@ -58,8 +78,12 @@ defineProps({
     align-items: center;
     justify-content: center;
     color: white;
-    border-radius: 55px;
-    background-color: #000;
   }
+
 }
+
+.active {
+  @include changeColor()
+}
+
 </style>

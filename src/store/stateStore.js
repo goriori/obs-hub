@@ -7,6 +7,15 @@ export const useStateStore = defineStore('stateStore', () => {
         selectSource: {
             show: false,
         },
+        delete: {
+            deleteSourceVideo: {
+                show: false,
+            },
+            deleteScript: {
+                show: false,
+            }
+        }
+
     })
     return {
         isLoading,

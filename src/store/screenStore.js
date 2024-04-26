@@ -8,6 +8,7 @@ export const useScreenStore = defineStore('screenStore', () => {
             title: 'Main Screen',
             type: 'main-screen',
             selector: 'main-screen',
+            isFocus: false,
             size: {
                 width: 1920,
                 height: 1080
@@ -29,7 +30,9 @@ export const useScreenStore = defineStore('screenStore', () => {
             ...screen
         })
     }
-
+    const deleteScreen = (id) => {
+        screens.value = screens.value.filter(screen => screen.id !== id)
+    }
     const changePositionScreen = (id, position) => {
         screens.value.find(screen => screen.id === id).position = position
     }
@@ -37,14 +40,13 @@ export const useScreenStore = defineStore('screenStore', () => {
         screens.value.find(screen => screen.id === id).size = size
     }
     const updateScreenList = (screenList) => {
-        const lengthList = screens.value.length
-        screens.value = screens.value.slice(0, lengthList - 1)
-        console.log(screens.value)
-        screens.value.push(...screenList)
+        screens.value = screens.value.splice(0, 1)
+        screens.value = [...screens.value, ...screenList]
     }
     return {
         screens,
         addScreen,
+        deleteScreen,
         changePositionScreen,
         resizeScreen,
         updateScreenList

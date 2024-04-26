@@ -1,54 +1,39 @@
 <script setup>
 
 import {ref} from "vue";
-import {useScreenStore} from "../../../store/screenStore.js";
-import {CardFactory} from "@/factory/card-factory/index.js";
-import Screen from "../../icons/Screen.vue";
-import Camera from "../../icons/Camera.vue";
-import PlusButton from "../../ui/buttons/plus/PlusButton.vue";
+import {useStateStore} from "../../../../store/stateStore.js";
+import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
+import Screen from "../../../icons/Screen.vue";
+import Camera from "../../../icons/Camera.vue";
 
-
-const screenStore = useScreenStore()
+const stateStore = useStateStore()
 const isActive = ref(false)
-const cardFactory = new CardFactory()
 const onActive = () => {
   isActive.value = true
 }
 const onClose = () => isActive.value = false
-const addCapture = (event) => {
+const addScript = () => {
   const targetElement = event.target.closest('article')
   if (targetElement) {
-    const {capture} = targetElement.dataset
+    const {type} = targetElement.dataset
     const randomId = Math.floor(Math.random() * 1000)
-    const screen = {
-      title: `${capture}-${randomId}`,
-      selector: `screen-add-${randomId}`,
-      size: {
-        width: 300,
-        height: 150
-      },
-      position: {
-        x: 0, y: 0
-      },
-      component: cardFactory.getCard(capture)
-    }
-    screenStore.addScreen(screen, capture)
-    onClose()
+    stateStore.modals.selectSource.show = true
   }
+  onClose()
 }
 </script>
 
 <template>
   <div class="action">
     <Transition name="fade">
-      <section class="action-list" v-if="isActive" @click="addCapture">
-        <article class="list-item" data-capture="screen">
+      <section class="action-list" v-if="isActive" @click="addScript">
+        <article class="list-item" data-type="script">
           <Screen color="#000"/>
-          <p>Захват экрана</p>
+          <p>Добавить скрипт</p>
         </article>
-        <article class="list-item" data-capture="webcam">
+        <article class="list-item" data-type="function">
           <Camera color="#000"/>
-          <p>Захват веб-камеры</p>
+          <p>Добавить функцию</p>
         </article>
       </section>
     </Transition>

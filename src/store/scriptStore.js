@@ -2,12 +2,17 @@ import {defineStore} from 'pinia'
 import {ref} from 'vue'
 
 export const useScriptStore = defineStore('scriptStore', () => {
-    const script = ref([])
+    const scripts = ref([])
     const addScript = (script) => {
-        script.value.push(script)
+        console.log(script)
+        scripts.value.push(script)
+    }
+    const deleteScript = (id) => {
+        scripts.value = scripts.value.filter(script => script.id !== id)
     }
     return {
-        script,
-        addScript
+        scripts,
+        addScript,
+        deleteScript
     }
 })

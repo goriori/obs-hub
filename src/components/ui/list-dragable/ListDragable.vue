@@ -38,7 +38,7 @@ const checkMove = (e) => {
   >
     <template #item="{element}">
       <div class="item">
-        <component :is="element.component"/>
+        <component :is="element.component" v-model:isActive="element.isFocus"/>
       </div>
     </template>
   </draggable>

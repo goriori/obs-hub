@@ -6,7 +6,7 @@ export class CardScriptFactory {
     constructor() {
         this.#cardsScript = {
             screen: ScriptTargetCard,
-
+            webcam: ScriptTargetCard,
         }
     }
 

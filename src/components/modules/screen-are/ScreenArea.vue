@@ -1,8 +1,8 @@
 <script setup>
 
-import Screen from "../../ui/screen/Screen.vue";
 import {useScreenStore} from "../../../store/screenStore.js";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
+import Screen from "../../ui/screen/Screen.vue";
 
 const screenStore = useScreenStore()
 const sendObject = {
@@ -67,8 +67,22 @@ const wsServer = 'ws://127.0.0.1/config'
 const videoStream = new WebSocket(wsServer)
 const mainScreen = screenStore.screens[0]
 const otherScreens = computed(() => screenStore.screens.slice(1))
+const videElement = ref(null)
+const screensSettings = {
+  webcam: {
+    width: sendObject.config.video_sources.webcam.position.width,
+    height: sendObject.config.video_sources.webcam.position.height
+  },
+  screen: {}
+
+}
 const onChangePositionScree = (screenId, coordinates,) => {
-  Object.assign(sendObject['config']['video_sources']['webcam']['position'], coordinates)
+  const {x, y} = coordinates
+  const {width: videoWidth, height: videoHeight} = videElement.value
+  const computedX = Math.floor(x / videoWidth * 1920)
+  const computedY = Math.floor(y / videoHeight * 1080)
+  const computedCoordinated = {x: computedX, y: computedY}
+  Object.assign(sendObject['config']['video_sources']['webcam']['position'], computedCoordinated)
   screenStore.changePositionScreen(screenId, coordinates)
   videoStream.send(JSON.stringify(sendObject))
 }
@@ -79,6 +93,7 @@ const onResizeScreen = (screenId, size) => {
   videoStream.send(JSON.stringify(sendObject))
 }
 onMounted(() => {
+  videElement.value = document.getElementById('screen-main')
   videoStream.onopen = async (event) => {
     console.log(event)
   }
@@ -89,7 +104,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <Screen :main-screen="mainScreen" :screens="otherScreens" @change-position-screen="onChangePositionScree"
+  <Screen :settings="screensSettings"
+          :main-screen="mainScreen"
+          :screens="otherScreens"
+          @change-position-screen="onChangePositionScree"
           @resize-screen="onResizeScreen"/>
 </template>
 

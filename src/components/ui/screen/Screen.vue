@@ -4,6 +4,16 @@ import {nextTick, onMounted, onUpdated, ref} from "vue";
 import {tr} from "date-fns/locale";
 
 const props = defineProps({
+  settings: {
+    type: Object,
+    default: {
+      webcam: {
+        width: 960,
+        height: 540
+      },
+      screen: {}
+    }
+  },
   mainScreen: {
     type: Object,
     default: () => {
@@ -19,11 +29,9 @@ const emits = defineEmits(['changePositionScreen', 'resizeScreen'])
 const initScreen = async () => {
   const videoElement = document.getElementsByTagName('video')[0]
   const devices = await navigator.mediaDevices.enumerateDevices()
-  console.log(devices)
-  const unityCapture = devices.find(device => device.kind === 'videoinput')
   navigator.mediaDevices.getUserMedia({
     video: {
-      deviceId: unityCapture.deviceId,
+      deviceId: devices[2].deviceId,
     }
   })
       .then(stream => {
@@ -69,7 +77,10 @@ onUpdated(async () => {
           console.log(event.type, event.target)
         },
         move(event) {
-          emits('changePositionScreen', screen.id, {x: screen.position.x += event.dx, y: screen.position.y += event.dy})
+          emits('changePositionScreen', screen.id, {
+            x: screen.position.x += event.dx,
+            y: screen.position.y += event.dy
+          })
           event.target.style.transform = `translate(${screen.position.x}px, ${screen.position.y}px)`
           event.target.setAttribute('data-x', screen.position.x)
           event.target.setAttribute('data-y', screen.position.y)
@@ -109,9 +120,12 @@ onUpdated(async () => {
 
 <template>
   <section class="screen">
-    <video :data-title="mainScreen?.title" :class="mainScreen?.selector" class="screen-main"></video>
+    <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="960"
+           :height="540" class="screen-main"
+           id="screen-main"></video>
     <div v-for="(screen, index) in screens" :key="screen.id" class="screen-add" :class="screen.selector"
-         :data-type="screen.type" :data-index="index + 1"></div>
+         :data-type="screen.type" :data-index="index + 1">{{ screen.title }}
+    </div>
   </section>
 </template>
 

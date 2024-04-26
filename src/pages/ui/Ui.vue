@@ -55,6 +55,13 @@ const sourceForScript = [
     title: 'Захват веб-камеры'
   },
 ]
+const sourceList = ref([
+  {
+    id: 1,
+    isFocus: false,
+    component: ScreenTargetCard
+  }
+])
 const dragList = ref([ScreenTargetCard, CameraTargetCard, ScreenTargetCard, CameraTargetCard])
 const onChangeSize = (size) => {
   console.log(size)
@@ -122,9 +129,9 @@ const onChangeSize = (size) => {
     </div>
     <div class="page-list">
       <h3>List Sources :</h3>
-      <ListSource :sources="[ScreenTargetCard, CameraTargetCard,ScreenTargetCard, CameraTargetCard]"/>
-      <ListSource :sources="[ScreenTargetCard, CameraTargetCard,ScreenTargetCard, CameraTargetCard]"/>
-      <ListSource :sources="[ScreenTargetCard, CameraTargetCard,ScreenTargetCard, CameraTargetCard]"/>
+      <ListSource :sources="sourceList"/>
+      <!--      <ListSource :sources="sourceList"/>-->
+      <!--      <ListSource :sources="sourceList"/>-->
     </div>
     <div class="page-list">
       <h3>List Dragable :</h3>

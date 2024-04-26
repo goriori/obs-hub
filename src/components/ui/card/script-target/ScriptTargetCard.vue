@@ -5,9 +5,12 @@ import IconCard from "../../icon-card/IconCard.vue";
 import Camera from "../../../icons/Camera.vue";
 import Screen from "../../../icons/Screen.vue";
 import Sound from "../../../icons/Sound.vue";
-import {onMounted, ref} from "vue";
 
 const props = defineProps({
+  isActive: {
+    type: Boolean,
+    default: false
+  },
   name: {
     type: String,
     default: 'Firstscript.py'
@@ -35,10 +38,14 @@ const typeScript = {
     component: Sound
   }
 }
+
+
+const emits = defineEmits(['update:isActive'])
+const onClick = () => emits('update:isActive', !props.isActive)
 </script>
 
 <template>
-  <Card class="script" is-script>
+  <Card class="script" is-script :is-active="isActive" @click="onClick">
     <template #icon>
       <IconCard icon-type="screen"/>
     </template>
