@@ -9,6 +9,7 @@ export const useScreenStore = defineStore('screenStore', () => {
             type: 'main-screen',
             selector: 'main-screen',
             isFocus: false,
+            isActive: false,
             size: {
                 width: 1920,
                 height: 1080

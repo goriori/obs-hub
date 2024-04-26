@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
   <section class="list-sources">
     <div class="item" v-for="source in sources" :key="source">
-      <component v-model:isActive="source.isFocus" :is="source.component" />
+      <component v-model:isFocus="source.isFocus" v-model:isActive="source.isActive" :is="source.component"/>
     </div>
   </section>
 </template>

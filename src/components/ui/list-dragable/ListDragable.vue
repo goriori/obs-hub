@@ -19,7 +19,7 @@ const dragOptions = {
 };
 const list = computed(() => [...props.sources.filter(source => source.component !== null)])
 const checkMove = (e) => {
-  window.console.log("Future index: " + e.draggedContext.futureIndex);
+  // window.console.log("Future index: " + e.draggedContext.futureIndex);
   emits('onChangeList', list.value)
 }
 </script>
@@ -38,7 +38,7 @@ const checkMove = (e) => {
   >
     <template #item="{element}">
       <div class="item">
-        <component :is="element.component" v-model:isActive="element.isFocus"/>
+        <component :is="element.component" v-model:isFocus="element.isFocus"/>
       </div>
     </template>
   </draggable>

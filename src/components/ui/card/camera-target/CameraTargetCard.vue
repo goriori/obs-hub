@@ -14,11 +14,11 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(['update:isFocus'])
-const onClick = () => emits('update:isFocus', !props.isFocus)
+const onFocus = () => emits('update:isFocus', !props.isFocus)
 </script>
 
 <template>
-  <Card class="card" :is-focus="isFocus" @click="onClick">
+  <Card class="card" :is-focus="isFocus" @on-focus="onFocus">
     <template #icon>
       <IconCard icon-type="camera"/>
     </template>

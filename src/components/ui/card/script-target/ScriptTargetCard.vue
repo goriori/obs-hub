@@ -45,11 +45,24 @@ const typeScript = {
 
 
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
-const onClick = () => emits('update:isFocus', !props.isFocus)
+const onFocus = () => emits('update:isFocus', !props.isFocus)
+const onActiveScript = () => {
+  emits('update:isActive', true)
+}
+const onDisableScript = () => {
+  emits('update:isActive', false)
+}
 </script>
 
 <template>
-  <Card class="script" is-script :is-active="isActive" :is-focus="isFocus" @click="onClick">
+  <Card class="script"
+        is-script
+        :is-active="isActive"
+        :is-focus="isFocus"
+        @on-focus="onFocus"
+        @on-active-script="onActiveScript"
+        @on-disable-script="onDisableScript"
+  >
     <template #icon>
       <IconCard icon-type="screen"/>
     </template>

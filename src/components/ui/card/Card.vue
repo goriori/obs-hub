@@ -13,11 +13,21 @@ const props = defineProps({
     default: false
   }
 })
+
+const emits = defineEmits(['onActiveScript, onDisableScript', 'onFocus'])
+const onActiveScript = () => {
+  if (props.isScript) {
+    return props.isActive ? emits('onDisableScript') : emits('onActiveScript')
+  }
+}
+const onFocus = () => {
+  emits('onFocus')
+}
 </script>
 
 <template>
   <article class="card" v-ripple>
-    <div :class="['card-container', {'is-script':isScript, focus:isFocus}]">
+    <div :class="['card-container', {'is-script':isScript, focus:isFocus}]" @click="onFocus">
       <section class="card-icon">
         <slot name="icon"/>
       </section>
@@ -25,7 +35,7 @@ const props = defineProps({
         <slot name="title"/>
       </section>
     </div>
-    <section class="card-script" v-if="isScript">
+    <section class="card-script" v-if="isScript" @click="onActiveScript">
       Активировать
     </section>
   </article>

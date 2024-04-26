@@ -8,17 +8,20 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  isFocus:{
-    type:Boolean,
-    default:false
+  isFocus: {
+    type: Boolean,
+    default: false
   }
 })
 const emits = defineEmits(['update:isFocus'])
-const onClick = () => emits('update:isFocus', !props.isFocus)
+const onFocus = () => {
+  console.log('onFocusCard')
+  emits('update:isFocus', !props.isFocus)
+}
 </script>
 
 <template>
-  <Card :is-focus="isFocus" @click="onClick">
+  <Card :is-focus="isFocus" @on-focus="onFocus">
     <template #icon>
       <IconCard icon-type="screen"/>
     </template>

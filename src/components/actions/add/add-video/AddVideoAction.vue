@@ -24,6 +24,7 @@ const addCapture = (event) => {
       title: `${capture}-${randomId}`,
       selector: `screen-add-${randomId}`,
       isFocus: false,
+      isActive: false,
       size: {
         width: 300,
         height: 150
