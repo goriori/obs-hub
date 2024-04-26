@@ -5,6 +5,7 @@ class ScriptItem {
         this.capture = capture;
         this.component = card
         this.isFocus = false
+        this.isActive = false
     }
 
 

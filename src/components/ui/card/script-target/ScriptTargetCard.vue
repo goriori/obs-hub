@@ -11,6 +11,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  isFocus: {
+    type: Boolean,
+    default: false
+  },
   name: {
     type: String,
     default: 'Firstscript.py'
@@ -40,12 +44,12 @@ const typeScript = {
 }
 
 
-const emits = defineEmits(['update:isActive'])
-const onClick = () => emits('update:isActive', !props.isActive)
+const emits = defineEmits(['update:isFocus', 'update:isActive'])
+const onClick = () => emits('update:isFocus', !props.isFocus)
 </script>
 
 <template>
-  <Card class="script" is-script :is-active="isActive" @click="onClick">
+  <Card class="script" is-script :is-active="isActive" :is-focus="isFocus" @click="onClick">
     <template #icon>
       <IconCard icon-type="screen"/>
     </template>

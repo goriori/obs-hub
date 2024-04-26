@@ -8,13 +8,17 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  isFocus: {
+    type: Boolean,
+    default: false
+  }
 })
-const emits = defineEmits(['update:isActive'])
-const onClick = () => emits('update:isActive', !props.isActive)
+const emits = defineEmits(['update:isFocus'])
+const onClick = () => emits('update:isFocus', !props.isFocus)
 </script>
 
 <template>
-  <Card :is-active="isActive" @click="onClick">
+  <Card :is-focus="isFocus" @click="onClick">
     <template #icon>
       <IconCard icon-type="sound"/>
     </template>

@@ -4,6 +4,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  isFocus: {
+    type: Boolean,
+    default: false
+  },
   isScript: {
     type: Boolean,
     default: false
@@ -13,7 +17,7 @@ const props = defineProps({
 
 <template>
   <article class="card" v-ripple>
-    <div :class="['card-container', {'is-script':isScript, active:isActive}]">
+    <div :class="['card-container', {'is-script':isScript, focus:isFocus}]">
       <section class="card-icon">
         <slot name="icon"/>
       </section>
@@ -82,7 +86,7 @@ const props = defineProps({
 
 }
 
-.active {
+.focus {
   @include changeColor()
 }
 
