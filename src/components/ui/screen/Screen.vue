@@ -106,7 +106,7 @@ onUpdated(async () => {
           }
           Object.assign(event.target.style, newSize)
           Object.assign(event.target.dataset, {x, y})
-          emits('resizeScreen', screen.id, newSize)
+          emits('resizeScreen', screen.id, {width: newSize.width, height: newSize.height})
         },
       },
     })
@@ -122,9 +122,9 @@ onUpdated(async () => {
   <section class="screen">
     <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="960"
            :height="540" class="screen-main"
-           id="screen-main"></video>
+           id="main-screen"></video>
     <div v-for="(screen, index) in screens" :key="screen.id" class="screen-add" :class="screen.selector"
-         :data-type="screen.type" :data-index="index + 1">{{ screen.title }}
+         :data-type="screen.type" :data-index="index + 1">
     </div>
   </section>
 </template>
@@ -150,9 +150,9 @@ onUpdated(async () => {
   &-add {
     position: absolute;
     width: 320px;
-    height: 208px;
-    background-color: $primary;
-    border: 1px solid black;
+    height: 180px;
+    //background-color: $primary;
+    //border: 1px solid black;
     touch-action: none;
     user-select: none;
   }

@@ -65,7 +65,6 @@ onMounted(() => {
 
 .list {
   position:absolute;
-  cursor: pointer;
   width: 100%;
   max-width: 154px;
   padding: 10px;
@@ -74,6 +73,8 @@ onMounted(() => {
   &-container {
     position: absolute;
     z-index: 5;
+    cursor: pointer;
+
     &.active {
       background-color: $secondary;
       border-radius: 25px;

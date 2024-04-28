@@ -1,56 +1,52 @@
 <script setup>
 
-import {ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useScreenStore} from "../../../../store/screenStore.js";
-import {CardFactory} from "@/factory/card-factory/index.js";
+import {useSourceStore} from "@/store/sourceStore.js";
+import {ScreenFactory} from "@/factory/screen-factory/index.js";
+import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
 import Screen from "../../../icons/Screen.vue";
 import Camera from "../../../icons/Camera.vue";
-import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
 
 
 const screenStore = useScreenStore()
+const sourceStore = useSourceStore()
 const isActive = ref(false)
-const cardFactory = new CardFactory()
+const haveScreens = computed(() => screenStore.getTypeScreens())
+
+
 const onActive = () => {
-  isActive.value = true
+  isActive.value = !isActive.value
 }
+
 const onClose = () => isActive.value = false
 const addCapture = (event) => {
   const targetElement = event.target.closest('article')
   if (targetElement) {
     const {capture} = targetElement.dataset
-    const randomId = Math.floor(Math.random() * 1000)
-    const screen = {
-      title: `${capture}-${randomId}`,
-      selector: `screen-add-${randomId}`,
-      isFocus: false,
-      isActive: false,
-      size: {
-        width: 300,
-        height: 150
-      },
-      position: {
-        x: 0, y: 0
-      },
-      component: cardFactory.getCard(capture)
-    }
+    if (capture === 'empty') return onClose()
+    const screen = ScreenFactory.getSource(capture)
     screenStore.addScreen(screen, capture)
-    onClose()
   }
+  onClose()
 }
+
 </script>
 
 <template>
   <div class="action">
     <Transition name="fade">
       <section class="action-list" v-if="isActive" @click="addCapture">
-        <article class="list-item" data-capture="screen">
+        <article class="list-item" data-capture="screen" v-if="!haveScreens.includes('screen')">
           <Screen color="#000"/>
           <p>Захват экрана</p>
         </article>
-        <article class="list-item" data-capture="webcam">
+        <article class="list-item" data-capture="webcam" v-if="!haveScreens.includes('webcam')">
           <Camera color="#000"/>
           <p>Захват веб-камеры</p>
+        </article>
+        <article class="list-item" data-capture='empty' v-if="haveScreens.length === 2">
+          <p>Пусто</p>
         </article>
       </section>
     </Transition>
@@ -73,7 +69,9 @@ const addCapture = (event) => {
     top: -100px;
     display: flex;
     width: 220px;
+    min-height: 90px;
     flex-direction: column;
+    justify-content: center;
     background-color: $primary;
     padding: 10px 20px;
     border-radius: 10px;

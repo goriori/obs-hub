@@ -5,6 +5,7 @@ import SourceVideo from "../../components/modules/source-video/SourceVideo.vue";
 import SourceScripts from "../../components/modules/source-scripts/SourceScripts.vue";
 import SizeSwitch from "../../components/modules/size-switch/SizeSwitch.vue";
 import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
+
 </script>
 
 <template>

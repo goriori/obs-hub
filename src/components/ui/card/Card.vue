@@ -27,7 +27,7 @@ const onFocus = () => {
 
 <template>
   <article class="card" v-ripple>
-    <div :class="['card-container', {'is-script':isScript, focus:isFocus}]" @click="onFocus">
+    <div :class="['card-container', {'is-script':isScript, 'is-active':isActive, focus:isFocus}]" @click="onFocus">
       <section class="card-icon">
         <slot name="icon"/>
       </section>
@@ -36,7 +36,7 @@ const onFocus = () => {
       </section>
     </div>
     <section class="card-script" v-if="isScript" @click="onActiveScript">
-      Активировать
+      {{ isActive ? 'Деактивировать' : 'Активировать' }}
     </section>
   </article>
 </template>
@@ -44,8 +44,9 @@ const onFocus = () => {
 <style scoped lang="scss">
 @import "@/assets/scss/variables";
 
+$transition-animation: 0.2s all ease-in-out;
 @mixin changeColor() {
-  transition: 0.2s background-color ease-in-out;
+  transition: $transition-animation;
   background-color: $primary;
 }
 
@@ -72,6 +73,7 @@ const onFocus = () => {
     padding: 10px 20px;
     background-color: #898989;
     border-radius: 55px;
+    transition: $transition-animation;
 
     &:hover {
       @include changeColor()
@@ -79,6 +81,12 @@ const onFocus = () => {
 
     &.is-script {
       width: 60%;
+      transition: $transition-animation;
+    }
+
+    &.is-active {
+      width: 100%;
+      @include changeColor();
     }
   }
 

@@ -6,19 +6,27 @@ export const useScreenStore = defineStore('screenStore', () => {
         {
             id: 1,
             title: 'Main Screen',
-            type: 'main-screen',
+            type: 'screen',
             selector: 'main-screen',
             isFocus: false,
             isActive: false,
-            size: {
+            position: {
+                x: 0,
+                y: 0,
                 width: 1920,
                 height: 1080
             },
-            position: {
+            component: null,
+            show: true,
+            external_scripts: {},
+            monitor_index: 1,
+            region: {
                 x: 0,
-                y: 0
+                y: 0,
+                width: 1920,
+                height: 1080
             },
-            component: null
+            "z-index": 0
         }
     ])
 
@@ -35,10 +43,20 @@ export const useScreenStore = defineStore('screenStore', () => {
         screens.value = screens.value.filter(screen => screen.id !== id)
     }
     const changePositionScreen = (id, position) => {
-        screens.value.find(screen => screen.id === id).position = position
+        const screen = screens.value.find(screen => screen.id === id)
+        Object.assign(screen.position, position)
     }
     const resizeScreen = (id, size) => {
-        screens.value.find(screen => screen.id === id).size = size
+        const screen = screens.value.find(screen => screen.id === id)
+        Object.assign(screen.position, size)
+
+    }
+
+    const getScreen = (id) => {
+        return screens.value.find(screen => screen.id === id)
+    }
+    const getTypeScreens = () => {
+        return screens.value.map(screen => screen.type)
     }
     const updateScreenList = (screenList) => {
         screens.value = screens.value.splice(0, 1)
@@ -48,6 +66,8 @@ export const useScreenStore = defineStore('screenStore', () => {
         screens,
         addScreen,
         deleteScreen,
+        getScreen,
+        getTypeScreens,
         changePositionScreen,
         resizeScreen,
         updateScreenList
