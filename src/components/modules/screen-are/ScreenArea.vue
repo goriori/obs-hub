@@ -1,13 +1,15 @@
 <script setup>
 
 import {useScreenStore} from "../../../store/screenStore.js";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, onUpdated, ref} from "vue";
 import {useSourceStore} from "@/store/sourceStore.js";
 import Screen from "../../ui/screen/Screen.vue";
 import wsService from "@/API/wsService/wsService.js";
 
 const sourceStore = useSourceStore()
 const screenStore = useScreenStore()
+// full - момент отпускания мышки
+// fast - момент перетаскивания и ресайза
 const configData = ref({
   "update_aspects": [],
   "update_type": "fast",
@@ -26,14 +28,12 @@ const screensSettings = ref({
 const onChangePositionScreen = (screenId, coordinates,) => {
   screenStore.changePositionScreen(screenId, coordinates)
   const screen = screenStore.getScreen(screenId)
-  if (screen.type === 'webcam') {
-    const computedCoordinates = rebuildPosition(screen.position, videElement.value)
-    const source = sourceStore.getSource('webcam')
-    console.log('source:', source)
-    Object.assign(source.position, computedCoordinates)
-    sourceStore.updateSource('webcam', source)
-    wsService.sendMessage(configData.value)
-  }
+  const computedCoordinates = rebuildPosition(screen.position, videElement.value)
+  const source = sourceStore.getSource(screen.type)
+  Object.assign(source.position, computedCoordinates)
+  console.log('source', source)
+  sourceStore.updateSource(screen.type, source)
+  wsService.sendMessage(configData.value)
 
 }
 
@@ -59,22 +59,43 @@ const onResizeScreen = (screenId, size) => {
   screenStore.resizeScreen(screenId, size)
   console.log('resize:', size, numberWidth, numberHeight)
   const screen = screenStore.getScreen(screenId)
-  if (screen.type === 'webcam') {
-    const source = sourceStore.getSource('webcam')
-    Object.assign(source.position, {width: numberWidth, height: numberHeight})
-    wsService.sendMessage(configData.value)
-  }
+  const source = sourceStore.getSource(screen.type)
+  Object.assign(source.position, {width: numberWidth, height: numberHeight})
+  wsService.sendMessage(configData.value)
 }
+const initScreen = async () => {
+  const videoElement = document.getElementsByTagName('video')[0]
+  const devices = await navigator.mediaDevices.enumerateDevices()
+  console.log(devices)
+  navigator.mediaDevices.getUserMedia({
+    video: {
+      deviceId: devices[2].deviceId,
+    }
+  })
+      .then(stream => {
+        videoElement.srcObject = stream
+        videoElement.play();
+      }).catch(error => {
+    console.log(error)
+  })
+}
+
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
 
 onMounted(async () => {
   initVideoElement()
   wsService.initConnect().then(() => {
-    wsService.sendMessage(configData.value)
+    setTimeout(() => {
+      wsService.sendMessage(configData.value)
+    }, 3000)
   })
 
 })
 
+onUpdated(async () => {
+  console.log('update')
+  await initScreen()
+})
 </script>
 
 <template>

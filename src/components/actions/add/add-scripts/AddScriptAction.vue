@@ -9,7 +9,7 @@ import Camera from "../../../icons/Camera.vue";
 const stateStore = useStateStore()
 const isActive = ref(false)
 const onActive = () => {
-  isActive.value = true
+  isActive.value = !isActive.value
 }
 const onClose = () => isActive.value = false
 const addScript = () => {

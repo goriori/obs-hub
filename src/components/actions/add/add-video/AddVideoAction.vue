@@ -7,13 +7,12 @@ import {ScreenFactory} from "@/factory/screen-factory/index.js";
 import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
 import Screen from "../../../icons/Screen.vue";
 import Camera from "../../../icons/Camera.vue";
-
+import wsService from "@/API/wsService/wsService.js";
 
 const screenStore = useScreenStore()
 const sourceStore = useSourceStore()
 const isActive = ref(false)
 const haveScreens = computed(() => screenStore.getTypeScreens())
-
 
 const onActive = () => {
   isActive.value = !isActive.value

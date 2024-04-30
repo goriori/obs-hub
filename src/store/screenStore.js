@@ -6,7 +6,7 @@ export const useScreenStore = defineStore('screenStore', () => {
         {
             id: 1,
             title: 'Main Screen',
-            type: 'screen',
+            type: 'main-screen',
             selector: 'main-screen',
             isFocus: false,
             isActive: false,

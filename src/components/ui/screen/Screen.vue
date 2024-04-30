@@ -26,21 +26,7 @@ const props = defineProps({
 })
 const emits = defineEmits(['changePositionScreen', 'resizeScreen'])
 
-const initScreen = async () => {
-  const videoElement = document.getElementsByTagName('video')[0]
-  const devices = await navigator.mediaDevices.enumerateDevices()
-  navigator.mediaDevices.getUserMedia({
-    video: {
-      deviceId: devices[2].deviceId,
-    }
-  })
-      .then(stream => {
-        videoElement.srcObject = stream
-        videoElement.play();
-      }).catch(error => {
-    console.log(error)
-  })
-}
+
 
 const setZIndexElements = () => {
   const screens = document.querySelectorAll('.screen-add')
@@ -51,10 +37,10 @@ const setZIndexElements = () => {
 }
 
 onMounted(async () => {
-  await initScreen()
 })
 
 onUpdated(async () => {
+
   props.screens.forEach((screen, index) => {
     const modifiers = [
       interact.modifiers.restrictRect({
@@ -63,12 +49,6 @@ onUpdated(async () => {
       interact.modifiers.restrictEdges({
         outer: 'parent',
       }),
-      // interact.modifiers.aspectRatio({
-      //   ratio: 2,
-      //   modifiers: [
-      //     interact.modifiers.restrictSize({max: 'parent'}),
-      //   ],
-      // })
     ]
     interact(`.${screen.selector}`).draggable({
       modifiers,
@@ -87,7 +67,14 @@ onUpdated(async () => {
         },
       },
     }).resizable({
-      modifiers,
+      modifiers: [
+        interact.modifiers.aspectRatio({
+          ratio: 2,
+          modifiers: [
+            interact.modifiers.restrictSize({max: 'parent'}),
+          ],
+        })
+      ],
       edges: {
         top: true,
         left: true,
@@ -124,7 +111,8 @@ onUpdated(async () => {
            :height="540" class="screen-main"
            id="main-screen"></video>
     <div v-for="(screen, index) in screens" :key="screen.id" class="screen-add" :class="screen.selector"
-         :data-type="screen.type" :data-index="index + 1">
+         :data-type="screen.type" :data-index="screen['z-index']">
+      {{screen.title}}
     </div>
   </section>
 </template>
@@ -152,7 +140,7 @@ onUpdated(async () => {
     width: 320px;
     height: 180px;
     //background-color: $primary;
-    //border: 1px solid black;
+    border: 1px solid black;
     touch-action: none;
     user-select: none;
   }

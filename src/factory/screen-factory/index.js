@@ -14,10 +14,10 @@ class WebCam {
         this.show = true
         this.external_scripts = [
             {
-                name: "\u0420\u045a\u0420\u00b0\u0421\u0403\u0420\u0454\u0420\u00b0",
-                path: "external_scripts/mask.py",
-                enabled: false,
-                args: {}
+                "name": "Mask",
+                "path": "external_scripts/mask.py",
+                "enabled": true,
+                "args": {}
             }
         ]
         this.device_index = 0
@@ -31,7 +31,7 @@ class WebCam {
             width: 640,
             height: 360
         }
-        this["z-index"] = 1
+        this["z-index"] = 2
         this.dshow_settings = true
         this.component = cardFactory.getCard(this.type)
 
@@ -64,7 +64,7 @@ class Screen {
             width: 1920,
             height: 1080
         }
-        this["z-index"] = 0
+        this["z-index"] = 1
         this.component = cardFactory.getCard(this.type)
     }
 }

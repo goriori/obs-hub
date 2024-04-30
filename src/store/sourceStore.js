@@ -7,16 +7,14 @@ export const useSourceStore = defineStore('sourceStore', () => {
             external_scripts: [],
             width: 1920,
             height: 1080,
-            fps: 30,
-            backend: "unitycapture",
-            device: "Unity Video Capture"
+            fps: 30
         },
         video_sources: {
             "webcam": {
                 "id": 2,
-                "show": true,
+                "show": false,
                 "external_scripts": [],
-                "device_index": 0,
+                device_index: 0,
                 "resolution": {
                     "width": 1280,
                     "height": 720
@@ -27,7 +25,7 @@ export const useSourceStore = defineStore('sourceStore', () => {
                     "width": 640,
                     "height": 360
                 },
-                "z-index": 1,
+                "z-index": 0,
                 "dshow_settings": true
             },
             "screen": {
@@ -47,7 +45,7 @@ export const useSourceStore = defineStore('sourceStore', () => {
                     "width": 1920,
                     "height": 1080
                 },
-                "z-index": 0
+                "z-index": 1
             }
         }
     })
@@ -60,12 +58,16 @@ export const useSourceStore = defineStore('sourceStore', () => {
 
     const updateSource = (sourceName, newSource) => {
         sources.value['video_sources'][sourceName] = newSource
-
+    }
+    const changeZIndex = (sourceName, zIndex) => {
+        console.log('changeZIndex', sourceName, zIndex)
+        sources.value['video_sources'][sourceName]['z-index'] = zIndex
     }
     return {
         sources,
         addSource,
         getSource,
-        updateSource
+        updateSource,
+        changeZIndex
     }
 })

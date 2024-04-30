@@ -1,19 +1,37 @@
 <script setup>
 
-import {computed, onUpdated, watch} from "vue";
+import {computed, onUpdated, ref, watch} from "vue";
 import {useScreenStore} from "@/store/screenStore.js";
+import {useSourceStore} from "@/store/sourceStore.js";
 import ListDragable from "@/components/ui/list-dragable/ListDragable.vue";
-import ScreenTargetCard from "@/components/ui/card/screen-target/ScreenTargetCard.vue";
-import CameraTargetCard from "@/components/ui/card/camera-target/CameraTargetCard.vue";
+import wsService from "@/API/wsService/wsService.js";
 
 const screenStore = useScreenStore()
-
+const sourceStore = useSourceStore()
 const sources = computed(() => screenStore.screens)
+const configData = ref({
+  "update_aspects": [],
+  "update_type": "fast",
+  "config": sourceStore.sources
+})
+
 const changeList = (list) => {
   console.log('updated list: ', list)
   screenStore.updateScreenList(list)
+  screenStore.screens.reduce((acc, value) => {
+    if (acc.type === 'webcam' && value.type === 'screen') {
+      sourceStore.changeZIndex(acc.type, 1)
+      sourceStore.changeZIndex(value.type, 0)
+    }
+    if (acc.type === 'screen' && value.type === 'webcam') {
+      sourceStore.changeZIndex(acc.type, 1)
+      sourceStore.changeZIndex(value.type, 0)
+    }
+    return value
+  })
 }
 onUpdated(() => {
+  wsService.sendMessage(configData.value)
   console.log('update list')
   console.log('updated list after hook update:', sources.value)
 })
