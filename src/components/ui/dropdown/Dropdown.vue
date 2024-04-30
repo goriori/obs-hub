@@ -4,12 +4,16 @@ import Chip from "../chips/Chip.vue";
 import {computed, onMounted, ref} from "vue";
 
 const props = defineProps({
+  modelValue: {
+    type: String,
+    default: ''
+  },
   titles: {
     type: Array,
     default: ['']
   }
 })
-const emits = defineEmits(['onChange'])
+const emits = defineEmits(['update:modelValue', 'onChange'])
 const list = ref([])
 const active = ref(false)
 const targetSize = computed(() => {
@@ -18,6 +22,7 @@ const targetSize = computed(() => {
 const onSelect = () => active.value = !active.value
 const onChange = (title) => {
   list.value.forEach(listItem => listItem.title === title ? listItem.onActive() : listItem.onDisabled())
+  emits('update:modelValue', title)
   return emits('onChange', title)
 }
 
@@ -64,7 +69,7 @@ onMounted(() => {
 @import '@/assets/scss/variables';
 
 .list {
-  position:absolute;
+  position: absolute;
   width: 100%;
   max-width: 154px;
   padding: 10px;
@@ -80,7 +85,6 @@ onMounted(() => {
       border-radius: 25px;
     }
   }
-
 
 
 }

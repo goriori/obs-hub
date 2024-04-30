@@ -1,12 +1,13 @@
 <script setup>
 
 import Dropdown from "../../ui/dropdown/Dropdown.vue";
+import {useResolutionStore} from "@/store/resolutionStore.js";
 
-const titles = ['1920 x 1080', '1080 x 1920', '720 x 1080']
+const resolutionStore = useResolutionStore()
 </script>
 
 <template>
-  <Dropdown :titles="titles"/>
+  <Dropdown v-model="resolutionStore.targetResolution" :titles="resolutionStore.resolutions"/>
 </template>
 
 <style scoped lang="scss">
