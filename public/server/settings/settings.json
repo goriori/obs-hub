@@ -1,0 +1,54 @@
+{
+    "virtual_camera": {
+        "external_scripts": [],
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "backend": "unitycapture",
+        "device": "Unity Video Capture"
+    },
+    "video_sources": {
+        "webcam": {
+            "show": true,
+            "external_scripts": [
+                {
+                    "name": "Mask",
+                    "path": "external_scripts/mask.py",
+                    "enabled": true,
+                    "args": {}
+                }
+            ],
+            "device_index": 0,
+            "resolution": {
+                "width": 3840,
+                "height": 2160
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "width": 640,
+                "height": 360
+            },
+            "z-index": 1,
+            "dshow_settings": false
+        },
+        "screen": {
+            "show": true,
+            "external_scripts": {},
+            "monitor_index": 1,
+            "region": {
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
+            },
+            "z-index": 0
+        }
+    }
+}
