@@ -8,6 +8,7 @@ import ConfirmButton from "../../../ui/buttons/confirm/ConfirmButton.vue";
 import Source from "../../../ui/source/Source.vue";
 import {useScriptStore} from "@/store/scriptStore.js";
 import {ScriptDto} from "@/dto/script-dto/index.js";
+import Camera from "@/components/icons/Camera.vue";
 
 
 const stateStore = useStateStore()

@@ -19,14 +19,19 @@ const props = defineProps({
     type: String,
     default: 'Firstscript.py'
   },
+  source: {
+    type: Object,
+    default: () => {
+    }
+  },
   targetType: {
     type: String,
-    default: 'camera'
+    default: 'webcam'
   }
 })
 
 const typeScript = {
-  camera: {
+  webcam: {
     title: 'захват веб-камер',
     color: '#000',
     component: Camera
@@ -64,7 +69,7 @@ const onDisableScript = () => {
         @on-disable-script="onDisableScript"
   >
     <template #icon>
-      <IconCard icon-type="screen"/>
+      <component :icon-type="source?.type" :is="source?.component"/>
     </template>
     <template #title>
       <div class="script-content">
