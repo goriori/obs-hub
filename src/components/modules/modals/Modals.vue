@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, ref, shallowRef} from "vue";
 import {useStateStore} from "@/store/stateStore.js";
 import SelectSourceModal from "@/components/modules/modals/select-source/SelectSourceModal.vue";
 import DeleteSourceVideo from "@/components/modules/modals/delete-source-video/DeleteSourceVideo.vue";
@@ -10,23 +10,23 @@ const stateStore = useStateStore()
 const modals = ref([
   {
     id: 1,
-    component: SelectSourceModal,
-    conditionVisibility: computed(() => stateStore.modals.selectSource.show)
+    component: shallowRef(SelectSourceModal) ,
+    conditionVisibility:computed(() => stateStore.modals.selectSource.show)
   },
   {
     id: 2,
-    component: DeleteSourceVideo,
-    conditionVisibility: computed(() => stateStore.modals.delete.deleteSourceVideo.show)
+    component: shallowRef(DeleteSourceVideo),
+    conditionVisibility:computed(() => stateStore.modals.delete.deleteSourceVideo.show)
   },
   {
     id: 3,
-    component: DeleteScript,
-    conditionVisibility: computed(() => stateStore.modals.delete.deleteScript.show)
+    component: shallowRef(DeleteScript),
+    conditionVisibility:computed(() => stateStore.modals.delete.deleteScript.show)
   },
   {
     id: 4,
-    component: DeleteAudio,
-    conditionVisibility: computed(() => stateStore.modals.delete.deleteAudio.show)
+    component: shallowRef(DeleteAudio),
+    conditionVisibility:computed(() => stateStore.modals.delete.deleteAudio.show)
   }
 ])
 </script>

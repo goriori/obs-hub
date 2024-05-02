@@ -8,25 +8,33 @@
     "video_sources": {
         "webcam": {
             "id": 2,
-            "show": true,
-            "external_scripts": [],
+            "show": false,
+            "external_scripts": [
+                {
+                    "id": 565,
+                    "name": "mask.py",
+                    "path": "external_scripts/mask.py",
+                    "args": {},
+                    "enabled": true
+                }
+            ],
             "device_index": 0,
             "resolution": {
                 "width": 1280,
                 "height": 720
             },
             "position": {
-                "x": 38,
-                "y": 216,
-                "width": 653,
-                "height": 326
+                "x": 0,
+                "y": 0,
+                "width": 640,
+                "height": 360
             },
-            "z-index": 1,
+            "z-index": 0,
             "dshow_settings": true
         },
         "screen": {
             "id": 1,
-            "show": true,
+            "show": false,
             "external_scripts": [],
             "monitor_index": 1,
             "region": {
@@ -36,12 +44,12 @@
                 "height": 1080
             },
             "position": {
-                "x": 728,
-                "y": 414,
-                "width": 725,
-                "height": 362
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
             },
-            "z-index": 0
+            "z-index": 1
         }
     }
 }

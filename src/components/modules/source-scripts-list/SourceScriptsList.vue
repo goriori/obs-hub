@@ -1,6 +1,6 @@
 <script setup>
 
-import {computed} from "vue";
+import {computed, onUpdated, watch} from "vue";
 import {useScriptStore} from "../../../store/scriptStore.js";
 import ListSource from "../../ui/list-source/ListSource.vue";
 import CameraTargetCard from "../../ui/card/camera-target/CameraTargetCard.vue";
@@ -10,7 +10,6 @@ const scriptStore = useScriptStore()
 
 
 const scripts = computed(() => scriptStore.scripts)
-
 </script>
 
 <template>

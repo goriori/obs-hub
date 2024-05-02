@@ -5,6 +5,7 @@ import SourceScriptsSpace from "../../ui/block-space/source-scripts/SourceScript
 import SourceScriptsList from "@/components/modules/source-scripts-list/SourceScriptsList.vue";
 import DeleteScriptAction from "@/components/actions/delete/delete-script/DeleteScriptAction.vue";
 
+
 </script>
 
 <template>

@@ -1,4 +1,5 @@
 import IconCard from "@/components/ui/icon-card/IconCard.vue";
+import {shallowRef} from "vue";
 
 
 export class ScriptSourceDto {
@@ -47,7 +48,7 @@ export class ScriptDto {
             id: randomId,
             title: this.data.targetForUse.title,
             type: this.data.targetForUse.type,
-            component: IconCard,
+            component: shallowRef(IconCard),
 
         }
         const capture = {
