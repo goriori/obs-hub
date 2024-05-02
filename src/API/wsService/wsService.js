@@ -1,12 +1,13 @@
 class wsService {
     constructor() {
-        this.host = 'ws://127.0.0.1/config'
+        this.wsHost = 'ws://127.0.0.1/config'
+        this.wsServer = 'http://127.0.0.1/config'
         this.videoStream = null
         this.connected = false
     }
 
     async initConnect() {
-        this.videoStream = await new WebSocket(this.host)
+        this.videoStream = await new WebSocket(this.wsHost)
         this.connected = true
     }
 
@@ -26,6 +27,10 @@ class wsService {
 
     checkConnect() {
         return this.connected
+    }
+
+    async getConfig() {
+        return await fetch(this.wsServer)
     }
 }
 

@@ -27,11 +27,11 @@ const addScript = () => {
   <div class="action">
     <Transition name="fade">
       <section class="action-list" v-if="isActive" @click="addScript">
-        <article class="list-item" data-type="script">
+        <article class="list-item" data-type="script-audio">
           <Screen color="#000"/>
           <p>Скрипт для аудио</p>
         </article>
-        <article class="list-item" data-type="function">
+        <article class="list-item" data-type="script-video">
           <Camera color="#000"/>
           <p>Скрипт для видео</p>
         </article>

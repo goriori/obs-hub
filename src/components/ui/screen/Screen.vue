@@ -112,7 +112,7 @@ onUpdated(async () => {
            id="main-screen"></video>
     <div v-for="(screen, index) in screens" :key="screen.id" class="screen-add" :class="screen.selector"
          :data-type="screen.type" :data-index="screen['z-index']">
-      {{screen.title}}
+<!--      {{screen.title}}-->
     </div>
   </section>
 </template>
@@ -140,7 +140,7 @@ onUpdated(async () => {
     width: 320px;
     height: 180px;
     //background-color: $primary;
-    border: 1px solid black;
+    //border: 1px solid black;
     touch-action: none;
     user-select: none;
   }

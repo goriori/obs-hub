@@ -1,15 +1,12 @@
 <script setup>
 
+import {computed, ref} from "vue";
+import {useAudioStore} from "@/store/audioStore.js";
 import ListSource from "../../ui/list-source/ListSource.vue";
 import SoundTargetCard from "../../ui/card/sound-target/SoundTargetCard.vue";
-import {ref} from "vue";
 
-const audioSources = ref([
-  {
-    isFocus: false,
-    component: SoundTargetCard
-  }
-])
+const audioStore = useAudioStore()
+const audioSources = computed(() => audioStore.audioSource)
 </script>
 
 <template>

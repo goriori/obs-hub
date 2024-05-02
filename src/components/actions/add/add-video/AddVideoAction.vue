@@ -26,6 +26,12 @@ const addCapture = (event) => {
     if (capture === 'empty') return onClose()
     const screen = ScreenFactory.getSource(capture)
     screenStore.addScreen(screen, capture)
+    sourceStore.addAspect(capture)
+    sourceStore.updateShow(capture, true)
+    sourceStore.updateType('full')
+    const config = sourceStore.getConfig()
+    wsService.sendMessage(config)
+    sourceStore.deleteAspect(capture)
   }
   onClose()
 }
@@ -44,7 +50,7 @@ const addCapture = (event) => {
           <Camera color="#000"/>
           <p>Захват веб-камеры</p>
         </article>
-        <article class="list-item" data-capture='empty' v-if="haveScreens.length === 2">
+        <article class="list-item" data-capture='empty' v-if="haveScreens.length === 3">
           <p>Пусто</p>
         </article>
       </section>

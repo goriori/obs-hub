@@ -75,7 +75,7 @@
                     "type": "object",
                     "properties": {
                         "show": {"type": "boolean", "default": true},
-                        "external_scripts": {"type": "object", "default": {}},
+                        "external_scripts": {"type": "array", "default": []},
                         "monitor_index": {"type": "integer", "default": 1},
                         "region": {
                             "type": "object",

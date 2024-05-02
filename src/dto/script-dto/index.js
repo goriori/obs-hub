@@ -1,5 +1,22 @@
 import IconCard from "@/components/ui/icon-card/IconCard.vue";
 
+
+export class ScriptSourceDto {
+    constructor(data = {
+        id: Math.floor(Math.random() * 1000),
+        name: '',
+        path: '',
+        args: {},
+        enabled: true
+    }) {
+        this.id = data?.id;
+        this.name = data?.name;
+        this.path = data.path;
+        this.args = data.args;
+        this.enabled = data.enabled
+    }
+}
+
 class ScriptItem {
     constructor(id, use, capture, card) {
         this.id = id;
@@ -15,6 +32,8 @@ class ScriptItem {
 
 export class ScriptDto {
     constructor(data = {
+        name: '',
+        path: '',
         targetForUse: null,
         targetForCapture: null,
         card: null,
@@ -38,6 +57,7 @@ export class ScriptDto {
             component: this.data.targetForCapture.component,
         }
         const card = this.data?.card
-        return new ScriptItem(randomId, use, capture, card)
+
+        return new ScriptItem(randomId, use, capture, card,)
     }
 }

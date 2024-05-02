@@ -8,20 +8,16 @@ import wsService from "@/API/wsService/wsService.js";
 
 const sourceStore = useSourceStore()
 const screenStore = useScreenStore()
-// full - момент отпускания мышки
-// fast - момент перетаскивания и ресайза
-const configData = ref({
-  "update_aspects": [],
-  "update_type": "fast",
-  "config": sourceStore.sources
-})
+
+const stream = ref(null)
+
 const mainScreen = screenStore.screens[0]
 const otherScreens = computed(() => screenStore.screens.slice(1))
 const videElement = ref(null)
 const screensSettings = ref({
   webcam: {
-    width: configData.value.config.video_sources?.webcam?.position?.width,
-    height: configData.value.config.video_sources?.webcam?.position?.height
+    width: sourceStore.getConfig().config.video_sources?.webcam?.position?.width,
+    height: sourceStore.getConfig().config.video_sources?.webcam?.position?.height
   },
   screen: {}
 })
@@ -33,7 +29,9 @@ const onChangePositionScreen = (screenId, coordinates,) => {
   Object.assign(source.position, computedCoordinates)
   console.log('source', source)
   sourceStore.updateSource(screen.type, source)
-  wsService.sendMessage(configData.value)
+  sourceStore.updateType('fast')
+  const config = sourceStore.getConfig()
+  wsService.sendMessage(config)
 
 }
 
@@ -61,35 +59,32 @@ const onResizeScreen = (screenId, size) => {
   const screen = screenStore.getScreen(screenId)
   const source = sourceStore.getSource(screen.type)
   Object.assign(source.position, {width: numberWidth, height: numberHeight})
-  wsService.sendMessage(configData.value)
+  sourceStore.updateType('fast')
+  const config = sourceStore.getConfig()
+  wsService.sendMessage(config)
 }
 const initScreen = async () => {
+  if (screenStore.screens.length === 1) return stream.value.getTracks().forEach(track => track.stop())
   const videoElement = document.getElementsByTagName('video')[0]
   const devices = await navigator.mediaDevices.enumerateDevices()
   console.log(devices)
-  navigator.mediaDevices.getUserMedia({
+  stream.value = await navigator.mediaDevices.getUserMedia({
     video: {
       deviceId: devices[2].deviceId,
     }
   })
-      .then(stream => {
-        videoElement.srcObject = stream
-        videoElement.play();
-      }).catch(error => {
-    console.log(error)
-  })
+  videoElement.srcObject = stream.value
+  videoElement.play();
+
 }
 
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
 
 onMounted(async () => {
   initVideoElement()
-  wsService.initConnect().then(() => {
-    setTimeout(() => {
-      wsService.sendMessage(configData.value)
-    }, 3000)
-  })
-
+  setTimeout(() => {
+    wsService.sendMessage(sourceStore.getConfig())
+  }, 3000)
 })
 
 onUpdated(async () => {

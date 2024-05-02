@@ -3,38 +3,31 @@
         "external_scripts": [],
         "width": 1920,
         "height": 1080,
-        "fps": 30,
-        "backend": "unitycapture",
-        "device": "Unity Video Capture"
+        "fps": 30
     },
     "video_sources": {
         "webcam": {
+            "id": 2,
             "show": true,
-            "external_scripts": [
-                {
-                    "name": "Mask",
-                    "path": "external_scripts/mask.py",
-                    "enabled": true,
-                    "args": {}
-                }
-            ],
+            "external_scripts": [],
             "device_index": 0,
             "resolution": {
-                "width": 3840,
-                "height": 2160
+                "width": 1280,
+                "height": 720
             },
             "position": {
-                "x": 0,
-                "y": 0,
-                "width": 640,
-                "height": 360
+                "x": 38,
+                "y": 216,
+                "width": 653,
+                "height": 326
             },
             "z-index": 1,
-            "dshow_settings": false
+            "dshow_settings": true
         },
         "screen": {
+            "id": 1,
             "show": true,
-            "external_scripts": {},
+            "external_scripts": [],
             "monitor_index": 1,
             "region": {
                 "x": 0,
@@ -43,10 +36,10 @@
                 "height": 1080
             },
             "position": {
-                "x": 0,
-                "y": 0,
-                "width": 1920,
-                "height": 1080
+                "x": 728,
+                "y": 414,
+                "width": 725,
+                "height": 362
             },
             "z-index": 0
         }

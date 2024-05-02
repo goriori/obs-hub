@@ -7,14 +7,18 @@ import SelectSource from "../../../ui/select-source/SelectSource.vue";
 import ConfirmButton from "../../../ui/buttons/confirm/ConfirmButton.vue";
 import Source from "../../../ui/source/Source.vue";
 import {useScriptStore} from "@/store/scriptStore.js";
-import {ScriptDto} from "@/dto/script-dto/index.js";
+import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
 import Camera from "@/components/icons/Camera.vue";
+import {useSourceStore} from "@/store/sourceStore.js";
+import wsService from "@/API/wsService/wsService.js";
 
 
 const stateStore = useStateStore()
 const scriptStore = useScriptStore()
+const sourceStore = useSourceStore()
 const cardScriptFactory = new CardScriptFactory()
 const ACTION_TYPES = ['script', 'source']
+const ASPECT_TYPE = 'scripts'
 const sourcesForUse = ref([
   {
     id: 1,
@@ -84,11 +88,30 @@ const actions = [
         targetForCapture: targetSourceForCapture,
         card: card
       }).getScript()
+      const sourceScript = new ScriptSourceDto({
+        id: script.id,
+        name: 'mask.py',
+        path: `external_scripts/mask.py`,
+        args: {},
+        enabled: true
+      })
       scriptStore.addScript(script)
+      const sourceName = targetSourceForCapture.type
+      addSourceScript(sourceScript, sourceName)
+      const config = sourceStore.getConfig()
+      wsService.sendMessage(config)
       stateStore.modals.selectSource.show = false
+      sourceStore.deleteAspect(ASPECT_TYPE)
     }
   }
 ]
+
+
+const addSourceScript = (script, sourceName) => {
+  sourceStore.addAspect(ASPECT_TYPE)
+  sourceStore.updateType('full')
+  sourceStore.addScript(script, sourceName)
+}
 
 const buildActions = (type) => {
   return actions.map(action => {

@@ -13,6 +13,9 @@ export const useStateStore = defineStore('stateStore', () => {
             },
             deleteScript: {
                 show: false,
+            },
+            deleteAudio: {
+                show: false,
             }
         }
 
