@@ -12,6 +12,7 @@ class wsService {
     }
 
     async sendMessage(message) {
+        console.log('message:', message)
         if (!this.connected) {
             const checkConnectInterval = setInterval(async () => {
                 if (this.connected) {

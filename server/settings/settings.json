@@ -9,25 +9,17 @@
         "webcam": {
             "id": 2,
             "show": false,
-            "external_scripts": [
-                {
-                    "id": 565,
-                    "name": "mask.py",
-                    "path": "external_scripts/mask.py",
-                    "args": {},
-                    "enabled": true
-                }
-            ],
+            "external_scripts": [],
             "device_index": 0,
             "resolution": {
                 "width": 1280,
                 "height": 720
             },
             "position": {
-                "x": 0,
-                "y": 0,
-                "width": 640,
-                "height": 360
+                "x": 99,
+                "y": 690,
+                "width": 608,
+                "height": 304
             },
             "z-index": 0,
             "dshow_settings": true
@@ -44,10 +36,10 @@
                 "height": 1080
             },
             "position": {
-                "x": 0,
-                "y": 0,
-                "width": 1920,
-                "height": 1080
+                "x": 589,
+                "y": 538,
+                "width": 593,
+                "height": 296
             },
             "z-index": 1
         }

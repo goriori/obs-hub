@@ -80,7 +80,12 @@ export const useSourceStore = defineStore('sourceStore', () => {
     const updateAspects = (aspects = ['webcam', 'screen']) => {
         update_aspects.value = aspects
     }
+    const updateActiveScript = (id, active) => {
+        const script = scripts.value.find(script => script.id === id)
+        script.enabled = active
+        sources.value.video_sources[script.source].external_scripts.find(script => script.id === id).enabled = active
 
+    }
     const updateSource = (sourceName, newSource) => {
         sources.value['video_sources'][sourceName] = newSource
     }
@@ -119,6 +124,7 @@ export const useSourceStore = defineStore('sourceStore', () => {
         getSource,
         getConfig,
         updateAspects,
+        updateActiveScript,
         updateSource,
         updateType,
         updateShow,

@@ -18,25 +18,32 @@ import Source from "../../components/ui/source/Source.vue";
 import ListSource from "../../components/ui/list-source/ListSource.vue";
 import ScriptTargetCard from "../../components/ui/card/script-target/ScriptTargetCard.vue";
 import ListDragable from "../../components/ui/list-dragable/ListDragable.vue";
-import {ref} from "vue";
+import {ref, shallowRef} from "vue";
+import DragonDrop from "@/components/ui/dragondrop/DragonDrop.vue";
 
 
 const sources = [
   {
     id: 1,
     'icon-type': 'camera',
+    isActive: false,
+    isFocus: false,
     component: Source,
     title: 'Захват веб-камеры'
   },
   {
     id: 2,
     'icon-type': 'screen',
+    isActive: false,
+    isFocus: false,
     component: Source,
     title: 'Захват веб-камеры'
   },
   {
     id: 3,
     'icon-type': 'sound',
+    isActive: false,
+    isFocus: false,
     component: Source,
     title: 'Захват веб-камеры и экрана'
   }
@@ -45,12 +52,16 @@ const sourceForScript = [
   {
     id: 1,
     'icon-type': 'camera',
+    isActive: false,
+    isFocus: false,
     component: Source,
     title: 'Захват веб-камеры'
   },
   {
     id: 2,
     'icon-type': 'screen',
+    isActive: false,
+    isFocus: false,
     component: Source,
     title: 'Захват веб-камеры'
   },
@@ -59,7 +70,17 @@ const sourceList = ref([
   {
     id: 1,
     isFocus: false,
-    component: ScreenTargetCard
+    component: shallowRef(ScreenTargetCard)
+  },
+  {
+    id: 3,
+    isFocus: false,
+    component: shallowRef(ScreenTargetCard)
+  },
+  {
+    id: 2,
+    isFocus: false,
+    component: shallowRef(ScreenTargetCard)
   }
 ])
 const dragList = ref([ScreenTargetCard, CameraTargetCard, ScreenTargetCard, CameraTargetCard])
@@ -100,9 +121,9 @@ const onChangeSize = (size) => {
     </div>
     <div class="page-list">
       <h3>Script Cards :</h3>
-      <ScriptTargetCard/>
-      <ScriptTargetCard/>
-      <ScriptTargetCard/>
+      <ScriptTargetCard :source="{type:'camera', component:IconCard}"/>
+      <ScriptTargetCard :source="{type:'screen', component:IconCard}"/>
+      <ScriptTargetCard :source="{type:'sound', component:IconCard}"/>
 
     </div>
     <div class="page-list">
@@ -123,21 +144,26 @@ const onChangeSize = (size) => {
     </div>
     <div class="page-list">
       <h3>Select Source Spaces :</h3>
-      <SelectSource title="Выбрать источник" :sources="sources" :actions="[ConfirmButton]"/>
+      <SelectSource title="Выбрать источник" :sources="sources"
+                    :actions="[{id:1, action:ConfirmButton, onClick:()=> {}}]"/>
       <SelectSource title="Для чего будет использоваться скрипт?" :sources="sourceForScript"
-                    :actions="[ConfirmButton]"/>
+                    :actions="[{id:1, action:ConfirmButton, onClick:()=> {}}]"/>
     </div>
     <div class="page-list">
       <h3>List Sources :</h3>
       <ListSource :sources="sourceList"/>
-      <!--      <ListSource :sources="sourceList"/>-->
-      <!--      <ListSource :sources="sourceList"/>-->
+      <ListSource :sources="sourceList"/>
+      <ListSource :sources="sourceList"/>
     </div>
     <div class="page-list">
       <h3>List Dragable :</h3>
       <ListDragable v-model:sources="dragList"/>
       <ListDragable v-model:sources="dragList"/>
       <ListDragable v-model:sources="dragList"/>
+    </div>
+    <div class="page-list">
+      <h3>Dragon drop :</h3>
+        <DragonDrop/>
     </div>
   </div>
 </template>

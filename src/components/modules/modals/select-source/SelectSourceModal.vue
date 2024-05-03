@@ -70,8 +70,8 @@ const actions = [
     type: ACTION_TYPES[0],
     action: ConfirmButton,
     onClick: function () {
-      console.log('click action')
-      steps.value = ACTION_TYPES[1]
+      const targetUse = sourcesForUse.value.filter(source => source.isActive)
+      if (targetUse.length > 0) steps.value = ACTION_TYPES[1]
     }
   },
   {
@@ -79,9 +79,9 @@ const actions = [
     type: ACTION_TYPES[1],
     action: ConfirmButton,
     onClick: function () {
-      console.log('click action')
       const targetSourceForUse = sourcesForUse.value.find(source => source.isActive)
       const targetSourceForCapture = sourcesForCapture.value.find((source => source.isActive))
+      if (!targetSourceForUse || !targetSourceForCapture) return
       const card = cardScriptFactory.getScriptCard(targetSourceForCapture.type)
       const script = new ScriptDto({
         targetForUse: targetSourceForUse,
@@ -93,7 +93,7 @@ const actions = [
         name: 'mask.py',
         path: `external_scripts/mask.py`,
         args: {},
-        enabled: true
+        enabled: false
       })
       scriptStore.addScript(script)
       const sourceName = targetSourceForCapture.type
@@ -126,7 +126,7 @@ const steps = ref(ACTION_TYPES[0])
 </script>
 
 <template>
-  <Popup>
+  <Popup >
     <template #window>
       <section class="select-source">
         <SelectSource v-if="steps === ACTION_TYPES[0]" title="Выберите источник" :sources="sourcesForUse"

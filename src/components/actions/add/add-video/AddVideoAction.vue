@@ -26,12 +26,12 @@ const addCapture = (event) => {
     if (capture === 'empty') return onClose()
     const screen = ScreenFactory.getSource(capture)
     screenStore.addScreen(screen, capture)
-    sourceStore.addAspect(capture)
+    sourceStore.updateAspects(['webcam','screen'])
     sourceStore.updateShow(capture, true)
     sourceStore.updateType('full')
     const config = sourceStore.getConfig()
     wsService.sendMessage(config)
-    sourceStore.deleteAspect(capture)
+    sourceStore.updateAspects([])
   }
   onClose()
 }

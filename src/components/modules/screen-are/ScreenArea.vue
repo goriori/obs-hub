@@ -82,9 +82,8 @@ const initVideoElement = () => videElement.value = document.getElementById('main
 
 onMounted(async () => {
   initVideoElement()
-  setTimeout(() => {
-    wsService.sendMessage(sourceStore.getConfig())
-  }, 3000)
+  sourceStore.updateType('full')
+  await wsService.sendMessage(sourceStore.getConfig())
 })
 
 onUpdated(async () => {

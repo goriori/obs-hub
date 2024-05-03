@@ -9,32 +9,31 @@ import wsService from "@/API/wsService/wsService.js";
 const screenStore = useScreenStore()
 const sourceStore = useSourceStore()
 const sources = computed(() => screenStore.screens)
-const configData = ref({
-  "update_aspects": [],
-  "update_type": "fast",
-  "config": sourceStore.sources
-})
 
 const changeList = (list) => {
   console.log('updated list: ', list)
   screenStore.updateScreenList(list)
   screenStore.screens.reduce((acc, value) => {
     if (acc.type === 'webcam' && value.type === 'screen') {
+      console.log('webcaaaaaam')
       sourceStore.changeZIndex(acc.type, 1)
       sourceStore.changeZIndex(value.type, 0)
     }
     if (acc.type === 'screen' && value.type === 'webcam') {
+      console.log('screeeeeen')
       sourceStore.changeZIndex(acc.type, 1)
       sourceStore.changeZIndex(value.type, 0)
     }
     return value
   })
+  sourceStore.addAspect('webcam')
+  sourceStore.addAspect('screen')
+  sourceStore.updateType('full')
+  wsService.sendMessage(sourceStore.getConfig())
+  sourceStore.deleteAspect('webcam')
+  sourceStore.deleteAspect('screen')
 }
-onUpdated(() => {
-  wsService.sendMessage(configData.value)
-  console.log('update list')
-  console.log('updated list after hook update:', sources.value)
-})
+
 </script>
 
 <template>

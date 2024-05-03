@@ -27,7 +27,6 @@ const props = defineProps({
 const emits = defineEmits(['changePositionScreen', 'resizeScreen'])
 
 
-
 const setZIndexElements = () => {
   const screens = document.querySelectorAll('.screen-add')
   screens.forEach(screen => {
@@ -83,9 +82,11 @@ onUpdated(async () => {
       },
       listeners: {
         move(event) {
+          const MAX_SIZE = 10
           let {x, y} = event.target.dataset
           x = (parseFloat(x) || 0) + event.deltaRect.left
           y = (parseFloat(y) || 0) + event.deltaRect.top
+          if (event.rect.width <= MAX_SIZE || event.rect.height <= MAX_SIZE) return
           const newSize = {
             width: `${event.rect.width}px`,
             height: `${event.rect.height}px`,
@@ -110,9 +111,17 @@ onUpdated(async () => {
     <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="960"
            :height="540" class="screen-main"
            id="main-screen"></video>
-    <div v-for="(screen, index) in screens" :key="screen.id" class="screen-add" :class="screen.selector"
-         :data-type="screen.type" :data-index="screen['z-index']">
-<!--      {{screen.title}}-->
+    <div v-for="(screen, index) in screens"
+         :key="screen.id"
+         :class="['screen-add', screen.selector]"
+         :style="{
+           width:Math.abs(screen.position.width - 960) + 'px' ,
+           height:Math.abs(screen.position.height - 540) + 'px'
+         }"
+         :data-type="screen.type"
+         :data-index="screen['z-index']"
+    >
+      <!--      {{screen.title}}-->
     </div>
   </section>
 </template>
@@ -129,7 +138,6 @@ onUpdated(async () => {
   &-main {
     position: absolute;
     width: 100%;
-    height: 540px;
     background-color: #000;
     z-index: 1;
     object-fit: cover;
@@ -137,8 +145,7 @@ onUpdated(async () => {
 
   &-add {
     position: absolute;
-    width: 320px;
-    height: 180px;
+
     //background-color: $primary;
     //border: 1px solid black;
     touch-action: none;

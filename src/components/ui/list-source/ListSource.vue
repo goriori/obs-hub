@@ -1,10 +1,22 @@
 <script setup>
+import {ref} from "vue";
+
 const props = defineProps({
   sources: {
     type: Array,
     default: () => []
   }
 })
+const updateData = ref({
+  type: 'active-script',
+  data: {}
+})
+const emits = defineEmits(['onUpdate'])
+const onActive = (value, id, type) => {
+  updateData.value.type = type
+  updateData.value.data.id = id
+  emits('onUpdate', updateData.value)
+}
 </script>
 
 <template>
@@ -16,6 +28,7 @@ const props = defineProps({
           :is="source.component"
           :targetType="source.capture?.type"
           :source="source.use"
+          @update:isActive="onActive"
       />
     </div>
   </section>
@@ -28,6 +41,7 @@ const props = defineProps({
 
 .list-sources {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

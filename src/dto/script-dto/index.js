@@ -1,5 +1,7 @@
 import IconCard from "@/components/ui/icon-card/IconCard.vue";
 import {shallowRef} from "vue";
+import ScriptTargetCard from "@/components/ui/card/script-target/ScriptTargetCard.vue";
+import Source from "@/components/ui/source/Source.vue";
 
 
 export class ScriptSourceDto {
@@ -8,7 +10,7 @@ export class ScriptSourceDto {
         name: '',
         path: '',
         args: {},
-        enabled: true
+        enabled: false
     }) {
         this.id = data?.id;
         this.name = data?.name;
@@ -46,19 +48,18 @@ export class ScriptDto {
         const randomId = Math.floor(Math.random() * 1000)
         const use = {
             id: randomId,
-            title: this.data.targetForUse.title,
-            type: this.data.targetForUse.type,
+            title: this.data?.targetForUse?.title || 'Захват веб-камеры',
+            type: this.data?.targetForUse?.type || 'camera',
             component: shallowRef(IconCard),
-
         }
         const capture = {
             id: randomId,
-            title: this.data.targetForCapture.title,
-            type: this.data.targetForCapture.type,
-            component: this.data.targetForCapture.component,
+            title: this.data?.targetForCapture?.title || 'Захват веб-камеры',
+            type: this.data?.targetForCapture?.type || 'webcam',
+            component: this.data?.targetForCapture?.component || shallowRef(Source) ,
         }
-        const card = this.data?.card
+        const card = this.data?.card || shallowRef(ScriptTargetCard)
 
-        return new ScriptItem(randomId, use, capture, card,)
+        return new ScriptItem(randomId, use, capture, card)
     }
 }

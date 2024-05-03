@@ -52,10 +52,10 @@ const typeScript = {
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
 const onFocus = () => emits('update:isFocus', !props.isFocus)
 const onActiveScript = () => {
-  emits('update:isActive', true)
+  emits('update:isActive', true, props.source.id, 'active-script')
 }
 const onDisableScript = () => {
-  emits('update:isActive', false)
+  emits('update:isActive', false, props.source.id, 'disable-script')
 }
 </script>
 

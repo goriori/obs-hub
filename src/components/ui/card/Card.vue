@@ -14,7 +14,7 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['onActiveScript, onDisableScript', 'onFocus'])
+const emits = defineEmits(['onActiveScript', 'onDisableScript', 'onFocus'])
 const onActiveScript = () => {
   if (props.isScript) {
     return props.isActive ? emits('onDisableScript') : emits('onActiveScript')

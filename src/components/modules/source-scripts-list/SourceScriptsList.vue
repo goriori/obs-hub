@@ -1,21 +1,63 @@
 <script setup>
 
-import {computed, onUpdated, watch} from "vue";
+import {computed, onUpdated, ref, watch} from "vue";
 import {useScriptStore} from "../../../store/scriptStore.js";
+import {useSourceStore} from "@/store/sourceStore.js";
 import ListSource from "../../ui/list-source/ListSource.vue";
-import CameraTargetCard from "../../ui/card/camera-target/CameraTargetCard.vue";
-import ScreenTargetCard from "../../ui/card/screen-target/ScreenTargetCard.vue";
+import DragonDrop from "@/components/ui/dragondrop/DragonDrop.vue";
+import wsService from "@/API/wsService/wsService.js";
+import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
 
 const scriptStore = useScriptStore()
-
+const sourceStore = useSourceStore()
+const TYPES_UPDATE = ['active-script', 'disable-script']
+const ASPECT = 'scripts'
+const updates = {
+  [TYPES_UPDATE[0]]: (data) => activeScript(data, true),
+  [TYPES_UPDATE[1]]: (data) => activeScript(data, false)
+}
 
 const scripts = computed(() => scriptStore.scripts)
+const activeScript = (data, active = false) => {
+  sourceStore.updateActiveScript(data?.id, active)
+  sourceStore.updateType('full')
+  sourceStore.addAspect(ASPECT)
+  wsService.sendMessage(sourceStore.getConfig())
+  sourceStore.deleteAspect(ASPECT)
+}
+
+const loadScript = (script) => {
+  console.log('load script', script)
+  const scriptItem = new ScriptDto(script).getScript()
+  const sourceScript = new ScriptSourceDto({
+    id: scriptItem.id,
+    name: 'mask.py',
+    path: 'external_scripts/mask.py',
+    args: {},
+    enabled: false
+  })
+  scriptStore.addScript(scriptItem)
+  sourceStore.addScript(sourceScript, 'webcam')
+  console.log(scriptItem)
+}
+const onUpdateList = (updated) => {
+  const {type, data} = updated
+  return updates[type].call(this, data)
+}
 </script>
 
 <template>
-  <ListSource :sources="scripts"/>
+  <div class="source">
+    <DragonDrop class="drop-list" v-if="scripts.length === 0" @load-file="loadScript" accept=".py"/>
+    <ListSource :sources="scripts" @on-update="onUpdateList" v-if="scripts.length > 0"/>
+  </div>
+
 </template>
 
 <style scoped lang="scss">
 
+
+.source {
+  height: 240px;
+}
 </style>
