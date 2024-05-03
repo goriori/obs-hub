@@ -70,8 +70,14 @@ onUpdated(async () => {
         interact.modifiers.aspectRatio({
           ratio: 2,
           modifiers: [
-            interact.modifiers.restrictSize({max: 'parent'}),
+            interact.modifiers.restrictEdges({outer: 'parent'}),
           ],
+        }),
+        interact.modifiers.restrictEdges({
+          outer: 'parent',
+        }),
+        interact.modifiers.restrictSize({
+          min: { width: 100, height: 50 }
         })
       ],
       edges: {
@@ -82,19 +88,26 @@ onUpdated(async () => {
       },
       listeners: {
         move(event) {
-          const MAX_SIZE = 10
-          let {x, y} = event.target.dataset
-          x = (parseFloat(x) || 0) + event.deltaRect.left
-          y = (parseFloat(y) || 0) + event.deltaRect.top
-          if (event.rect.width <= MAX_SIZE || event.rect.height <= MAX_SIZE) return
+          const target = event.target
+          let x = parseFloat(target.getAttribute('data-x')) || 0
+          let y = parseFloat(target.getAttribute('data-y')) || 0
           const newSize = {
             width: `${event.rect.width}px`,
             height: `${event.rect.height}px`,
             transform: `translate(${x}px, ${y}px)`,
           }
-          Object.assign(event.target.style, newSize)
-          Object.assign(event.target.dataset, {x, y})
+          target.style.width = event.rect.width + 'px'
+          target.style.height = event.rect.height + 'px'
+          x += event.deltaRect.left
+          y += event.deltaRect.top
+          target.style.transform = `translate(${x}px, ${y}px)`
+          target.setAttribute('data-x', x)
+          target.setAttribute('data-y', y)
           emits('resizeScreen', screen.id, {width: newSize.width, height: newSize.height})
+          emits('changePositionScreen', screen.id, {
+            x,
+            y
+          })
         },
       },
     })
@@ -147,7 +160,7 @@ onUpdated(async () => {
     position: absolute;
 
     //background-color: $primary;
-    //border: 1px solid black;
+    border: 2px solid $primary;
     touch-action: none;
     user-select: none;
   }
