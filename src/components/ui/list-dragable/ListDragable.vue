@@ -1,6 +1,6 @@
 <script setup>
 import draggable from 'vuedraggable'
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 
 const props = defineProps({
   sources: {
@@ -17,11 +17,19 @@ const dragOptions = {
   disabled: false,
   ghostClass: "ghost"
 };
+
 const list = computed(() => [...props.sources.filter(source => source.component !== null)])
-const checkMove = (e) => {
+watch(list, (value, oldValue, onCleanup) => {
+  console.log('value:', value)
+  console.log('oldValue:', oldValue)
+})
+const updateList = (e) => {
+  dragging.value = false
   // window.console.log("Future index: " + e.draggedContext.futureIndex);
   emits('onChangeList', list.value)
 }
+
+
 </script>
 
 <template>
@@ -31,9 +39,8 @@ const checkMove = (e) => {
       v-bind="dragOptions"
       class="list-group"
       ghost-class="ghost"
-      :move="checkMove"
       @start="dragging = true"
-      @end="dragging = false"
+      @end="updateList"
       item-key="item"
   >
     <template #item="{element}">

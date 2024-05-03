@@ -15,12 +15,10 @@ const changeList = (list) => {
   screenStore.updateScreenList(list)
   screenStore.screens.reduce((acc, value) => {
     if (acc.type === 'webcam' && value.type === 'screen') {
-      console.log('webcaaaaaam')
       sourceStore.changeZIndex(acc.type, 1)
       sourceStore.changeZIndex(value.type, 0)
     }
     if (acc.type === 'screen' && value.type === 'webcam') {
-      console.log('screeeeeen')
       sourceStore.changeZIndex(acc.type, 1)
       sourceStore.changeZIndex(value.type, 0)
     }
