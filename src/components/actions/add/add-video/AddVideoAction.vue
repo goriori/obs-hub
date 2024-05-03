@@ -23,10 +23,11 @@ const addCapture = (event) => {
   const targetElement = event.target.closest('article')
   if (targetElement) {
     const {capture} = targetElement.dataset
+    if (!capture) return
     if (capture === 'empty') return onClose()
     const screen = ScreenFactory.getSource(capture)
     screenStore.addScreen(screen, capture)
-    sourceStore.updateAspects(['webcam','screen'])
+    sourceStore.updateAspects(['webcam', 'screen'])
     sourceStore.updateShow(capture, true)
     sourceStore.updateType('full')
     const config = sourceStore.getConfig()

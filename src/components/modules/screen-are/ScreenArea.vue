@@ -67,10 +67,10 @@ const initScreen = async () => {
   if (screenStore.screens.length === 1) return stream.value.getTracks().forEach(track => track.stop())
   const videoElement = document.getElementsByTagName('video')[0]
   const devices = await navigator.mediaDevices.enumerateDevices()
-  console.log(devices)
+  const streamerDevice = devices.find(device => device.label === 'Streamer')
   stream.value = await navigator.mediaDevices.getUserMedia({
     video: {
-      deviceId: devices[2].deviceId,
+      deviceId: streamerDevice.deviceId,
     }
   })
   videoElement.srcObject = stream.value
@@ -83,7 +83,11 @@ const initVideoElement = () => videElement.value = document.getElementById('main
 onMounted(async () => {
   initVideoElement()
   sourceStore.updateType('full')
-  await wsService.sendMessage(sourceStore.getConfig())
+  if (wsService.connected) await wsService.sendMessage(sourceStore.getConfig())
+  else {
+    await wsService.initConnect()
+    await wsService.sendMessage(sourceStore.getConfig())
+  }
 })
 
 onUpdated(async () => {

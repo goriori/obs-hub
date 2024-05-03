@@ -16,17 +16,17 @@
                 "height": 720
             },
             "position": {
-                "x": 99,
-                "y": 690,
-                "width": 608,
-                "height": 304
+                "x": 0,
+                "y": 0,
+                "width": 640,
+                "height": 360
             },
             "z-index": 0,
             "dshow_settings": true
         },
         "screen": {
             "id": 1,
-            "show": false,
+            "show": true,
             "external_scripts": [],
             "monitor_index": 1,
             "region": {
@@ -36,10 +36,10 @@
                 "height": 1080
             },
             "position": {
-                "x": 589,
-                "y": 538,
-                "width": 593,
-                "height": 296
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
             },
             "z-index": 1
         }
