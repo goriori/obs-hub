@@ -79,18 +79,8 @@ const actions = [
     type: ACTION_TYPES[1],
     action: ConfirmButton,
     onClick: function () {
-      generateLoadFileInput()
-          .then(async file => {
-            console.log(file)
-            const {targetSourceForUse, targetSourceForCapture} = getSources()
-            if (!targetSourceForUse || !targetSourceForCapture) return
-            const formData = buildFormData(file, targetSourceForCapture.type, 'load')
-            formData.forEach((value, key) => console.log(key, value))
-            const {config} = await sourceStore.loadScript(formData)
-            sourceStore.sources = config
-            stateStore.modals.selectSource.show = false
-          })
-
+      if (!stateStore.modals.selectSource.targetFile) generateLoadFileInput().then(loadScript)
+      else loadScript(stateStore.modals.selectSource.targetFile)
     }
   }
 ]
@@ -108,7 +98,6 @@ const generateLoadFileInput = () => {
       resolve(file)
       formLoadElement.removeEventListener('change', listenerId)
     }
-
   })
 }
 const buildFormData = (file, source, action) => {
@@ -124,6 +113,29 @@ const getSources = () => {
   const targetSourceForUse = sourcesForUse.value.find(source => source.isActive)
   const targetSourceForCapture = sourcesForCapture.value.find((source => source.isActive))
   return {targetSourceForUse, targetSourceForCapture}
+}
+
+const loadScript = async (file) => {
+  const fileName = file.name.split('.zip')[0]
+  const {targetSourceForUse, targetSourceForCapture} = getSources()
+  if (!targetSourceForUse || !targetSourceForCapture) return
+  const script = new ScriptDto({
+    name:fileName,
+    targetForUse: targetSourceForUse,
+    targetForCapture: targetSourceForCapture,
+    card: cardScriptFactory.getScriptCard(targetSourceForCapture.type)
+  }).getScript()
+  const scriptSource = new ScriptSourceDto({
+    args: {},
+    name: fileName,
+    enabled: false,
+  })
+  const formData = buildFormData(file, targetSourceForCapture.type, 'load')
+  const {config} = await sourceStore.loadScript(formData)
+  sourceStore.sources = config
+  sourceStore.addScript(scriptSource, targetSourceForCapture.type)
+  scriptStore.addScript(script)
+  stateStore.modals.selectSource.show = false
 }
 const buildActions = (type) => {
   return actions.map(action => {

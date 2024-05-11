@@ -9,19 +9,25 @@ const emits = defineEmits(['onConfirmDelete'])
 const scriptStore = useScriptStore()
 const sourceStore = useSourceStore()
 const deleteTargetScripts = () => {
-  const ASPECT = 'scripts'
   const focusesScript = scriptStore.scripts.filter((script) => {
     if (script.isFocus) return script
   })
-  focusesScript.forEach(script => {
-    scriptStore.deleteScript(script.id)
-    sourceStore.deleteScript(script.id)
+  focusesScript.forEach(async script => {
+    const formData = buildFormData(script)
+    scriptStore.deleteScript(script.name)
+    sourceStore.deleteScript(script.name)
+    const {config} = await sourceStore.deleteScriptServer(formData)
+    sourceStore.sources = config
   })
-  sourceStore.addAspect(ASPECT)
-  sourceStore.updateType('full')
-  wsService.sendMessage(sourceStore.getConfig())
   emits('onConfirmDelete')
-  sourceStore.deleteAspect(ASPECT)
+}
+const buildFormData = (script) => {
+  const formData = new FormData()
+  formData.set('script_archive', {})
+  formData.set('source', script.capture.type)
+  formData.set('action', 'delete')
+  formData.set('script_name', script.name)
+  return formData
 }
 </script>
 

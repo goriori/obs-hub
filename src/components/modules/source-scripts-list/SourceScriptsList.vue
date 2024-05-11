@@ -7,7 +7,9 @@ import ListSource from "../../ui/list-source/ListSource.vue";
 import DragonDrop from "@/components/ui/dragondrop/DragonDrop.vue";
 import wsService from "@/API/wsService/wsService.js";
 import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
+import {useStateStore} from "@/store/stateStore.js";
 
+const stateSource = useStateStore()
 const scriptStore = useScriptStore()
 const sourceStore = useSourceStore()
 const TYPES_UPDATE = ['active-script', 'disable-script']
@@ -28,16 +30,8 @@ const activeScript = (data, active = false) => {
 }
 
 const loadScript = (script) => {
-  const scriptItem = new ScriptDto(script).getScript()
-  const sourceScript = new ScriptSourceDto({
-    id: scriptItem.id,
-    name: 'mask.py',
-    path: 'external_scripts/mask.py',
-    args: {},
-    enabled: false
-  })
-  scriptStore.addScript(scriptItem)
-  sourceStore.addScript(sourceScript, 'webcam')
+  stateSource.modals.selectSource.targetFile = script
+  stateSource.modals.selectSource.show = true
 }
 const onUpdateList = (updated) => {
   console.log(updated)

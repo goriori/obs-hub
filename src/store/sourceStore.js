@@ -45,9 +45,6 @@ export const useSourceStore = defineStore('sourceStore', () => {
     const addScript = (script, sourceName) => {
         if (!sourceName) return
         scripts.value.push({source: sourceName, ...script})
-        if (sources.value['video_sources'][sourceName].external_scripts === undefined) return
-        if (sourceName === 'virtual_camera') sources.value['virtual_camera'].external_scripts.push(script)
-        else sources.value['video_sources'][sourceName].external_scripts.push(script)
     }
     const getSource = (sourceName) => {
         return sources.value['video_sources'][sourceName]
@@ -63,6 +60,7 @@ export const useSourceStore = defineStore('sourceStore', () => {
         update_aspects.value = aspects
     }
     const updateActiveScript = (name, active) => {
+        console.log(name, active)
         const script = scripts.value.find(script => script.name === name)
         script.enabled = active
         sources.value.video_sources[script.source].external_scripts.find(script => script.name === name).enabled = active
@@ -91,11 +89,13 @@ export const useSourceStore = defineStore('sourceStore', () => {
         update_aspects.value = update_aspects.value.filter(a => a !== aspect)
     }
 
-    const deleteScript = (id) => {
-        const script = scripts.value.find(script => script.id === id)
+    const deleteScript = (name) => {
+        const script = scripts.value.find(script => script.name === name)
         if (!script) return
-        sources.value.video_sources[script.source].external_scripts = sources.value.video_sources[script.source].external_scripts.filter(script => script.id !== id)
-        scripts.value = scripts.value.filter(script => script.id !== id)
+        scripts.value = scripts.value.filter(script => script.name !== name)
+    }
+    const deleteScriptServer = async (deleteData) => {
+        return await scriptService.deleteScript(deleteData)
     }
     return {
         sources,
@@ -115,7 +115,8 @@ export const useSourceStore = defineStore('sourceStore', () => {
         updateResolutionVirtualCamera,
         changeZIndex,
         deleteAspect,
-        deleteScript
+        deleteScript,
+        deleteScriptServer
 
     }
 })

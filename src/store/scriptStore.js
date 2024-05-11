@@ -6,8 +6,8 @@ export const useScriptStore = defineStore('scriptStore', () => {
     const addScript = (script) => {
         scripts.value.push(script)
     }
-    const deleteScript = (id) => {
-        scripts.value = scripts.value.filter(script => script.id !== id)
+    const deleteScript = (name) => {
+        scripts.value = scripts.value.filter(script => script.name !== name)
     }
     return {
         scripts,

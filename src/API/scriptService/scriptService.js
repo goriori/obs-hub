@@ -13,4 +13,17 @@ export default class ScriptService {
             throw e
         }
     }
+
+    static async deleteScript(deleteData) {
+        try {
+            const response = await axiosInstance({
+                url: '/script',
+                method: 'POST',
+                data: deleteData
+            })
+            return response.data
+        } catch (e) {
+            throw e
+        }
+    }
 }

@@ -5,6 +5,7 @@ export const useStateStore = defineStore('stateStore', () => {
     const isLoading = ref(false)
     const modals = ref({
         selectSource: {
+            targetFile:null,
             show: false,
         },
         delete: {
