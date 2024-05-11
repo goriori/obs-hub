@@ -1,33 +1,27 @@
 <script setup>
 
-import {useScreenStore} from "../../../store/screenStore.js";
+import {useScreenStore} from "@/store/screenStore.js";
 import {computed, onMounted, onUpdated, ref} from "vue";
 import {useSourceStore} from "@/store/sourceStore.js";
+import {useResolutionStore} from "@/store/resolutionStore.js";
 import Screen from "../../ui/screen/Screen.vue";
 import wsService from "@/API/wsService/wsService.js";
 
 const sourceStore = useSourceStore()
 const screenStore = useScreenStore()
-
-const stream = ref(null)
+const resolutionStore = useResolutionStore()
 
 const mainScreen = screenStore.screens[0]
 const otherScreens = computed(() => screenStore.screens.slice(1))
 const videElement = ref(null)
-const screensSettings = ref({
-  webcam: {
-    width: sourceStore.getConfig().config.video_sources?.webcam?.position?.width,
-    height: sourceStore.getConfig().config.video_sources?.webcam?.position?.height
-  },
-  screen: {}
-})
+const stream = ref(null)
+
 const onChangePositionScreen = (screenId, coordinates,) => {
   screenStore.changePositionScreen(screenId, coordinates)
   const screen = screenStore.getScreen(screenId)
-  const computedCoordinates = rebuildPosition(screen.position, videElement.value)
+  const computedCoordinates = rebuildPosition(screen, videElement.value)
   const source = sourceStore.getSource(screen.type)
   Object.assign(source.position, computedCoordinates)
-  console.log('source', source)
   sourceStore.updateSource(screen.type, source)
   sourceStore.updateType('fast')
   const config = sourceStore.getConfig()
@@ -35,31 +29,43 @@ const onChangePositionScreen = (screenId, coordinates,) => {
 
 }
 
-const rebuildPosition = (position, videoSize) => {
-  const {x, y} = position
+const rebuildPosition = (screen, videoSize) => {
+  const {x, y} = screen.position
+  const [widthResolution, heightResolution] = resolutionStore.resolution
   const {width: videoWidth, height: videoHeight} = videoSize
-  return computedCoordinates(x, y, videoWidth, videoHeight)
+  return computedCoordinates(x, y, widthResolution, heightResolution, videoWidth, videoHeight)
 }
 
-const computedCoordinates = (x, y, videoWidth, videoHeight) => {
-  const computedX = Math.floor(x / videoWidth * 1920)
-  const computedY = Math.floor(y / videoHeight * 1080)
+const computedCoordinates = (x, y, widthResolution, heightResolution, videoWidth, videoHeight) => {
+  const computedX = Math.floor(x / videoWidth * widthResolution)
+  console.log('computedX:', computedX, x)
+  console.log('reComputedX: ', (computedX * videoWidth) / widthResolution)
+  const computedY = Math.floor(y / videoHeight * heightResolution)
   return {x: computedX, y: computedY}
 }
 
 
 const onResizeScreen = (screenId, size) => {
   const {width, height} = size
-  const videoWidth = videElement.value.width
-  const videoHeight = videElement.value.height
-  const numberWidth = Math.floor(+width.replace('px', '') / videoWidth * 1920)
-  const numberHeight = Math.floor(+height.replace('px', '') / videoHeight * 1080)
-  screenStore.resizeScreen(screenId, size)
-  console.log('resize:', size, numberWidth, numberHeight)
+  const sizeWidth = +width.toString().replace('px', '')
+  const sizeHeight = +height.toString().replace('px', '')
+
   const screen = screenStore.getScreen(screenId)
   const source = sourceStore.getSource(screen.type)
+
+  const [widthResolution, heightResolution] = resolutionStore.resolution
+  const videoWidth = videElement.value.width
+  const videoHeight = videElement.value.height
+
+  const numberWidth = Math.floor(sizeWidth / videoWidth * widthResolution)
+  console.log('Resize Number Width:', numberWidth, sizeWidth)
+  console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
+  const numberHeight = Math.floor(sizeHeight / videoHeight * heightResolution)
+  screenStore.resizeScreen(screenId, size)
+
   Object.assign(source.position, {width: numberWidth, height: numberHeight})
   sourceStore.updateType('fast')
+
   const config = sourceStore.getConfig()
   wsService.sendMessage(config)
 }
@@ -79,29 +85,24 @@ const initScreen = async () => {
 }
 
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
-
+const checkSources = async () => screenStore.screens.length > 1 ? await initScreen() : false
 onMounted(async () => {
   initVideoElement()
-  sourceStore.updateType('full')
-  if (wsService.connected) await wsService.sendMessage(sourceStore.getConfig())
-  else {
-    await wsService.initConnect()
-    await wsService.sendMessage(sourceStore.getConfig())
-  }
+  await checkSources()
 })
 
 onUpdated(async () => {
-  console.log('update')
-  await initScreen()
+  await checkSources()
 })
+
 </script>
 
 <template>
-  <Screen :settings="screensSettings"
-          :main-screen="mainScreen"
-          :screens="otherScreens"
-          @change-position-screen="onChangePositionScreen"
-          @resize-screen="onResizeScreen"/>
+  <Screen
+      :main-screen="mainScreen"
+      :screens="otherScreens"
+      @change-position-screen="onChangePositionScreen"
+      @resize-screen="onResizeScreen"/>
 </template>
 
 <style scoped lang="scss">

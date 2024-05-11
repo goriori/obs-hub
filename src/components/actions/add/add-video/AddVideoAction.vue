@@ -1,16 +1,18 @@
 <script setup>
 
-import {computed, onMounted, ref, watch} from "vue";
-import {useScreenStore} from "../../../../store/screenStore.js";
+import {computed, ref} from "vue";
+import {useScreenStore} from "@/store/screenStore.js";
 import {useSourceStore} from "@/store/sourceStore.js";
 import {ScreenFactory} from "@/factory/screen-factory/index.js";
 import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
 import Screen from "../../../icons/Screen.vue";
 import Camera from "../../../icons/Camera.vue";
 import wsService from "@/API/wsService/wsService.js";
+import {useResolutionStore} from "@/store/resolutionStore.js";
 
 const screenStore = useScreenStore()
 const sourceStore = useSourceStore()
+const resolutionApplication = useResolutionStore()
 const isActive = ref(false)
 const haveScreens = computed(() => screenStore.getTypeScreens())
 
@@ -25,14 +27,19 @@ const addCapture = (event) => {
     const {capture} = targetElement.dataset
     if (!capture) return
     if (capture === 'empty') return onClose()
-    const screen = ScreenFactory.getSource(capture)
+    const screenOption = {
+      resolutionApplication: resolutionApplication.resolution
+    }
+    const screen = ScreenFactory.getSource(capture, screenOption)
+    const source = sourceStore.getSource(capture)
+    Object.assign(screen.position, source.position)
     screenStore.addScreen(screen, capture)
-    sourceStore.updateAspects(['webcam', 'screen'])
+    sourceStore.addAspect(capture)
     sourceStore.updateShow(capture, true)
     sourceStore.updateType('full')
     const config = sourceStore.getConfig()
     wsService.sendMessage(config)
-    sourceStore.updateAspects([])
+    sourceStore.deleteAspect(capture)
   }
   onClose()
 }

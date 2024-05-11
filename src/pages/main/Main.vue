@@ -11,13 +11,13 @@ import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 <template>
   <div class="page">
     <div class="page-container">
-      <section>
+      <section class="switcher">
         <SizeSwitch/>
       </section>
-      <section class="screen">
+      <section class="screen block">
         <ScreenArea/>
       </section>
-      <section class="spaces">
+      <section class="spaces block">
         <SourceAudio/>
         <SourceVideo/>
         <SourceScripts/>
@@ -27,21 +27,21 @@ import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/scss/variables';
 .page {
-  &-container {
-    padding: 40px;
+  padding: 40px;
 
-  }
 }
 
 header {
   width: 100%;
 }
 
-section {
-  margin: 40px 0;
+.switcher {
+  position: absolute;
+  right: 30px;
+  z-index: 5;
 }
-
 .screen {
   margin: 0 auto;
 }
@@ -49,5 +49,9 @@ section {
 .spaces {
   display: flex;
   gap: 40px;
+}
+
+.block {
+  margin: 0 0 40px 0;
 }
 </style>

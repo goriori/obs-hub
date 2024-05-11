@@ -45,11 +45,12 @@ export const useScreenStore = defineStore('screenStore', () => {
     const changePositionScreen = (id, position) => {
         const screen = screens.value.find(screen => screen.id === id)
         Object.assign(screen.position, position)
+        Object.assign(screen.positionApplication, position)
     }
     const resizeScreen = (id, size) => {
         const screen = screens.value.find(screen => screen.id === id)
         Object.assign(screen.position, size)
-
+        Object.assign(screen.positionApplication, size)
     }
 
     const getScreen = (id) => {

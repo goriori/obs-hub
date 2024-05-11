@@ -19,7 +19,8 @@ const updates = {
 
 const scripts = computed(() => scriptStore.scripts)
 const activeScript = (data, active = false) => {
-  sourceStore.updateActiveScript(data?.id, active)
+  console.log('active script', data)
+  sourceStore.updateActiveScript(data?.name, active)
   sourceStore.updateType('full')
   sourceStore.addAspect(ASPECT)
   wsService.sendMessage(sourceStore.getConfig())
@@ -27,7 +28,6 @@ const activeScript = (data, active = false) => {
 }
 
 const loadScript = (script) => {
-  console.log('load script', script)
   const scriptItem = new ScriptDto(script).getScript()
   const sourceScript = new ScriptSourceDto({
     id: scriptItem.id,
@@ -38,9 +38,9 @@ const loadScript = (script) => {
   })
   scriptStore.addScript(scriptItem)
   sourceStore.addScript(sourceScript, 'webcam')
-  console.log(scriptItem)
 }
 const onUpdateList = (updated) => {
+  console.log(updated)
   const {type, data} = updated
   return updates[type].call(this, data)
 }
@@ -48,7 +48,7 @@ const onUpdateList = (updated) => {
 
 <template>
   <div class="source">
-    <DragonDrop class="drop-list" v-if="scripts.length === 0" @load-file="loadScript" accept=".py"/>
+    <DragonDrop class="drop-list" v-if="scripts.length === 0" @load-file="loadScript" accept=".zip"/>
     <ListSource :sources="scripts" @on-update="onUpdateList" v-if="scripts.length > 0"/>
   </div>
 

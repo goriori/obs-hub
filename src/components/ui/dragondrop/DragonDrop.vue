@@ -1,6 +1,7 @@
 <script setup>
 
 import {ref} from "vue";
+import Dropzone from "@/components/icons/Dropzone.vue";
 
 const props = defineProps({
   accept: {
@@ -20,6 +21,7 @@ const onLoadFile = (event) => {
 <template>
   <section class="dragon-drop">
     <div class="dragon-zone">
+      <Dropzone class="zone"/>
       <form method="post" class="form">
         <input type="file" name="script-file" id="script-load" @change="onLoadFile" :accept="accept">
       </form>
@@ -28,6 +30,7 @@ const onLoadFile = (event) => {
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/scss/variables';
 .dragon {
   &-drop {
     position: relative;
@@ -47,10 +50,6 @@ const onLoadFile = (event) => {
   &-zone {
     cursor: pointer;
     width: 100%;
-    height: 233px;
-    background-image: url("/images/dropzone.png");
-    background-size: cover;
-    background-repeat: no-repeat;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -62,6 +61,7 @@ const onLoadFile = (event) => {
     &::backdrop {
       opacity: 0.3;
     }
+
   }
 
   &-title {
@@ -84,4 +84,8 @@ const onLoadFile = (event) => {
   }
 }
 
+
+.zone {
+  width: 100%;
+}
 </style>

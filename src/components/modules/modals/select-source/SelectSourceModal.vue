@@ -79,40 +79,52 @@ const actions = [
     type: ACTION_TYPES[1],
     action: ConfirmButton,
     onClick: function () {
-      const targetSourceForUse = sourcesForUse.value.find(source => source.isActive)
-      const targetSourceForCapture = sourcesForCapture.value.find((source => source.isActive))
-      if (!targetSourceForUse || !targetSourceForCapture) return
-      const card = cardScriptFactory.getScriptCard(targetSourceForCapture.type)
-      const script = new ScriptDto({
-        targetForUse: targetSourceForUse,
-        targetForCapture: targetSourceForCapture,
-        card: card
-      }).getScript()
-      const sourceScript = new ScriptSourceDto({
-        id: script.id,
-        name: 'mask.py',
-        path: `external_scripts/mask.py`,
-        args: {},
-        enabled: false
-      })
-      scriptStore.addScript(script)
-      const sourceName = targetSourceForCapture.type
-      addSourceScript(sourceScript, sourceName)
-      const config = sourceStore.getConfig()
-      wsService.sendMessage(config)
-      stateStore.modals.selectSource.show = false
-      sourceStore.deleteAspect(ASPECT_TYPE)
+      generateLoadFileInput()
+          .then(async file => {
+            console.log(file)
+            const {targetSourceForUse, targetSourceForCapture} = getSources()
+            if (!targetSourceForUse || !targetSourceForCapture) return
+            const formData = buildFormData(file, targetSourceForCapture.type, 'load')
+            formData.forEach((value, key) => console.log(key, value))
+            const {config} = await sourceStore.loadScript(formData)
+            sourceStore.sources = config
+            stateStore.modals.selectSource.show = false
+          })
+
     }
   }
 ]
 
+const generateLoadFileInput = () => {
+  return new Promise((resolve, reject) => {
+    let file
+    const formLoadElement = document.createElement('input')
+    formLoadElement.setAttribute('type', 'file')
+    formLoadElement.setAttribute('accept', '.zip')
+    formLoadElement.click()
+    const listenerId = formLoadElement.onchange = e => {
+      file = e.target.files[0]
+      if (!file) reject({error: 'file is undefined'})
+      resolve(file)
+      formLoadElement.removeEventListener('change', listenerId)
+    }
 
-const addSourceScript = (script, sourceName) => {
-  sourceStore.addAspect(ASPECT_TYPE)
-  sourceStore.updateType('full')
-  sourceStore.addScript(script, sourceName)
+  })
 }
-
+const buildFormData = (file, source, action) => {
+  const formData = new FormData()
+  const fileName = file.name.split('.zip')[0]
+  formData.set('script_archive', file)
+  formData.set('source', source)
+  formData.set('action', action)
+  formData.set('script_name', fileName)
+  return formData
+}
+const getSources = () => {
+  const targetSourceForUse = sourcesForUse.value.find(source => source.isActive)
+  const targetSourceForCapture = sourcesForCapture.value.find((source => source.isActive))
+  return {targetSourceForUse, targetSourceForCapture}
+}
 const buildActions = (type) => {
   return actions.map(action => {
     if (action.type === type) return action
@@ -126,7 +138,7 @@ const steps = ref(ACTION_TYPES[0])
 </script>
 
 <template>
-  <Popup >
+  <Popup>
     <template #window>
       <section class="select-source">
         <SelectSource v-if="steps === ACTION_TYPES[0]" title="Выберите источник" :sources="sourcesForUse"

@@ -3,7 +3,8 @@ import {CardFactory} from "@/factory/card-factory/index.js";
 const cardFactory = new CardFactory();
 
 class WebCam {
-    constructor() {
+    constructor(position, resolution, region, resolutionApplication) {
+
         const randomId = Math.floor(Math.random() * 1000)
         this.id = randomId
         this.title = `webcam-${randomId}`
@@ -22,14 +23,20 @@ class WebCam {
         ]
         this.device_index = 0
         this.resolution = {
-            width: 1280,
-            height: 720
+            width: resolution?.width || 1280,
+            height: resolution?.height || 720
         }
         this.position = {
-            x: 0,
-            y: 0,
-            width: 640,
-            height: 360
+            x: position?.x || 0,
+            y: position?.y || 0,
+            width: position?.width || 640,
+            height: position?.height || 340
+        }
+        this.positionApplication = {
+            x: (this.position.x * 960) / resolutionApplication[0] || 0,
+            y: (this.position.y * 540) / resolutionApplication[1] || 0,
+            width: (this.position.width * 960) / resolutionApplication[0] || 0,
+            height: (this.position.height * 540) / resolutionApplication[1] || 0
         }
         this["z-index"] = 2
         this.dshow_settings = true
@@ -41,7 +48,8 @@ class WebCam {
 
 
 class Screen {
-    constructor() {
+    constructor(position, resolution, region, resolutionApplication) {
+        console.log(resolutionApplication)
         const randomId = Math.floor(Math.random() * 1000)
         this.id = randomId
         this.title = `screen-${randomId}`
@@ -53,16 +61,22 @@ class Screen {
         this.external_scripts = {}
         this.monitor_index = 1
         this.region = {
-            x: 0,
-            y: 0,
-            width: 1920,
-            height: 1080
+            x: region?.x || 0,
+            y: region?.y || 0,
+            width: region?.width || 1920,
+            height: region?.height || 1080
         }
         this.position = {
-            x: 0,
-            y: 0,
-            width: 1920,
-            height: 1080
+            x: position?.x || 0,
+            y: position?.y || 0,
+            width: position?.width || 1920,
+            height: position?.height || 1080
+        }
+        this.positionApplication = {
+            x: (this.position.x * 960) / resolutionApplication[0] || 0,
+            y: (this.position.y * 540) / resolutionApplication[1] || 0,
+            width: (this.position.width * 960) / resolutionApplication[0] || 0,
+            height: (this.position.height * 540) / resolutionApplication[1] || 0
         }
         this["z-index"] = 1
         this.component = cardFactory.getCard(this.type)
@@ -70,10 +84,11 @@ class Screen {
 }
 
 export class ScreenFactory {
-    static getSource(sourceType) {
+    static getSource(sourceType, options) {
+        console.log(options)
         const sources = {
-            webcam: new WebCam(),
-            screen: new Screen(),
+            webcam: new WebCam(options?.position, options?.resolution, options?.region, options?.resolutionApplication),
+            screen: new Screen(options?.position, options?.resolution, options?.region, options?.resolutionApplication),
         }
         return sources[sourceType]
     }

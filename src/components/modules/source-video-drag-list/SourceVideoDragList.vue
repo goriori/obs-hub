@@ -11,7 +11,6 @@ const sourceStore = useSourceStore()
 const sources = computed(() => screenStore.screens)
 
 const changeList = (list) => {
-  console.log('updated list: ', list)
   screenStore.updateScreenList(list)
   screenStore.screens.reduce((acc, value) => {
     if (acc.type === 'webcam' && value.type === 'screen') {

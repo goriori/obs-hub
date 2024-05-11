@@ -7,6 +7,10 @@ import Screen from "../../../icons/Screen.vue";
 import Sound from "../../../icons/Sound.vue";
 
 const props = defineProps({
+  scriptId: {
+    type: Number,
+    default: 0
+  },
   isActive: {
     type: Boolean,
     default: false
@@ -52,10 +56,16 @@ const typeScript = {
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
 const onFocus = () => emits('update:isFocus', !props.isFocus)
 const onActiveScript = () => {
-  emits('update:isActive', true, props.source.id, 'active-script')
+  emits('update:isActive', true, {
+    id: props.scriptId,
+    name: props.name
+  }, 'active-script')
 }
 const onDisableScript = () => {
-  emits('update:isActive', false, props.source.id, 'disable-script')
+  emits('update:isActive', false, {
+    id: props.scriptId,
+    name: props.name
+  }, 'disable-script')
 }
 </script>
 

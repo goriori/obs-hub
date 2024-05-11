@@ -4,7 +4,6 @@ import {ref} from 'vue'
 export const useAudioStore = defineStore('audioStore', () => {
     const audioSource = ref([])
     const addAudioSource = (audio) => {
-        console.log(audio)
         audioSource.value.push(audio)
     }
     const deleteAudioSource = (id) => {

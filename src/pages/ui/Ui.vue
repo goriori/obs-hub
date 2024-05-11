@@ -173,12 +173,11 @@ const onChangeSize = (size) => {
   display: flex;
   flex-direction: column;
   gap: 50px;
-
+  height: 3000px;
   &-list {
     display: flex;
     align-items: start;
     gap: 20px;
-
   }
 }
 </style>

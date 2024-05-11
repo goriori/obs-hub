@@ -12,9 +12,9 @@ const updateData = ref({
   data: {}
 })
 const emits = defineEmits(['onUpdate'])
-const onActive = (value, id, type) => {
+const onActive = (value, data, type) => {
   updateData.value.type = type
-  updateData.value.data.id = id
+  updateData.value.data = data
   emits('onUpdate', updateData.value)
 }
 </script>
@@ -25,7 +25,9 @@ const onActive = (value, id, type) => {
       <component
           v-model:isFocus="source.isFocus"
           v-model:isActive="source.isActive"
+          :scriptId="source.id"
           :is="source.component"
+          :name="source.name"
           :targetType="source.capture?.type"
           :source="source.use"
           @update:isActive="onActive"

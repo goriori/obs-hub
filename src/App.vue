@@ -2,16 +2,72 @@
 import {useRoute} from 'vue-router'
 import {onMounted} from "vue";
 import {useStateStore} from '@/store/stateStore'
+import {useSourceStore} from "@/store/sourceStore.js";
+import {useResolutionStore} from "@/store/resolutionStore.js";
+import {useScreenStore} from "@/store/screenStore.js";
+import {ScreenFactory} from "@/factory/screen-factory/index.js";
 import VLoader from '@/components/VLoader.vue'
 import Modals from "@/components/modules/modals/Modals.vue";
 import wsService from "@/API/wsService/wsService.js";
+import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
+import {useScriptStore} from "@/store/scriptStore.js";
 
 const route = useRoute()
 const stateStore = useStateStore()
+const sourceStore = useSourceStore()
+const screenStore = useScreenStore()
+const scriptStore = useScriptStore()
+const resolutionStore = useResolutionStore()
+const checkActiveSources = async (config) => {
+  const sources = Object.keys(config?.video_sources)
+  sources.forEach(source => {
+    const sourceObject = config?.video_sources[source]
+    const sourceObjectShow = sourceObject?.show
+    const sourceObjectScripts = sourceObject.external_scripts
+    const optionSource = {
+      position: config?.video_sources[source]?.position,
+      resolution: config?.video_sources[source]?.resolution,
+      region: config?.video_sources[source]?.region,
+      resolutionApplication: resolutionStore.resolution
+    }
+    if (sourceObjectShow) {
+      createScreen(source, optionSource)
+      createScripts(sourceObjectScripts, source)
+    }
+  })
+}
+
+const createScreen = (source, option) => {
+  const screen = ScreenFactory.getSource(source, option)
+  screenStore.addScreen(screen, source)
+}
+
+const createScripts = (scripts, sourceName) => {
+  scripts.forEach(script => {
+    const scriptObject = new ScriptDto({id: script?.id , name: script.name, path: script.path}).getScript()
+    const scriptSourceObject = new ScriptSourceDto({
+      id: script.id,
+      path: script.path,
+      name: script.name,
+      args: script.args,
+      enabled: script.enabled
+    })
+    sourceStore.scripts.push({...scriptSourceObject, source: sourceName})
+    scriptStore.addScript(scriptObject)
+  })
+}
 onMounted(async () => {
   await wsService.initConnect()
-  console.log(await wsService.getConfig())
+  const config = await wsService.getConfig()
+  await checkActiveSources(config)
+  sourceStore.sources = config
+  if (config.virtual_camera) {
+    const {width, height} = config.virtual_camera
+    resolutionStore.setTargetResolution({width, height})
+  }
 })
+
+
 </script>
 
 <template>

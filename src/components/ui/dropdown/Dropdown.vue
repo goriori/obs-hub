@@ -69,17 +69,13 @@ onMounted(() => {
 @import '@/assets/scss/variables';
 
 .list {
-  position: absolute;
   width: 100%;
   max-width: 154px;
   padding: 10px;
   transition: 0.3s all ease-in-out;
 
   &-container {
-    position: absolute;
-    z-index: 5;
     cursor: pointer;
-
     &.active {
       background-color: $secondary;
       border-radius: 25px;

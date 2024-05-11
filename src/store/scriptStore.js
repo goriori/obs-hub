@@ -4,7 +4,6 @@ import {ref} from 'vue'
 export const useScriptStore = defineStore('scriptStore', () => {
     const scripts = ref([])
     const addScript = (script) => {
-        console.log(script)
         scripts.value.push(script)
     }
     const deleteScript = (id) => {
