@@ -3,12 +3,12 @@
 import {computed, ref} from "vue";
 import {useScreenStore} from "@/store/screenStore.js";
 import {useSourceStore} from "@/store/sourceStore.js";
+import {useResolutionStore} from "@/store/resolutionStore.js";
 import {ScreenFactory} from "@/factory/screen-factory/index.js";
 import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
 import Screen from "../../../icons/Screen.vue";
 import Camera from "../../../icons/Camera.vue";
 import wsService from "@/API/wsService/wsService.js";
-import {useResolutionStore} from "@/store/resolutionStore.js";
 
 const screenStore = useScreenStore()
 const sourceStore = useSourceStore()
@@ -27,27 +27,36 @@ const addCapture = (event) => {
     const {capture} = targetElement.dataset
     if (!capture) return
     if (capture === 'empty') return onClose()
-    const configSources = sourceStore.sources
-    const screenOption = {
-      position: configSources?.video_sources[capture]?.position,
-      resolution: configSources?.video_sources[capture]?.resolution,
-      region: configSources?.video_sources[capture]?.region,
-      resolutionApplication: resolutionApplication.resolution
-    }
+    const screenOption = buildScreenOption(capture)
     const screen = ScreenFactory.getSource(capture, screenOption)
     const source = sourceStore.getSource(capture)
     Object.assign(screen.position, source.position)
-    screenStore.addScreen(screen, capture)
-    sourceStore.addAspect(capture)
-    sourceStore.updateShow(capture, true)
-    sourceStore.updateType('full')
-    const config = sourceStore.getConfig()
+    const config = setOptionSourceConfig(screen, capture).getConfig()
     wsService.sendMessage(config)
     sourceStore.deleteAspect(capture)
   }
   onClose()
 }
 
+const setOptionSourceConfig = (screen, capture) => {
+  screenStore.addScreen(screen, capture)
+  sourceStore.addAspect(capture)
+  sourceStore.updateShow(capture, true)
+  sourceStore.updateType('full')
+  return {
+    getConfig: () => sourceStore.getConfig()
+  }
+}
+const buildScreenOption = (capture) => {
+  const configSources = sourceStore.sources
+  return {
+    position: configSources?.video_sources[capture]?.position,
+    positionApplication: screenStore.screens[0].position,
+    resolution: configSources?.video_sources[capture]?.resolution,
+    region: configSources?.video_sources[capture]?.region,
+    resolutionApplication: resolutionApplication.resolution
+  }
+}
 </script>
 
 <template>

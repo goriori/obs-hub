@@ -25,9 +25,11 @@ const iconsCard = {
 </template>
 
 <style scoped lang="scss">
+@import "@/assets/scss/variables";
 
 .icon-card {
-  width: 70px;
+  width: 100%;
+  max-width: 70px;
   height: 70px;
   display: flex;
   justify-content: center;
@@ -35,6 +37,9 @@ const iconsCard = {
   border-radius: 100%;
   padding: 20px;
   background-color: #202020;
-
+  @media (max-width: $md1 + px) {
+    max-width: 55px;
+    height: 55px;
+  }
 }
 </style>

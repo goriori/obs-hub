@@ -99,6 +99,7 @@ const onDisableScript = () => {
 </template>
 
 <style scoped lang="scss">
+@import '@/assets/scss/variables';
 .script {
   &-content {
     font-weight: 500;
@@ -106,6 +107,9 @@ const onDisableScript = () => {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    @media (max-width: $md1 + px) {
+      font-size: 12px;
+    }
   }
 
   &-type {
@@ -114,6 +118,9 @@ const onDisableScript = () => {
     align-items: center;
     gap: 10px;
     font-size: 11px;
+    @media (max-width: $md1 + px) {
+      font-size: 8px;
+    }
   }
 }
 

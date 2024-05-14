@@ -87,5 +87,8 @@ const onLoadFile = (event) => {
 
 .zone {
   width: 100%;
+  @media (max-width: $md1 + px) {
+    max-height: 170px;
+  }
 }
 </style>

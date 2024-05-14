@@ -153,7 +153,7 @@ onUpdated(async () => {
          :data-x="screen.positionApplication.x"
          :data-y="screen.positionApplication.y"
          :data-type="screen.type"
-         :data-index="screen['z-index']"
+         :data-index="index + 1"
     >
       <!--      {{screen.title}}-->
     </div>
@@ -168,7 +168,7 @@ onUpdated(async () => {
   width: 100%;
   max-width: 960px;
   height: 540px;
-  @media (max-width: 1440px) {
+  @media (max-width: $md1 + px) {
     max-width: 720px;
     height: 405px;
   }

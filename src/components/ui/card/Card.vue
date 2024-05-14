@@ -63,6 +63,9 @@ $transition-animation: 0.2s all ease-in-out;
   font-size: 16px;
   color: #000;
   background-color: #000;
+  @media (max-width: $md1 + px) {
+    font-size: 12px;
+  }
 
   &-container {
     width: 100%;
@@ -74,10 +77,6 @@ $transition-animation: 0.2s all ease-in-out;
     background-color: #898989;
     border-radius: 55px;
     transition: $transition-animation;
-
-    &:hover {
-      @include changeColor()
-    }
 
     &.is-script {
       width: 60%;

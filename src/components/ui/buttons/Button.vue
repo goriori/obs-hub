@@ -3,6 +3,10 @@ const props = defineProps({
   rounded: {
     type: Boolean,
     default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
@@ -12,7 +16,7 @@ const props = defineProps({
   {
     'button-rounded':rounded
   }
-  ]" v-ripple>
+  ]" :disabled="disabled" v-ripple>
     <slot name="icon"/>
     <slot name="title"/>
   </button>
@@ -30,6 +34,11 @@ const props = defineProps({
   justify-content: center;
   align-items: center;
   background-color: $primary;
+
+  &:disabled {
+    opacity: 0.7;
+  }
+
 
   &-rounded {
     border-radius: 50px;

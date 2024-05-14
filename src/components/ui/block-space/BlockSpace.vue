@@ -29,16 +29,20 @@
   border-radius: 50px;
   min-height: 420px;
   background-color: $secondary;
-  @media(max-width: 1440px) {
+  @media(max-width: $md1 + px) {
     padding: 15px 30px;
     min-height: 312px;
   }
+
   .title {
     display: flex;
     justify-content: flex-start;
     color: $primary;
     font-weight: 600;
     font-size: 20px;
+    @media(max-width: $md1 + px) {
+      font-size: 15px;
+    }
   }
 
   .actions {
@@ -47,6 +51,9 @@
     display: flex;
     align-items: center;
     gap: 20px;
+    @media(max-width: $md1 + px) {
+      gap: 15px;
+    }
   }
 }
 

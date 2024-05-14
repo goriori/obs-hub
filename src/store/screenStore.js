@@ -13,8 +13,8 @@ export const useScreenStore = defineStore('screenStore', () => {
             position: {
                 x: 0,
                 y: 0,
-                width: window.innerWidth <= 1440 ? 720 : 960,
-                height: window.innerWidth <= 1440 ? 405 : 540
+                width: window.innerWidth <= 1800 ? 720 : 960,
+                height: window.innerWidth <= 1800 ? 405 : 540
             },
             component: null,
             show: true,
