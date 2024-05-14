@@ -21,8 +21,8 @@ const deleteTargetScreens = () => {
   const config = sourceStore.getConfig()
   wsService.sendMessage(config)
   focusesScreen.forEach(screen => screenStore.deleteScreen(screen.id))
-  emits('onConfirmDelete')
   sourceStore.updateAspects([])
+  emits('onConfirmDelete')
 }
 
 </script>

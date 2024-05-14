@@ -24,7 +24,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="popup">
+  <div class="popup"  id="popup" >
     <div class="popup-content">
       <slot name="window"/>
     </div>

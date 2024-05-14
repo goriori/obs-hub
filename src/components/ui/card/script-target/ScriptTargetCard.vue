@@ -45,6 +45,11 @@ const typeScript = {
     color: '#000',
     component: Screen
   },
+  all:{
+    title: 'захват веб-камеры и экрана',
+    color: '#000',
+    component: Screen
+  },
   sound: {
     title: 'захват звука',
     color: '#000',

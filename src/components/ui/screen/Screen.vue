@@ -126,6 +126,7 @@ onMounted(async () => {
 })
 
 onUpdated(async () => {
+  console.log('screens:', props.screens)
 
   renderScreens()
   setZIndexElements()

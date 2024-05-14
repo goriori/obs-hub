@@ -5,6 +5,8 @@ import SelectSourceModal from "@/components/modules/modals/select-source/SelectS
 import DeleteSourceVideo from "@/components/modules/modals/delete-source-video/DeleteSourceVideo.vue";
 import DeleteScript from "@/components/modules/modals/delete-script/DeleteScript.vue";
 import DeleteAudio from "@/components/modules/modals/delete-audio/DeleteAudio.vue";
+import Warning from "@/components/modules/modals/warning/Warning.vue";
+import Error from "@/components/modules/modals/error/Error.vue";
 const stateStore = useStateStore()
 
 const modals = ref([
@@ -27,6 +29,16 @@ const modals = ref([
     id: 4,
     component: shallowRef(DeleteAudio),
     conditionVisibility:computed(() => stateStore.modals.delete.deleteAudio.show)
+  },
+  {
+    id: 5,
+    component: shallowRef(Warning),
+    conditionVisibility:computed(() => stateStore.modals.message.warning.show)
+  },
+  {
+    id: 6,
+    component: shallowRef(Error),
+    conditionVisibility:computed(() => stateStore.modals.message.error.show)
   }
 ])
 </script>

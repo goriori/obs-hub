@@ -85,7 +85,7 @@ class Screen {
 
 export class ScreenFactory {
     static getSource(sourceType, options) {
-        console.log(options)
+        console.log('options', options)
         const sources = {
             webcam: new WebCam(options?.position, options?.resolution, options?.region, options?.resolutionApplication),
             screen: new Screen(options?.position, options?.resolution, options?.region, options?.resolutionApplication),

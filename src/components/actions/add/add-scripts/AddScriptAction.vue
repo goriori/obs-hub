@@ -16,7 +16,8 @@ const addScript = () => {
   const targetElement = event.target.closest('article')
   if (targetElement) {
     const {type} = targetElement.dataset
-    const randomId = Math.floor(Math.random() * 1000)
+    const useSource = type.split('-')[1]
+    stateStore.modals.selectSource.use = useSource
     stateStore.modals.selectSource.show = true
   }
   onClose()
@@ -27,11 +28,11 @@ const addScript = () => {
   <div class="action">
     <Transition name="fade">
       <section class="action-list" v-if="isActive" @click="addScript">
-        <article class="list-item" data-type="script-audio">
+        <article class="list-item" data-type="script-sound">
           <Screen color="#000"/>
           <p>Скрипт для аудио</p>
         </article>
-        <article class="list-item" data-type="script-video">
+        <article class="list-item" data-type="script-camera">
           <Camera color="#000"/>
           <p>Скрипт для видео</p>
         </article>

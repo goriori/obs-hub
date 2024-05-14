@@ -70,9 +70,9 @@ const onResizeScreen = (screenId, size) => {
   wsService.sendMessage(config)
 }
 const initScreen = async () => {
-  if (screenStore.screens.length === 1) return stream.value.getTracks().forEach(track => track.stop())
   const videoElement = document.getElementsByTagName('video')[0]
   const devices = await navigator.mediaDevices.enumerateDevices()
+  console.log(devices)
   const streamerDevice = devices.find(device => device.label === 'Streamer')
   stream.value = await navigator.mediaDevices.getUserMedia({
     video: {
@@ -84,15 +84,19 @@ const initScreen = async () => {
 
 }
 
+const stopScreens = () => {
+  return  stream.value.getTracks().forEach(track => track.stop())
+}
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
-const checkSources = async () => screenStore.screens.length > 1 ? await initScreen() : false
+
 onMounted(async () => {
   initVideoElement()
-  await checkSources()
+  if(screenStore.screens.length > 1) await initScreen()
 })
 
 onUpdated(async () => {
-  await checkSources()
+  if(screenStore.screens.length === 1) stopScreens()
+  else await initScreen()
 })
 
 </script>

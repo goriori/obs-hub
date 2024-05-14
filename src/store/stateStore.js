@@ -5,7 +5,8 @@ export const useStateStore = defineStore('stateStore', () => {
     const isLoading = ref(false)
     const modals = ref({
         selectSource: {
-            targetFile:null,
+            use: null,
+            targetFile: null,
             show: false,
         },
         delete: {
@@ -17,6 +18,30 @@ export const useStateStore = defineStore('stateStore', () => {
             },
             deleteAudio: {
                 show: false,
+            }
+        },
+        message: {
+            warning: {
+                show: false,
+                message: '',
+                onShow(message) {
+                    this.show = true
+                    this.message = message
+                    setTimeout(() => {
+                        this.show = false
+                    }, 3000)
+                }
+            },
+            error: {
+                show: false,
+                message: '',
+                onShow(message) {
+                    this.show = true
+                    this.message = message
+                    setTimeout(() => {
+                        this.show = false
+                    }, 3000)
+                }
             }
         }
 

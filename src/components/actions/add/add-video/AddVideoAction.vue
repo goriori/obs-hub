@@ -27,7 +27,11 @@ const addCapture = (event) => {
     const {capture} = targetElement.dataset
     if (!capture) return
     if (capture === 'empty') return onClose()
+    const configSources = sourceStore.sources
     const screenOption = {
+      position: configSources?.video_sources[capture]?.position,
+      resolution: configSources?.video_sources[capture]?.resolution,
+      region: configSources?.video_sources[capture]?.region,
       resolutionApplication: resolutionApplication.resolution
     }
     const screen = ScreenFactory.getSource(capture, screenOption)

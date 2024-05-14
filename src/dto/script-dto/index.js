@@ -22,14 +22,14 @@ export class ScriptSourceDto {
 }
 
 class ScriptItem {
-    constructor(id, name, use, capture, card) {
+    constructor(id, name, use, capture, card, isActive) {
         this.id = id;
         this.name = name;
         this.use = use;
         this.capture = capture;
         this.component = card
         this.isFocus = false
-        this.isActive = false
+        this.isActive = isActive
     }
 
 
@@ -39,6 +39,7 @@ export class ScriptDto {
     constructor(data = {
         name: '',
         path: '',
+        isActive: false,
         targetForUse: null,
         targetForCapture: null,
         card: null,
@@ -46,6 +47,7 @@ export class ScriptDto {
         this.data = data
         this.id = data.id || generateRandomId()
         this.name = this.data?.name || 'Новый скрипт'
+        this.isActive = this.data?.isActive;
         this.use = {
             id: generateRandomId(),
             title: this.data?.targetForUse?.title || 'Захват веб-камеры',
@@ -62,6 +64,6 @@ export class ScriptDto {
     }
 
     getScript() {
-        return new ScriptItem(this.id,this.name, this.use, this.capture, this.card)
+        return new ScriptItem(this.id, this.name, this.use, this.capture, this.card, this.isActive)
     }
 }
