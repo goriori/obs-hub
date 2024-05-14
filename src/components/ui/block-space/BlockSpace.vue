@@ -29,7 +29,10 @@
   border-radius: 50px;
   min-height: 420px;
   background-color: $secondary;
-
+  @media(max-width: 1440px) {
+    padding: 15px 30px;
+    min-height: 312px;
+  }
   .title {
     display: flex;
     justify-content: flex-start;

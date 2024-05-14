@@ -73,6 +73,7 @@ const initScreen = async () => {
   const videoElement = document.getElementsByTagName('video')[0]
   const devices = await navigator.mediaDevices.enumerateDevices()
   console.log(devices)
+  // const videoInput = devices.find(device => device.kind === 'videoinput')
   const streamerDevice = devices.find(device => device.label === 'Streamer')
   stream.value = await navigator.mediaDevices.getUserMedia({
     video: {

@@ -181,17 +181,24 @@ const closeModal = () => {
 const clearModalOption = () => {
   stateStore.modals.selectSource.use = null
 }
+const onKeypress = (event) => {
+  const keys = {
+    'Escape': () => closeModal()
+  }
+  if (keys[event.key]) return keys[event.key].call()
+}
 onMounted(() => {
   if (stateStore.modals.selectSource.use) {
     sourcesForUse.value.find(source => source.type === stateStore.modals.selectSource.use).isActive = true
   }
+  window.addEventListener('keydown', onKeypress);
 })
 </script>
 
 <template>
-  <Popup >
+  <Popup>
     <template #window>
-      <section class="select-source"  >
+      <section class="select-source">
         <SelectSource v-if="steps === ACTION_TYPES[0]" title="Выберите источник" :sources="sourcesForUse"
                       :actions="actionsScripts"/>
         <SelectSource v-if="steps === ACTION_TYPES[1]" title="Выберите источник" :sources="sourcesForCapture"

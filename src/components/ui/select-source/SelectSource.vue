@@ -44,6 +44,8 @@ const props = defineProps({
   padding: 20px 40px;
   gap: 52px;
 
+
+
   &-title {
     display: flex;
     justify-content: center;

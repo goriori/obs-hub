@@ -33,6 +33,7 @@ const checkActiveSources = async (config) => {
     const sourceObjectScripts = sourceObject.external_scripts
     const optionSource = {
       position: config?.video_sources[source]?.position,
+      positionApplication: screenStore.screens[0].position,
       resolution: config?.video_sources[source]?.resolution,
       region: config?.video_sources[source]?.region,
       resolutionApplication: resolutionStore.resolution
@@ -98,8 +99,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="main" >
-    <Modals />
+  <main class="main">
+    <Modals/>
     <RouterView v-slot="{ Component }">
       <template v-if="Component">
         <transition name="fade-page" mode="out-in">

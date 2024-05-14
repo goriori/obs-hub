@@ -30,7 +30,9 @@ import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 @import '@/assets/scss/variables';
 .page {
   padding: 40px;
-
+  @media(max-width: 1440px) {
+    padding:30px;
+  }
 }
 
 header {
@@ -49,9 +51,15 @@ header {
 .spaces {
   display: flex;
   gap: 40px;
+  @media(max-width: 1440px) {
+   gap:30px;
+  }
 }
 
 .block {
   margin: 0 0 40px 0;
+  @media(max-width: 1440px) {
+    margin: 0 0 30px 0;
+  }
 }
 </style>

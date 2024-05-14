@@ -1,6 +1,6 @@
 <script setup>
 import interact from 'interactjs'
-import {nextTick, onMounted, onUpdated, ref} from "vue";
+import {computed, nextTick, onMounted, onUpdated, ref} from "vue";
 import {useResolutionStore} from "@/store/resolutionStore.js";
 
 
@@ -105,6 +105,7 @@ const renderScreens = () => {
             width: `${event.rect.width}px`,
             height: `${event.rect.height}px`
           }
+          console.log('newSize: ', newSize)
           target.style.transform = `translate(${newSize.x}px, ${newSize.y}px)`
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)
@@ -137,8 +138,8 @@ onUpdated(async () => {
 
 <template>
   <section class="screen">
-    <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="960"
-           :height="540" class="screen-main"
+    <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="mainScreen.position.width"
+           :height="mainScreen.position.height" class="screen-main"
            id="main-screen"></video>
     <div v-for="(screen, index) in screens"
          ref="screensRef"
@@ -149,6 +150,8 @@ onUpdated(async () => {
           height: screen.positionApplication.height + 'px',
           transform:`translate(${screen.positionApplication.x}px, ${screen.positionApplication.y}px)`
          }"
+         :data-x="screen.positionApplication.x"
+         :data-y="screen.positionApplication.y"
          :data-type="screen.type"
          :data-index="screen['z-index']"
     >
@@ -165,6 +168,10 @@ onUpdated(async () => {
   width: 100%;
   max-width: 960px;
   height: 540px;
+  @media (max-width: 1440px) {
+    max-width: 720px;
+    height: 405px;
+  }
 
   &-main {
     position: absolute;
