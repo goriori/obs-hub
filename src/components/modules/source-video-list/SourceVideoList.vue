@@ -9,10 +9,12 @@ import {computed} from "vue";
 const screenStore = useScreenStore()
 
 const sources = computed(() => screenStore.screens.map(screen => screen.component))
+
+
 </script>
 
 <template>
-  <ListSource :sources="sources"/>
+  <ListSource :sources="sources" />
 </template>
 
 <style scoped lang="scss">

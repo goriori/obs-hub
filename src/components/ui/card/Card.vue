@@ -23,10 +23,11 @@ const onActiveScript = () => {
 const onFocus = () => {
   emits('onFocus')
 }
+
 </script>
 
 <template>
-  <article class="card" v-ripple>
+  <article class="card"  v-ripple>
     <div :class="['card-container', {'is-script':isScript, 'is-active':isActive, focus:isFocus}]" @click="onFocus">
       <section class="card-icon">
         <slot name="icon"/>

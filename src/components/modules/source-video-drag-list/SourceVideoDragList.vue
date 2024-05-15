@@ -30,11 +30,12 @@ const changeList = (list) => {
   sourceStore.deleteAspect('webcam')
   sourceStore.deleteAspect('screen')
 }
-
+const clearFocus = () => screenStore.screens.forEach(source => source.isFocus = false)
+const clickOutside = () => clearFocus()
 </script>
 
 <template>
-  <ListDragable :sources="sources" @on-change-list="changeList"/>
+  <ListDragable :sources="sources" @on-change-list="changeList" v-outside="clickOutside"/>
 </template>
 
 <style scoped lang="scss">

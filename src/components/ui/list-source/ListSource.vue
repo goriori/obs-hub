@@ -17,11 +17,12 @@ const onActive = (value, data, type) => {
   updateData.value.data = data
   emits('onUpdate', updateData.value)
 }
+
 </script>
 
 <template>
-  <section class="list-sources">
-    <div class="item" v-for="source in sources" :key="source">
+  <section class="list-sources" >
+    <div class="item" v-for="source in sources" :key="source" >
       <component
           v-model:isFocus="source.isFocus"
           v-model:isActive="source.isActive"
