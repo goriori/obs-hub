@@ -38,17 +38,13 @@ const onUpdateList = (updated) => {
   const {type, data} = updated
   return updates[type].call(this, data)
 }
-const clearFocus = () => {
-  scriptStore.scripts.forEach(script => script.isFocus = false)
 
-}
-const clickOutside = () => clearFocus()
 </script>
 
 <template>
   <div class="source">
     <DragonDrop class="drop-list" v-if="scripts.length === 0" @load-file="loadScript" accept=".zip"/>
-    <ListSource :sources="scripts" @on-update="onUpdateList" v-if="scripts.length > 0" v-outside="clickOutside"/>
+    <ListSource :sources="scripts" @on-update="onUpdateList" v-if="scripts.length > 0" />
   </div>
 
 </template>

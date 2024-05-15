@@ -12,7 +12,7 @@ const focusScripts = computed(() => {
 })
 
 const onClick = () => {
-  if (focusScripts.value.length > 0) stateStore.modals.delete.deleteScript.show = true
+  if (focusScripts.value) stateStore.modals.delete.deleteScript.show = true
 }
 </script>
 
