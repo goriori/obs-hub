@@ -7,12 +7,11 @@ import SoundTargetCard from "../../ui/card/sound-target/SoundTargetCard.vue";
 
 const audioStore = useAudioStore()
 const audioSources = computed(() => audioStore.audioSource)
-const clearFocus = ()=> audioStore.audioSource.forEach(audio=> audio.isFocus = false)
-const clickOutside = () => clearFocus()
+
 </script>
 
 <template>
-  <ListSource :sources="audioSources" v-outside="clickOutside"/>
+  <ListSource :sources="audioSources" />
 </template>
 
 <style scoped lang="scss">
