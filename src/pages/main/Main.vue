@@ -11,9 +11,9 @@ import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 <template>
   <div class="page">
     <div class="page-container">
-      <section class="switcher">
-        <SizeSwitch/>
-      </section>
+<!--      <section class="switcher">-->
+<!--        <SizeSwitch/>-->
+<!--      </section>-->
       <section class="screen block">
         <ScreenArea/>
       </section>
@@ -30,7 +30,7 @@ import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 @import '@/assets/scss/variables';
 .page {
   padding: 40px;
-  @media(max-width: 1440px) {
+  @media(max-width: $md1 + px) {
     padding:30px;
   }
 }
@@ -58,8 +58,8 @@ header {
 
 .block {
   margin: 0 0 40px 0;
-  @media(max-width: 1440px) {
-    margin: 0 0 30px 0;
+  @media(max-width: $md1 + px) {
+    margin: 0 0 20px 0;
   }
 }
 </style>

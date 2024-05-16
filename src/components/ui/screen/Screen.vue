@@ -18,6 +18,8 @@ const props = defineProps({
 })
 const emits = defineEmits(['changePositionScreen', 'resizeScreen'])
 const [widthResolution, heightResolution] = resolutionStore.resolution
+const parentWidth = ref(props.mainScreen.position.width + 'px')
+const parentHeight = ref(props.mainScreen.position.height + 'px')
 const screensRef = ref([])
 const videoElement = ref(null)
 const videoWidth = ref(0)
@@ -166,12 +168,8 @@ onUpdated(async () => {
 .screen {
   position: relative;
   width: 100%;
-  max-width: 960px;
-  height: 540px;
-  @media (max-width: $md1 + px) {
-    max-width: 720px;
-    height: 405px;
-  }
+  max-width: v-bind(parentWidth);
+  height: v-bind(parentHeight);
 
   &-main {
     position: absolute;

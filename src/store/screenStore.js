@@ -1,5 +1,7 @@
 import {defineStore} from 'pinia'
 import {ref} from 'vue'
+import {calculateWidth} from "@/utils/helpers/calculateWidth.js";
+import {calculateHeight} from "@/utils/helpers/calculateHeight.js";
 
 export const useScreenStore = defineStore('screenStore', () => {
     const screens = ref([
@@ -13,8 +15,8 @@ export const useScreenStore = defineStore('screenStore', () => {
             position: {
                 x: 0,
                 y: 0,
-                width: window.innerWidth <= 1800 ? 720 : 960,
-                height: window.innerWidth <= 1800 ? 405 : 540
+                width: calculateWidth(window.innerWidth),
+                height: calculateHeight(window.innerHeight)
             },
             component: null,
             show: true,

@@ -70,33 +70,46 @@ const onResizeScreen = (screenId, size) => {
   wsService.sendMessage(config)
 }
 const initScreen = async () => {
-  const videoElement = document.getElementsByTagName('video')[0]
   const devices = await navigator.mediaDevices.enumerateDevices()
-  console.log(devices)
-  // const videoInput = devices.find(device => device.kind === 'videoinput')
   const streamerDevice = devices.find(device => device.label === 'Streamer')
+  if (!streamerDevice) await getPermissionVideoCapture(devices)
+  else await loadVideoStream(streamerDevice)
+
+
+}
+
+const loadVideoStream = async (device) => {
+  const videoElement = document.getElementsByTagName('video')[0]
   stream.value = await navigator.mediaDevices.getUserMedia({
     video: {
-      deviceId: streamerDevice.deviceId,
+      deviceId: device.deviceId,
     }
   })
   videoElement.srcObject = stream.value
   videoElement.play();
+}
 
+const getPermissionVideoCapture = async (devices) => {
+  const videoInput = devices.find(device => device.kind === 'videoinput')
+  await navigator.mediaDevices.getUserMedia({
+    video: {
+      deviceId: videoInput.deviceId,
+    }
+  }).finally(() => window.location.reload())
 }
 
 const stopScreens = () => {
-  return  stream.value.getTracks().forEach(track => track.stop())
+  return stream.value.getTracks().forEach(track => track.stop())
 }
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
 
 onMounted(async () => {
   initVideoElement()
-  if(screenStore.screens.length > 1) await initScreen()
+  if (screenStore.screens.length > 1) await initScreen()
 })
 
 onUpdated(async () => {
-  if(screenStore.screens.length === 1) stopScreens()
+  if (screenStore.screens.length === 1) stopScreens()
   else await initScreen()
 })
 
