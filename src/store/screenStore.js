@@ -65,6 +65,15 @@ export const useScreenStore = defineStore('screenStore', () => {
         screens.value = screens.value.splice(0, 1)
         screens.value = [...screens.value, ...screenList]
     }
+
+    const updateScreenListIndex = () => {
+        const listScreen = screens.value.map((screen, index) => index !== 0 ? screen : null)
+            .filter(screen => screen)
+            .sort((a, b) => a['z-index'] - b['z-index'])
+        updateScreenList(listScreen)
+    }
+
+
     return {
         screens,
         addScreen,
@@ -73,6 +82,7 @@ export const useScreenStore = defineStore('screenStore', () => {
         getTypeScreens,
         changePositionScreen,
         resizeScreen,
-        updateScreenList
+        updateScreenList,
+        updateScreenListIndex
     }
 })

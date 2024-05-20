@@ -46,6 +46,7 @@ const checkActiveSources = async (config) => {
 const createScreen = (source, option) => {
   const screen = ScreenFactory.getSource(source, option)
   screenStore.addScreen(screen, source)
+  screenStore.updateScreenListIndex()
 }
 
 const createScripts = (scripts, sourceName) => {

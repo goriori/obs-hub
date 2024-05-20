@@ -73,7 +73,7 @@ const renderScreens = () => {
     }).resizable({
       modifiers: [
         interact.modifiers.aspectRatio({
-          ratio: 1.77,
+          ratio: 1.7777,
           modifiers: [
             interact.modifiers.restrictEdges({outer: 'parent'}),
           ],
@@ -155,7 +155,7 @@ onUpdated(async () => {
          :data-x="screen.positionApplication.x"
          :data-y="screen.positionApplication.y"
          :data-type="screen.type"
-         :data-index="index + 1"
+         :data-index="screen['z-index']"
     >
       <!--      {{screen.title}}-->
     </div>
