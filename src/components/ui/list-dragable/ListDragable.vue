@@ -19,13 +19,9 @@ const dragOptions = {
 };
 
 const list = computed(() => [...props.sources.filter(source => source.component !== null)])
-watch(list, (value, oldValue, onCleanup) => {
-  console.log('value:', value)
-  console.log('oldValue:', oldValue)
-})
+
 const updateList = (e) => {
   dragging.value = false
-  // window.console.log("Future index: " + e.draggedContext.futureIndex);
   emits('onChangeList', list.value)
 }
 

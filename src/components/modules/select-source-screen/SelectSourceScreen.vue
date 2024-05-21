@@ -28,7 +28,6 @@ const sources = [
 
 <template>
   <SelectSource title="Выбрать источник" :sources="sources" :actions="[ConfirmButton]"/>
-
 </template>
 
 <style scoped lang="scss">

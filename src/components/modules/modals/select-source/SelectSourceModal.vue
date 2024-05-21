@@ -15,12 +15,13 @@ import {ERRORS} from "@/configs/errors.config.js";
 import {WARNINGS} from "@/configs/warnings.config.js";
 
 
+const ACTION_TYPES = ['script', 'source']
+const ASPECT_TYPE = 'scripts'
+
 const stateStore = useStateStore()
 const scriptStore = useScriptStore()
 const sourceStore = useSourceStore()
 const cardScriptFactory = new CardScriptFactory()
-const ACTION_TYPES = ['script', 'source']
-const ASPECT_TYPE = 'scripts'
 
 const sourcesForUse = ref([
   {

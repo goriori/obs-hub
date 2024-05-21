@@ -39,9 +39,7 @@ const addCapture = (event) => {
 }
 
 const computedZIndex = () => {
-  if (haveScreens.value.length === 1) return 0
-  else if (haveScreens.value.length === 2) return 1
-  else return 0
+  return haveScreens.value.length
 }
 const setOptionSourceConfig = (screen, zIndex, capture) => {
   screenStore.addScreen(screen, capture)
@@ -60,7 +58,7 @@ const buildScreenOption = (capture) => {
   const configSources = sourceStore.sources
   return {
     position: configSources?.video_sources[capture]?.position,
-    positionApplication: screenStore.screens[0].position,
+    positionApplication: screenStore.mainScreen.position,
     resolution: configSources?.video_sources[capture]?.resolution,
     region: configSources?.video_sources[capture]?.region,
     resolutionApplication: resolutionApplication.resolution,

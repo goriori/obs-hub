@@ -21,7 +21,6 @@ const updates = {
 
 const scripts = computed(() => scriptStore.scripts)
 const activeScript = (data, active = false) => {
-  console.log('active script', data)
   sourceStore.updateActiveScript(data?.name, active)
   sourceStore.updateType('full')
   sourceStore.addAspect(ASPECT)
@@ -34,7 +33,6 @@ const loadScript = (script) => {
   stateSource.modals.selectSource.show = true
 }
 const onUpdateList = (updated) => {
-  console.log(updated)
   const {type, data} = updated
   return updates[type].call(this, data)
 }

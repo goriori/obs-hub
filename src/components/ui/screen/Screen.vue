@@ -61,7 +61,6 @@ const renderScreens = () => {
             y: screen.positionApplication.y += event.dy
           })
           event.target.style.transform = `translate(${screen.positionApplication.x}px, ${screen.positionApplication.y}px)`
-          console.log('transform:', event.target.style.transform)
           event.target.setAttribute('data-x', screen.positionApplication.x)
           event.target.setAttribute('data-y', screen.positionApplication.y)
         },
@@ -107,7 +106,6 @@ const renderScreens = () => {
             width: `${event.rect.width}px`,
             height: `${event.rect.height}px`
           }
-          console.log('newSize: ', newSize)
           target.style.transform = `translate(${newSize.x}px, ${newSize.y}px)`
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)
@@ -122,15 +120,12 @@ onMounted(async () => {
   if (screensRef.value) {
     console.log('screens ref: ', screensRef.value)
   }
-  console.log('screens:', props.screens)
   initVideoElement()
   renderScreens()
   setZIndexElements()
 })
 
 onUpdated(async () => {
-  console.log('screens:', props.screens)
-
   renderScreens()
   setZIndexElements()
 })

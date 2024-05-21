@@ -38,8 +38,11 @@ const rebuildPosition = (screen, videoSize) => {
 
 const computedCoordinates = (x, y, widthResolution, heightResolution, videoWidth, videoHeight) => {
   const computedX = Math.floor(x / videoWidth * widthResolution)
-  console.log('computedX:', computedX, x)
-  console.log('reComputedX: ', (computedX * videoWidth) / widthResolution)
+  // ========== Логи оригинальных и вычисляемых значений ===================
+  // console.log('computedX:', computedX, x)
+  // console.log('reComputedX: ', (computedX * videoWidth) / widthResolution)
+  // ========== Логи оригинальных и вычисляемых значений ===================
+
   const computedY = Math.floor(y / videoHeight * heightResolution)
   return {x: computedX, y: computedY}
 }
@@ -58,8 +61,12 @@ const onResizeScreen = (screenId, size) => {
   const videoHeight = videElement.value.height
 
   const numberWidth = Math.floor(sizeWidth / videoWidth * widthResolution)
-  console.log('Resize Number Width:', numberWidth, sizeWidth)
-  console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
+
+  // ========== Логи оригинальных и вычисляемых значений ===================
+  // console.log('Resize Number Width:', numberWidth, sizeWidth)
+  // console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
+  // ========== Логи оригинальных и вычисляемых значений ===================
+
   const numberHeight = Math.floor(sizeHeight / videoHeight * heightResolution)
   screenStore.resizeScreen(screenId, size)
 
@@ -109,7 +116,7 @@ onMounted(async () => {
 })
 
 onUpdated(async () => {
-  if (screenStore.screens.length === 1) stopScreens()
+  if (screenStore.screens.length === 0) stopScreens()
   else await initScreen()
 })
 
