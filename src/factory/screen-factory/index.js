@@ -12,7 +12,7 @@ const buildPositionApplication = (position, positionApplication, resolutionAppli
 }
 
 class WebCam {
-    constructor(position, positionApplication, resolution, region, resolutionApplication) {
+    constructor(position, positionApplication, resolution, region, resolutionApplication, zIndex) {
         const randomId = Math.floor(Math.random() * 1000)
         this.id = randomId
         this.title = `webcam-${randomId}`
@@ -41,7 +41,7 @@ class WebCam {
             height: position?.height || 340
         }
         this.positionApplication = buildPositionApplication(position, positionApplication, resolutionApplication)
-        this["z-index"] = 2
+        this["z-index"] =  zIndex
         this.dshow_settings = true
         this.component = cardFactory.getCard(this.type)
 
@@ -51,7 +51,7 @@ class WebCam {
 
 
 class Screen {
-    constructor(position, positionApplication, resolution, region, resolutionApplication) {
+    constructor(position, positionApplication, resolution, region, resolutionApplication, zIndex) {
         const randomId = Math.floor(Math.random() * 1000)
         this.id = randomId
         this.title = `screen-${randomId}`
@@ -75,7 +75,7 @@ class Screen {
             height: position?.height || 1080
         }
         this.positionApplication = buildPositionApplication(position, positionApplication, resolutionApplication)
-        this["z-index"] = 1
+        this["z-index"] = zIndex
         this.component = cardFactory.getCard(this.type)
     }
 }
@@ -89,14 +89,16 @@ export class ScreenFactory {
                 options?.positionApplication,
                 options?.resolution,
                 options?.region,
-                options?.resolutionApplication
+                options?.resolutionApplication,
+                options?.zIndex,
             ),
             screen: new Screen(
                 options?.position,
                 options?.positionApplication,
                 options?.resolution,
                 options?.region,
-                options?.resolutionApplication
+                options?.resolutionApplication,
+                options?.zIndex,
             ),
         }
         return sources[sourceType]

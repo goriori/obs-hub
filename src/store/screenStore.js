@@ -4,39 +4,24 @@ import {calculateWidth} from "@/utils/helpers/calculateWidth.js";
 import {calculateHeight} from "@/utils/helpers/calculateHeight.js";
 
 export const useScreenStore = defineStore('screenStore', () => {
-    const screens = ref([
-        {
-            id: 1,
-            title: 'Main Screen',
-            type: 'main-screen',
-            selector: 'main-screen',
-            isFocus: false,
-            isActive: false,
-            position: {
-                x: 0,
-                y: 0,
-                width: calculateWidth(window.innerWidth),
-                height: calculateHeight(window.innerHeight)
-            },
-            component: null,
-            show: true,
-            external_scripts: {},
-            monitor_index: 1,
-            region: {
-                x: 0,
-                y: 0,
-                width: 1920,
-                height: 1080
-            },
-            "z-index": 0
-        }
-    ])
+    const mainScreen = ref({
+        id: 1,
+        title: 'Main Screen',
+        selector: 'main-screen',
+        position: {
+            x: 0,
+            y: 0,
+            width: calculateWidth(window.innerWidth),
+            height: calculateHeight(window.innerHeight)
+        },
+    })
+    const screens = ref([])
 
 
     const addScreen = (screen, captureType) => {
         const lastScreen = screens.value[screens.value.length - 1]
         screens.value.push({
-            id: lastScreen.id + 1,
+            id: lastScreen?.id + 1,
             type: captureType,
             ...screen
         })
@@ -48,6 +33,10 @@ export const useScreenStore = defineStore('screenStore', () => {
         const screen = screens.value.find(screen => screen.id === id)
         Object.assign(screen.position, position)
         Object.assign(screen.positionApplication, position)
+    }
+    const changeZIndexScreen = (id, zIndex) => {
+        const screen = screens.value.find(screen => screen.id === id)
+        screen['z-index'] = zIndex
     }
     const resizeScreen = (id, size) => {
         const screen = screens.value.find(screen => screen.id === id)
@@ -62,25 +51,26 @@ export const useScreenStore = defineStore('screenStore', () => {
         return screens.value.map(screen => screen.type)
     }
     const updateScreenList = (screenList) => {
-        screens.value = screens.value.splice(0, 1)
-        screens.value = [...screens.value, ...screenList]
+        screens.value = [...screenList]
     }
 
     const updateScreenListIndex = () => {
-        const listScreen = screens.value.map((screen, index) => index !== 0 ? screen : null)
+        const listScreen = screens.value.map((screen, index) => screen)
             .filter(screen => screen)
-            .sort((a, b) => a['z-index'] - b['z-index'])
+            .sort((a, b) => b['z-index'] - a['z-index'])
         updateScreenList(listScreen)
     }
 
 
     return {
+        mainScreen,
         screens,
         addScreen,
         deleteScreen,
         getScreen,
         getTypeScreens,
         changePositionScreen,
+        changeZIndexScreen,
         resizeScreen,
         updateScreenList,
         updateScreenListIndex

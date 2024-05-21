@@ -16,25 +16,28 @@ const changeList = (list) => {
     if (acc.type === 'webcam' && value.type === 'screen') {
       sourceStore.changeZIndex(acc.type, 1)
       sourceStore.changeZIndex(value.type, 0)
+
+      screenStore.changeZIndexScreen(acc.id, 1)
+      screenStore.changeZIndexScreen(value.id, 0)
     }
     if (acc.type === 'screen' && value.type === 'webcam') {
       sourceStore.changeZIndex(acc.type, 1)
       sourceStore.changeZIndex(value.type, 0)
+
+      screenStore.changeZIndexScreen(acc.id, 1)
+      screenStore.changeZIndexScreen(value.id, 0)
     }
     return value
   })
-  sourceStore.addAspect('webcam')
-  sourceStore.addAspect('screen')
   sourceStore.updateType('full')
   wsService.sendMessage(sourceStore.getConfig())
-  sourceStore.deleteAspect('webcam')
-  sourceStore.deleteAspect('screen')
+
 }
 
 </script>
 
 <template>
-  <ListDragable :sources="sources" @on-change-list="changeList" />
+  <ListDragable :sources="sources" @on-change-list="changeList"/>
 </template>
 
 <style scoped lang="scss">

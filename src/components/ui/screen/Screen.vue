@@ -73,7 +73,7 @@ const renderScreens = () => {
     }).resizable({
       modifiers: [
         interact.modifiers.aspectRatio({
-          ratio: 1.7777,
+          ratio: 1.7,
           modifiers: [
             interact.modifiers.restrictEdges({outer: 'parent'}),
           ],
@@ -175,7 +175,6 @@ onUpdated(async () => {
     position: absolute;
     width: 100%;
     background-color: #000;
-    z-index: 1;
     object-fit: cover;
   }
 

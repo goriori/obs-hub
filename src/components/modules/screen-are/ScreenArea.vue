@@ -11,8 +11,8 @@ const sourceStore = useSourceStore()
 const screenStore = useScreenStore()
 const resolutionStore = useResolutionStore()
 
-const mainScreen = screenStore.screens[0]
-const otherScreens = computed(() => screenStore.screens.slice(1))
+const mainScreen = screenStore.mainScreen
+const otherScreens = computed(() => screenStore.screens)
 const videElement = ref(null)
 const stream = ref(null)
 

@@ -31,22 +31,31 @@ const addCapture = (event) => {
     const screen = ScreenFactory.getSource(capture, screenOption)
     const source = sourceStore.getSource(capture)
     Object.assign(screen.position, source.position)
-    const config = setOptionSourceConfig(screen, capture).getConfig()
+    const config = setOptionSourceConfig(screen, screenOption.zIndex, capture).getConfig()
     wsService.sendMessage(config)
     sourceStore.deleteAspect(capture)
   }
   onClose()
 }
 
-const setOptionSourceConfig = (screen, capture) => {
+const computedZIndex = () => {
+  if (haveScreens.value.length === 1) return 0
+  else if (haveScreens.value.length === 2) return 1
+  else return 0
+}
+const setOptionSourceConfig = (screen, zIndex, capture) => {
   screenStore.addScreen(screen, capture)
+  screenStore.updateScreenListIndex()
   sourceStore.addAspect(capture)
+  sourceStore.changeZIndex(capture, zIndex)
   sourceStore.updateShow(capture, true)
   sourceStore.updateType('full')
   return {
     getConfig: () => sourceStore.getConfig()
   }
 }
+
+
 const buildScreenOption = (capture) => {
   const configSources = sourceStore.sources
   return {
@@ -54,7 +63,8 @@ const buildScreenOption = (capture) => {
     positionApplication: screenStore.screens[0].position,
     resolution: configSources?.video_sources[capture]?.resolution,
     region: configSources?.video_sources[capture]?.region,
-    resolutionApplication: resolutionApplication.resolution
+    resolutionApplication: resolutionApplication.resolution,
+    zIndex: computedZIndex()
   }
 }
 </script>

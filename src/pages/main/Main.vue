@@ -6,6 +6,8 @@ import SourceScripts from "../../components/modules/source-scripts/SourceScripts
 import SizeSwitch from "../../components/modules/size-switch/SizeSwitch.vue";
 import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 
+
+
 </script>
 
 <template>

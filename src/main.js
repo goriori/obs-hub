@@ -6,7 +6,6 @@ import VClickOutside from '@/directives/vClickOutside'
 import vRipple from '@/directives/vRipple'
 import '@/assets/scss/main.scss'
 
-console.log("this text create help nvim")
 
 const app = createApp(App)
   .directive('ripple', vRipple)

@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute} from 'vue-router'
-import {onMounted, shallowRef} from "vue";
+import {onMounted, onUpdated, shallowRef} from "vue";
 import {useStateStore} from '@/store/stateStore'
 import {useSourceStore} from "@/store/sourceStore.js";
 import {useResolutionStore} from "@/store/resolutionStore.js";
@@ -33,14 +33,16 @@ const checkActiveSources = async (config) => {
     const sourceObjectScripts = sourceObject.external_scripts
     const optionSource = {
       position: config?.video_sources[source]?.position,
-      positionApplication: screenStore.screens[0].position,
+      positionApplication: screenStore.mainScreen.position,
       resolution: config?.video_sources[source]?.resolution,
       region: config?.video_sources[source]?.region,
-      resolutionApplication: resolutionStore.resolution
+      resolutionApplication: resolutionStore.resolution,
+      zIndex: config?.video_sources[source]['z-index']
     }
     if (sourceObjectShow) createScreen(source, optionSource)
     createScripts(sourceObjectScripts, source)
   })
+  console.log(screenStore.screens)
 }
 
 const createScreen = (source, option) => {
@@ -96,6 +98,8 @@ onMounted(async () => {
     resolutionStore.setTargetResolution({width, height})
   }
 })
+
+onUpdated(async()=> console.log('update app'))
 
 </script>
 

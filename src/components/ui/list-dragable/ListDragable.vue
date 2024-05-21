@@ -56,7 +56,7 @@ const updateList = (e) => {
 
 .list-group {
   width: 100%;
-  max-height: 200px;
+  max-height: 215px;
   overflow: auto;
   @include no-scroll();
 }
