@@ -119,4 +119,8 @@ onUpdated(async()=> console.log('update app'))
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+.main {
+  transition: 0.3s all ea;
+}
+</style>

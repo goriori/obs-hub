@@ -4,6 +4,10 @@ const props = defineProps({
     type: String,
     default: 'Выберите источник'
   },
+  type:{
+    type:String,
+    default:''
+  },
   sources: {
     type: Array,
     default: () => []
@@ -13,6 +17,16 @@ const props = defineProps({
     default: () => []
   }
 })
+const emits = defineEmits(['update'])
+
+const onActiveSource = (source) => {
+  const data = {
+    type: props.type,
+    data: source
+  }
+  emits('update', data)
+}
+
 </script>
 
 <template>
@@ -21,7 +35,8 @@ const props = defineProps({
     <section class="select-list">
       <div class="list-item" v-for="source in sources" :key="source.id">
         <component :is="source.component" :title="source.title" :icon-type="source['icon-type']"
-                   v-model:isActive="source.isActive" @click="source.onClick"/>
+                   v-model:isActive="source.isActive" @update:isActive="onActiveSource(source)"
+                   @click="source.onClick"/>
       </div>
     </section>
     <section class="select-actions">
@@ -43,7 +58,6 @@ const props = defineProps({
   flex-direction: column;
   padding: 20px 40px;
   gap: 52px;
-
 
 
   &-title {

@@ -11,8 +11,8 @@ export const useScreenStore = defineStore('screenStore', () => {
         position: {
             x: 0,
             y: 0,
-            width: calculateWidth(window.innerWidth),
-            height: calculateHeight(window.innerHeight)
+            width: calculateWidth(window.innerWidth, window.innerHeight),
+            height: calculateHeight(window.innerHeight, window.innerWidth),
         },
     })
     const screens = ref([])

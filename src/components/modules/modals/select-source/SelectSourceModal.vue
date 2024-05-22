@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUpdated, ref, shallowRef} from "vue";
+import {computed, onMounted, onUpdated, ref, shallowRef, watch, watchEffect} from "vue";
 import {useStateStore} from "../../../../store/stateStore.js";
 import {CardScriptFactory} from "@/factory/card-script-factory/index.js";
 import Popup from "../../../ui/popup/Popup.vue";
@@ -41,6 +41,7 @@ const sourcesForUse = ref([
     title: 'Видео'
   },
 ])
+
 const sourcesForCapture = ref([
   {
     id: 1,
@@ -48,7 +49,7 @@ const sourcesForCapture = ref([
     type: 'screen',
     isActive: false,
     component: shallowRef(Source),
-    title: 'Захват веб-камеры'
+    title: 'Захват экран'
   },
   {
     id: 2,
@@ -56,7 +57,7 @@ const sourcesForCapture = ref([
     type: 'webcam',
     isActive: false,
     component: shallowRef(Source),
-    title: 'Захват камеры'
+    title: 'Захват веб-камеры'
   },
   {
     id: 3,
@@ -67,6 +68,8 @@ const sourcesForCapture = ref([
     title: 'Захват веб-камеры и экрана'
   }
 ])
+
+
 const actions = [
   {
     title: 'Confirm Script',
@@ -92,6 +95,25 @@ const actions = [
     }
   }
 ]
+
+const activeSourceCapture = (id) => {
+  if (!id) return
+  sourcesForCapture.value.forEach(source => source.isActive = false)
+  sourcesForCapture.value.find(source => source.id === id).isActive = true
+}
+const activeSourceUse = (id) => {
+  if (!id) return
+  sourcesForUse.value.forEach(source => source.isActive = false)
+  sourcesForUse.value.find(source => source.id === id).isActive = true
+}
+const onUpdateSelect = (updateObject) => {
+  const {type, data} = updateObject
+  const updateHandlers = {
+    video: (data) => activeSourceCapture(data?.id),
+    sound: (data) => activeSourceUse(data?.id)
+  }
+  return updateHandlers[type].call(this, data)
+}
 
 const generateLoadFileInput = () => {
   return new Promise((resolve, reject) => {
@@ -194,16 +216,19 @@ onMounted(() => {
   }
   window.addEventListener('keydown', onKeypress);
 })
+
+
 </script>
 
 <template>
   <Popup>
     <template #window>
       <section class="select-source">
-        <SelectSource v-if="steps === ACTION_TYPES[0]" title="Выберите источник" :sources="sourcesForUse"
-                      :actions="actionsScripts"/>
-        <SelectSource v-if="steps === ACTION_TYPES[1]" title="Выберите источник" :sources="sourcesForCapture"
-                      :actions="actionsSource"/>
+        <SelectSource v-if="steps === ACTION_TYPES[0]" type="sound" title="Выберите источник" :sources="sourcesForUse"
+                      :actions="actionsScripts" @update="onUpdateSelect"/>
+        <SelectSource v-if="steps === ACTION_TYPES[1]" type="video" title="Выберите источник"
+                      :sources="sourcesForCapture"
+                      :actions="actionsSource" @update="onUpdateSelect"/>
       </section>
 
     </template>
