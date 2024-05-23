@@ -59,14 +59,14 @@ const sourcesForCapture = ref([
     component: shallowRef(Source),
     title: 'Захват веб-камеры'
   },
-  {
-    id: 3,
-    'icon-type': 'screen',
-    type: 'all',
-    isActive: false,
-    component: shallowRef(Source),
-    title: 'Захват веб-камеры и экрана'
-  }
+  // {
+  //   id: 3,
+  //   'icon-type': 'screen',
+  //   type: 'all',
+  //   isActive: false,
+  //   component: shallowRef(Source),
+  //   title: 'Захват веб-камеры и экрана'
+  // }
 ])
 
 

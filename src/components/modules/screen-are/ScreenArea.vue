@@ -63,8 +63,8 @@ const onResizeScreen = (screenId, size) => {
   const numberWidth = Math.floor(sizeWidth / videoWidth * widthResolution)
 
   // ========== Логи оригинальных и вычисляемых значений ===================
-  // console.log('Resize Number Width:', numberWidth, sizeWidth)
-  // console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
+  console.log('Resize Number Width:', numberWidth, sizeWidth)
+  console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
   // ========== Логи оригинальных и вычисляемых значений ===================
 
   const numberHeight = Math.floor(sizeHeight / videoHeight * heightResolution)
@@ -86,6 +86,7 @@ const initScreen = async () => {
 }
 
 const loadVideoStream = async (device) => {
+  console.log('load video stream')
   const videoElement = document.getElementsByTagName('video')[0]
   stream.value = await navigator.mediaDevices.getUserMedia({
     video: {
@@ -97,6 +98,7 @@ const loadVideoStream = async (device) => {
 }
 
 const getPermissionVideoCapture = async (devices) => {
+  console.log('get permission ')
   const videoInput = devices.find(device => device.kind === 'videoinput')
   await navigator.mediaDevices.getUserMedia({
     video: {
@@ -112,7 +114,7 @@ const initVideoElement = () => videElement.value = document.getElementById('main
 
 onMounted(async () => {
   initVideoElement()
-  if (screenStore.screens.length > 1) await initScreen()
+  if (screenStore.screens.length > 0) await initScreen()
 })
 
 onUpdated(async () => {

@@ -4,9 +4,9 @@ const props = defineProps({
     type: String,
     default: 'Выберите источник'
   },
-  type:{
-    type:String,
-    default:''
+  type: {
+    type: String,
+    default: ''
   },
   sources: {
     type: Array,
@@ -88,6 +88,7 @@ const onActiveSource = (source) => {
 
 .list {
   &-item {
+    width: 100%;
   }
 }
 </style>

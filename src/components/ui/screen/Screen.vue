@@ -72,7 +72,7 @@ const renderScreens = () => {
     }).resizable({
       modifiers: [
         interact.modifiers.aspectRatio({
-          ratio: 1.7,
+          ratio: 1.7777,
           modifiers: [
             interact.modifiers.restrictEdges({outer: 'parent'}),
           ],
@@ -106,6 +106,7 @@ const renderScreens = () => {
             width: `${event.rect.width}px`,
             height: `${event.rect.height}px`
           }
+          console.log(newSize)
           target.style.transform = `translate(${newSize.x}px, ${newSize.y}px)`
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)

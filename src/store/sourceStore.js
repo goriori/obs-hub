@@ -60,10 +60,17 @@ export const useSourceStore = defineStore('sourceStore', () => {
         update_aspects.value = aspects
     }
     const updateActiveScript = (name, active) => {
-        console.log(name, active)
         const script = scripts.value.find(script => script.name === name)
+        const sourceScript = script.source === 'all' ? 'virtual_camera' : script.source
         script.enabled = active
-        sources.value.video_sources[script.source].external_scripts.find(script => script.name === name).enabled = active
+        const activeVirtualCameraScript = () => sources.value.virtual_camera.external_scripts.find(script => script.name === name).enabled = active
+        const activeVideoSourceScript = () => sources.value.video_sources[sourceScript].external_scripts.find(script => script.name === name).enabled = active
+        const sourceHandler = {
+            virtual_camera: () => activeVirtualCameraScript(),
+            webcam: () => activeVideoSourceScript(),
+            screen: () => activeVideoSourceScript()
+        }
+        if (sourceHandler[sourceScript]) sourceHandler[sourceScript].call()
 
     }
     const updateSource = (sourceName, newSource) => {
