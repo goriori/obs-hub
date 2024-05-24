@@ -7,6 +7,7 @@ import DeleteScript from "@/components/modules/modals/delete-script/DeleteScript
 import DeleteAudio from "@/components/modules/modals/delete-audio/DeleteAudio.vue";
 import Warning from "@/components/modules/modals/warning/Warning.vue";
 import Error from "@/components/modules/modals/error/Error.vue";
+import EditScriptModal from "@/components/modules/modals/edit-script/EditScriptModal.vue";
 const stateStore = useStateStore()
 
 const modals = ref([
@@ -39,6 +40,11 @@ const modals = ref([
     id: 6,
     component: shallowRef(Error),
     conditionVisibility:computed(() => stateStore.modals.message.error.show)
+  },
+  {
+    id: 7,
+    component: shallowRef(EditScriptModal),
+    conditionVisibility:computed(() => stateStore.modals.edit.editScript.show)
   }
 ])
 </script>

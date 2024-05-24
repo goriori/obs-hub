@@ -1,7 +1,6 @@
 <script setup>
 
 import Card from "../Card.vue";
-import IconCard from "../../icon-card/IconCard.vue";
 import Camera from "../../../icons/Camera.vue";
 import Screen from "../../../icons/Screen.vue";
 import Sound from "../../../icons/Sound.vue";
@@ -31,6 +30,10 @@ const props = defineProps({
   targetType: {
     type: String,
     default: 'webcam'
+  },
+  action:{
+    type:Object,
+    default:()=> {}
   }
 })
 
@@ -45,7 +48,7 @@ const typeScript = {
     color: '#000',
     component: Screen
   },
-  all:{
+  all: {
     title: 'захват веб-камеры и экрана',
     color: '#000',
     component: Screen
@@ -93,6 +96,9 @@ const onDisableScript = () => {
           <component :is="typeScript[targetType].component" :color="typeScript[targetType].color"/>
           <p> {{ typeScript[targetType].title }}</p>
         </div>
+        <div class="script-action">
+          <component :is="action"/>
+        </div>
       </div>
     </template>
   </Card>
@@ -100,7 +106,9 @@ const onDisableScript = () => {
 
 <style scoped lang="scss">
 @import '@/assets/scss/variables';
+
 .script {
+  max-height: 90px;
   &-content {
     font-weight: 500;
     font-size: 16px;
@@ -122,6 +130,8 @@ const onDisableScript = () => {
       font-size: 8px;
     }
   }
+
+
 }
 
 svg {

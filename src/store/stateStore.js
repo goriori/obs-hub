@@ -9,6 +9,12 @@ export const useStateStore = defineStore('stateStore', () => {
             targetFile: null,
             show: false,
         },
+        edit: {
+            editScript: {
+                scriptTarget: null,
+                show: false,
+            }
+        },
         delete: {
             deleteSourceVideo: {
                 show: false,

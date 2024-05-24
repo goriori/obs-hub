@@ -26,12 +26,13 @@ const onActive = (value, data, type) => {
       <component
           v-model:isFocus="source.isFocus"
           v-model:isActive="source.isActive"
+          @update:isActive="onActive"
           :scriptId="source.id"
           :is="source.component"
           :name="source.name"
           :targetType="source.capture?.type"
           :source="source.use"
-          @update:isActive="onActive"
+          :action="source?.action"
       />
     </div>
   </section>
