@@ -199,6 +199,7 @@ const actionsSource = buildActions(ACTION_TYPES[1])
 const steps = ref(stateStore.modals.selectSource.use ? ACTION_TYPES[1] : ACTION_TYPES[0])
 
 const closeModal = () => {
+  stateStore.modals.selectSource.targetFile = null
   stateStore.modals.selectSource.show = false
 }
 const clearModalOption = () => {
