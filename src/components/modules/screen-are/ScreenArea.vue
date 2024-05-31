@@ -93,7 +93,7 @@ onMounted(async () => {
 })
 
 onUpdated(async () => {
-  if (screenStore.screens.length === 0) videoStream.stop()
+  if (screenStore.screens.length === 0) await videoStream.stopStream()
   else await videoStream.init()
 })
 
