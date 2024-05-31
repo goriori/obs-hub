@@ -6,6 +6,8 @@ import {useSourceStore} from "@/store/sourceStore.js";
 import {useResolutionStore} from "@/store/resolutionStore.js";
 import Screen from "../../ui/screen/Screen.vue";
 import wsService from "@/API/wsService/wsService.js";
+import {VideoStream} from "@/enitites/stream/video-stream/index.js";
+
 
 const sourceStore = useSourceStore()
 const screenStore = useScreenStore()
@@ -75,41 +77,19 @@ const onResizeScreen = (screenId, size) => {
   const config = sourceStore.getConfig()
   wsService.sendMessage(config)
 }
-const initVideoStream = async () => {
-  const devices = await navigator.mediaDevices.enumerateDevices()
-  const streamerDevice = devices.find(device => device.label === 'Streamer')
-  if (!streamerDevice) await getPermissionVideoCapture(devices)
-  else await loadVideoStream(streamerDevice)
-}
 
-const loadVideoStream = async (device) => {
+
+const loadVideoStream = async () => {
   const videoElement = document.getElementsByTagName('video')[0]
-  stream.value = await navigator.mediaDevices.getUserMedia({
-    video: {
-      deviceId: device.deviceId,
-    }
-  })
-  videoElement.srcObject = stream.value
+  videoElement.srcObject = await new VideoStream().init()
   videoElement.play();
 }
 
-const getPermissionVideoCapture = async (devices) => {
-  const videoInput = devices.find(device => device.kind === 'videoinput')
-  await navigator.mediaDevices.getUserMedia({
-    video: {
-      deviceId: videoInput.deviceId,
-    }
-  }).finally(() => window.location.reload())
-}
-
-const stopVideoStream = () => {
-  return stream.value.getTracks().forEach(track => track.stop())
-}
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
 
 onMounted(async () => {
   initVideoElement()
-  if (screenStore.screens.length > 0) await initVideoStream()
+  if (screenStore.screens.length > 0) await loadVideoStream()
 })
 
 onUpdated(async () => {
