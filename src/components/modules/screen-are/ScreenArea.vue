@@ -81,8 +81,6 @@ const initScreen = async () => {
   const streamerDevice = devices.find(device => device.label === 'Streamer')
   if (!streamerDevice) await getPermissionVideoCapture(devices)
   else await loadVideoStream(streamerDevice)
-
-
 }
 
 const loadVideoStream = async (device) => {

@@ -1,0 +1,8 @@
+
+
+
+export class Gateway {
+    constructor() {
+
+    }
+}

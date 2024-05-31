@@ -5,17 +5,34 @@ import SourceVideo from "../../components/modules/source-video/SourceVideo.vue";
 import SourceScripts from "../../components/modules/source-scripts/SourceScripts.vue";
 import SizeSwitch from "../../components/modules/size-switch/SizeSwitch.vue";
 import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
+import {onMounted} from "vue";
+import wsService from "@/API/wsService/wsService.js";
+import SourceFactory from "@/factory/source-factory/index.js";
+import {useSourceGateway} from "@/store/sourceStoreNew.js";
 
+const sourceGateway = useSourceGateway()
+const initSources = async () => {
+  const serverConfig = await wsService.getConfig()
+  const videoSources = serverConfig.video_sources
+  const sources = Object.keys(videoSources).map(source => SourceFactory.getSource(source))
+  sources.forEach(source => {
+    source.changePosition(videoSources[source.name].position)
+    sourceGateway.addSource(source)
+  })
+}
 
+onMounted(() => {
+  initSources()
+})
 
 </script>
 
 <template>
   <div class="page">
     <div class="page-container">
-<!--      <section class="switcher">-->
-<!--        <SizeSwitch/>-->
-<!--      </section>-->
+      <!--      <section class="switcher">-->
+      <!--        <SizeSwitch/>-->
+      <!--      </section>-->
       <section class="screen block">
         <ScreenArea/>
       </section>
@@ -30,10 +47,11 @@ import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 
 <style scoped lang="scss">
 @import '@/assets/scss/variables';
+
 .page {
   padding: 40px;
   @media(max-width: $md1 + px) {
-    padding:30px;
+    padding: 30px;
   }
 }
 
@@ -46,6 +64,7 @@ header {
   right: 30px;
   z-index: 5;
 }
+
 .screen {
   margin: 0 auto;
 }
@@ -54,7 +73,7 @@ header {
   display: flex;
   gap: 40px;
   @media(max-width: 1440px) {
-   gap:30px;
+    gap: 30px;
   }
 }
 
