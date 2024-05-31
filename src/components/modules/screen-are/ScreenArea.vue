@@ -26,7 +26,6 @@ const onChangePositionScreen = (screenId, coordinates,) => {
   sourceStore.updateType('fast')
   const config = sourceStore.getConfig()
   wsService.sendMessage(config)
-
 }
 
 const rebuildPosition = (screen, videoSize) => {
@@ -76,7 +75,7 @@ const onResizeScreen = (screenId, size) => {
   const config = sourceStore.getConfig()
   wsService.sendMessage(config)
 }
-const initScreen = async () => {
+const initVideoStream = async () => {
   const devices = await navigator.mediaDevices.enumerateDevices()
   const streamerDevice = devices.find(device => device.label === 'Streamer')
   if (!streamerDevice) await getPermissionVideoCapture(devices)
@@ -84,7 +83,6 @@ const initScreen = async () => {
 }
 
 const loadVideoStream = async (device) => {
-  console.log('load video stream')
   const videoElement = document.getElementsByTagName('video')[0]
   stream.value = await navigator.mediaDevices.getUserMedia({
     video: {
@@ -96,7 +94,6 @@ const loadVideoStream = async (device) => {
 }
 
 const getPermissionVideoCapture = async (devices) => {
-  console.log('get permission ')
   const videoInput = devices.find(device => device.kind === 'videoinput')
   await navigator.mediaDevices.getUserMedia({
     video: {
@@ -105,19 +102,19 @@ const getPermissionVideoCapture = async (devices) => {
   }).finally(() => window.location.reload())
 }
 
-const stopScreens = () => {
+const stopVideoStream = () => {
   return stream.value.getTracks().forEach(track => track.stop())
 }
 const initVideoElement = () => videElement.value = document.getElementById('main-screen')
 
 onMounted(async () => {
   initVideoElement()
-  if (screenStore.screens.length > 0) await initScreen()
+  if (screenStore.screens.length > 0) await initVideoStream()
 })
 
 onUpdated(async () => {
-  if (screenStore.screens.length === 0) stopScreens()
-  else await initScreen()
+  if (screenStore.screens.length === 0) stopVideoStream()
+  else await initVideoStream()
 })
 
 </script>
