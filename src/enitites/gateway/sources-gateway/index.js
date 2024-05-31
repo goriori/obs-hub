@@ -9,4 +9,7 @@ export class SourceGateway {
     getSource(id) {
         return this.sourceGateway.getSource(id);
     }
+    getSources()  {
+        return this.sourceGateway.getSources();
+    }
 }

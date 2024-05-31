@@ -11,7 +11,7 @@ const props = defineProps({
     default: () => {
     }
   },
-  screens: {
+  sources: {
     type: Array,
     default: () => []
   }
@@ -39,7 +39,7 @@ const setZIndexElements = () => {
   })
 }
 const renderScreens = () => {
-  props.screens.forEach((screen, index) => {
+  props.sources.forEach((screen, index) => {
     const modifiers = [
       interact.modifiers.restrictRect({
         restriction: 'parent',
@@ -139,19 +139,19 @@ onUpdated(async () => {
     <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="mainScreen.position.width"
            :height="mainScreen.position.height" class="screen-main"
            id="main-screen"></video>
-    <div v-for="(screen, index) in screens"
+    <div v-for="(source, index) in sources"
          ref="screensRef"
-         :key="screen.id"
-         :class="['screen-add', screen.selector]"
+         :key="source.id"
+         :class="['screen-add', source.selector]"
          :style="{
-          width: screen.positionApplication.width + 'px',
-          height: screen.positionApplication.height + 'px',
-          transform:`translate(${screen.positionApplication.x}px, ${screen.positionApplication.y}px)`
+          width: source.position.width + 'px',
+          height: source.position.height + 'px',
+          transform:`translate(${source.position.x}px, ${source.position.y}px)`
          }"
-         :data-x="screen.positionApplication.x"
-         :data-y="screen.positionApplication.y"
-         :data-type="screen.type"
-         :data-index="screen['z-index']"
+         :data-x="source.position.x"
+         :data-y="source.position.y"
+         :data-type="source.type"
+         :data-index="source['z-index']"
     >
       <!--      {{screen.title}}-->
     </div>

@@ -9,6 +9,8 @@ const sourceStoreNew = defineStore('sources', () => {
         sources.value.push(source)
     }
 
+    const getSources =  ()  => sources.value
+
     const getSource = (id) => sources.value.find(source => source.id === id)
 
     const removeSource = (source) => {
@@ -18,6 +20,7 @@ const sourceStoreNew = defineStore('sources', () => {
     return {
         sources,
         getSource,
+        getSources,
         addSource,
         removeSource
     }

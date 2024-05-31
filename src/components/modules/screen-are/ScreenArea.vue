@@ -7,14 +7,15 @@ import {useResolutionStore} from "@/store/resolutionStore.js";
 import Screen from "../../ui/screen/Screen.vue";
 import wsService from "@/API/wsService/wsService.js";
 import {VideoStream} from "@/enitites/stream/video-stream/index.js";
+import {useSourceGateway} from "@/store/sourceStoreNew.js";
 
 
 const sourceStore = useSourceStore()
 const screenStore = useScreenStore()
 const resolutionStore = useResolutionStore()
-
+const gatewaySources = useSourceGateway()
 const mainScreen = screenStore.mainScreen
-const otherScreens = computed(() => screenStore.screens)
+const otherScreens = computed(() => gatewaySources.getSources())
 const videElement = ref(null)
 const videoStream = new VideoStream()
 
@@ -102,7 +103,7 @@ onUpdated(async () => {
 <template>
   <Screen
       :main-screen="mainScreen"
-      :screens="otherScreens"
+      :sources="otherScreens"
       @change-position-screen="onChangePositionScreen"
       @resize-screen="onResizeScreen"/>
 </template>

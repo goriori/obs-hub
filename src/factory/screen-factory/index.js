@@ -1,15 +1,9 @@
 import {CardFactory} from "@/factory/card-factory/index.js";
+import {buildPositionApplication} from "@/utils/helpers/buildPositionApplication.js";
 
 const cardFactory = new CardFactory();
 
-const buildPositionApplication = (position, positionApplication, resolutionApplication) => {
-    return {
-        x: (position.x * positionApplication.width) / resolutionApplication[0] || 0,
-        y: (position.y * positionApplication.height) / resolutionApplication[1] || 0,
-        width: (position.width * positionApplication.width) / resolutionApplication[0] || 0,
-        height: (position.height * positionApplication.height) / resolutionApplication[1] || 0
-    }
-}
+
 
 class WebCam {
     constructor(position, positionApplication, resolution, region, resolutionApplication, zIndex) {

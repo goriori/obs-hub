@@ -9,21 +9,11 @@ import {onMounted} from "vue";
 import wsService from "@/API/wsService/wsService.js";
 import SourceFactory from "@/factory/source-factory/index.js";
 import {useSourceGateway} from "@/store/sourceStoreNew.js";
+import {useResolutionStore} from "@/store/resolutionStore.js";
+import {buildPositionApplication} from "@/utils/helpers/buildPositionApplication.js";
+import {useScreenStore} from "@/store/screenStore.js";
 
-const sourceGateway = useSourceGateway()
-const initSources = async () => {
-  const serverConfig = await wsService.getConfig()
-  const videoSources = serverConfig.video_sources
-  const sources = Object.keys(videoSources).map(source => SourceFactory.getSource(source))
-  sources.forEach(source => {
-    source.changePosition(videoSources[source.name].position)
-    sourceGateway.addSource(source)
-  })
-}
 
-onMounted(() => {
-  initSources()
-})
 
 </script>
 
