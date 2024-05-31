@@ -16,7 +16,7 @@ const resolutionStore = useResolutionStore()
 const mainScreen = screenStore.mainScreen
 const otherScreens = computed(() => screenStore.screens)
 const videElement = ref(null)
-const stream = ref(null)
+const videoStream = new VideoStream()
 
 const onChangePositionScreen = (screenId, coordinates,) => {
   screenStore.changePositionScreen(screenId, coordinates)
@@ -81,7 +81,7 @@ const onResizeScreen = (screenId, size) => {
 
 const loadVideoStream = async () => {
   const videoElement = document.getElementsByTagName('video')[0]
-  videoElement.srcObject = await new VideoStream().init()
+  videoElement.srcObject = await videoStream.init()
   videoElement.play();
 }
 
@@ -93,8 +93,8 @@ onMounted(async () => {
 })
 
 onUpdated(async () => {
-  if (screenStore.screens.length === 0) stopVideoStream()
-  else await initVideoStream()
+  if (screenStore.screens.length === 0) videoStream.stop()
+  else await videoStream.init()
 })
 
 </script>
