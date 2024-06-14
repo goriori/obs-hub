@@ -1,49 +1,75 @@
 <script setup>
 import {useRoute} from 'vue-router'
-import {onMounted, onUpdated, shallowRef} from "vue";
+import {onMounted, onUpdated} from "vue";
 import {useStateStore} from '@/store/stateStore'
-import {useSourceStore} from "@/store/sourceStore.js";
 import {useResolutionStore} from "@/store/resolutionStore.js";
 import {useScreenStore} from "@/store/screenStore.js";
-import {ScreenFactory} from "@/factory/screen-factory/index.js";
+import {useScriptGateway} from "@/store/scriptStore.js";
+import {useSourceGateway} from "@/store/sourceStore.js";
+import {buildPositionApplication} from "@/utils/helpers/buildPositionApplication.js";
 import VLoader from '@/components/VLoader.vue'
 import Modals from "@/components/modules/modals/Modals.vue";
 import wsService from "@/API/wsService/wsService.js";
-import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
-import {useScriptStore} from "@/store/scriptStore.js";
-import Source from "@/components/ui/source/Source.vue";
-import {CardCaptureFactory} from "@/factory/icon-card-capture-factory/index.js";
-import IconCard from "@/components/ui/icon-card/IconCard.vue";
-import {useSourceGateway} from "@/store/sourceStoreNew.js";
 import SourceFactory from "@/factory/source-factory/index.js";
-import {buildPositionApplication} from "@/utils/helpers/buildPositionApplication.js";
+import CardFactory from "@/factory/card-factory/index.js";
+import CardScriptFactory from "@/factory/card-script-factory/index.js";
 
 const route = useRoute()
 const stateStore = useStateStore()
-const sourceStore = useSourceStore()
-const scriptStore = useScriptStore()
+const scriptGateway = useScriptGateway()
 const resolutionStore = useResolutionStore()
 const screenStore = useScreenStore()
 
 const sourceGateway = useSourceGateway()
-const initSources = async () => {
+const initVideoSources = async () => {
   await wsService.initConnect()
   const serverConfig = await wsService.getConfig()
   const videoSources = serverConfig.video_sources
-  const sources = Object.keys(videoSources).map(source => SourceFactory.getSource(source))
+  const sources = Object.keys(videoSources).map(sourceName => SourceFactory.getSource(sourceName))
   sources.forEach(source => {
     const position = videoSources[source.name].position
     const positionApplication = screenStore.mainScreen.position
     const positionResolution = resolutionStore.resolution
     const computedPositionApplication = buildPositionApplication(position, positionApplication, positionResolution)
-    source.changePosition(computedPositionApplication)
+
+    source.changePosition(position)
     source.changeZIndex(videoSources[source.name]['z-index'])
+    source.changePositionApplication(computedPositionApplication)
     sourceGateway.addSource(source)
   })
 }
 
-onMounted(() => {
-  initSources()
+const initAudioSources = async () => {
+  const serverConfig = await wsService.getConfig()
+  const audioSources = serverConfig.audio_sources
+  const sources = Object.keys(audioSources).map(sourceName => SourceFactory.getSource(sourceName))
+  sources.forEach(source => source.component = CardFactory.getCard(source.name))
+  sources.forEach(source => sourceGateway.addSource(source))
+}
+
+const initScripts = async () => {
+  const serverConfig = await wsService.getConfig()
+  const virtualCamera = serverConfig.virtual_camera
+  const videoSources = serverConfig.video_sources
+  const nameSources = Object.keys(videoSources)
+  const scriptsSources = nameSources.map(sourceName => {
+    if (videoSources[sourceName].external_scripts.length > 0) {
+      const scripts = videoSources[sourceName].external_scripts
+      const source = sourceGateway.getSource(sourceName)
+      scripts.forEach(script => source.addScript(script))
+      return scripts
+    }
+    return []
+  })
+  const scriptsVirtualCamera = virtualCamera.external_scripts
+  const scripts = [...scriptsSources, scriptsVirtualCamera].flat(Infinity)
+  scripts.forEach(script => scriptGateway.addScript(script))
+}
+
+onMounted(async () => {
+  await initVideoSources()
+  await initAudioSources()
+  await initScripts()
 })
 onUpdated(async () => console.log('update app'))
 

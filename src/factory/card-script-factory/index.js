@@ -1,7 +1,7 @@
 import ScriptTargetCard from "@/components/ui/card/script-target/ScriptTargetCard.vue";
 import {shallowRef} from "vue";
 
-export class CardScriptFactory {
+ class CardScriptFactory {
     #cardsScript;
 
     constructor() {
@@ -11,7 +11,9 @@ export class CardScriptFactory {
         }
     }
 
-    getScriptCard(typeScript) {
+    getCard(typeScript) {
         return this.#cardsScript[typeScript];
     }
 }
+
+export default new CardScriptFactory()

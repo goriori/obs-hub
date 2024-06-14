@@ -1,0 +1,210 @@
+{
+    "type": "object",
+    "properties": {
+        "virtual_camera": {
+            "type": "object",
+            "properties": {
+                "external_scripts": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {"type": "string"},
+                            "path": {"type": "string"},
+                            "enabled": {"type": "boolean"},
+                            "args": {"type": "object"}
+                        },
+                        "required": ["name", "path", "enabled", "args"]
+                    },
+                    "default": []
+                },
+                "width": {"type": "integer", "default": 1920},
+                "height": {"type": "integer", "default": 1080},
+                "fps": {"type": "integer", "default": 30},
+                "backend": {"type": "string", "default": "unitycapture"},
+                "device": {"type": "string", "default": "Unity Video Capture"}
+            },
+            "required": ["external_scripts", "width", "height", "fps"]
+        },
+        "video_sources": {
+            "type": "object",
+            "properties": {
+                "webcam": {
+                    "type": "object",
+                    "properties": {
+                        "show": {"type": "boolean", "default": true},
+                        "external_scripts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "path": {"type": "string"},
+                                    "enabled": {"type": "boolean"},
+                                    "args": {"type": "object"}
+                                },
+                                "required": ["name", "path", "enabled", "args"]
+                            },
+                            "default": []
+                        },
+                        "device_index": {"type": "integer", "default": 0},
+                        "resolution": {
+                            "type": "object",
+                            "properties": {
+                                "width": {"type": "integer", "default": 3840},
+                                "height": {"type": "integer", "default": 2160}
+                            },
+                            "required": ["width", "height"]
+                        },
+                        "position": {
+                            "type": "object",
+                            "properties": {
+                                "x": {"type": "integer", "default": 0},
+                                "y": {"type": "integer", "default": 0},
+                                "width": {"type": "integer", "default": 320},
+                                "height": {"type": "integer", "default": 180}
+                            },
+                            "required": ["x", "y", "width", "height"]
+                        },
+                        "z-index": {"type": "integer", "default": 1},
+                        "dshow_settings": {"type": "boolean", "default": false}
+                    },
+                    "required": ["show", "external_scripts", "device_index", "resolution", "position", "z-index", "dshow_settings"]
+                },
+                "screen": {
+                    "type": "object",
+                    "properties": {
+                        "show": {"type": "boolean", "default": true},
+                        "external_scripts": {"type": "array", "default": []},
+                        "monitor_index": {"type": "integer", "default": 1},
+                        "region": {
+                            "type": "object",
+                            "properties": {
+                                "x": {"type": "integer", "default": 0},
+                                "y": {"type": "integer", "default": 0},
+                                "width": {"type": "integer", "default": 1920},
+                                "height": {"type": "integer", "default": 1080}
+                            },
+                            "required": ["x", "y", "width", "height"]
+                        },
+                        "position": {
+                            "type": "object",
+                            "properties": {
+                                "x": {"type": "integer", "default": 0},
+                                "y": {"type": "integer", "default": 0},
+                                "width": {"type": "integer", "default": 1920},
+                                "height": {"type": "integer", "default": 1080}
+                            },
+                            "required": ["x", "y", "width", "height"]
+                        },
+                        "z-index": {"type": "integer", "default": 0}
+                    },
+                    "required": ["show", "external_scripts", "monitor_index", "position", "z-index"]
+                }
+            },
+            "required": ["webcam", "screen"]
+        },
+        "virtual_audio": {
+            "type": "object",
+            "properties": {
+                "input_device_name": {"type": "string", "default": "CABLE Input"},
+                "output_device_name": {"type": "string", "default": "CABLE Output"}
+                
+            },
+            "required": ["input_device_name","output_device_name"]
+        },
+        "audio_sources": {
+            "type": "object",
+            "properties": {
+                "microphone": {
+                    "type": "object",
+                    "properties": {
+                        "show": {"type": "boolean", "default": false},
+                        "external_scripts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "path": {"type": "string"},
+                                    "enabled": {"type": "boolean"},
+                                    "args": {"type": "object"}
+                                },
+                                "required": ["name", "path", "enabled", "args"]
+                            },
+                            "default": []
+                        },
+                        "device_input_index": {"type": "integer", "default": 1},
+                        "device_output_index": {"type": "integer", "default": 5},
+                        "format": {"type": "integer", "default": 2},
+                        "channels": {"type": "integer", "default" : 1},
+                        "rate": {"type": "integer", "default" : 44100},
+                        "chunk": {"type": "integer", "default": 1024}
+                    },
+                    "required": ["show","external_scripts","device_input_index","device_output_index","format", "channels", "rate", "chunk"]
+                },
+                "system_sound": {
+                    "type": "object",
+                    "properties": {
+                        "show": {"type": "boolean", "default": false},
+                        "external_scripts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "path": {"type": "string"},
+                                    "enabled": {"type": "boolean"},
+                                    "args": {"type": "object"}
+                                },
+                                "required": ["name", "path", "enabled", "args"]
+                            },
+                            "default": []
+                        },
+                        "device_input_index": {"type": "integer", "default": -1},
+                        "device_output_index": {"type": "integer", "default": 5},
+                        "format": {"type": "integer", "default": 3},
+                        "channels": {"type": "integer", "default" : 2},
+                        "rate": {"type": "integer", "default" : 48000},
+                        "chunk": {"type": "integer", "default": 2048}
+                    },
+                    "required": ["show","external_scripts","device_input_index","device_output_index","format", "channels", "rate", "chunk"]
+                },
+                "sound": {
+                    "type": "object",
+                    "properties": {
+                        "show": {"type": "boolean", "default": false},
+                        "audio_state": {
+                            "type": "string",
+                            "enum": ["play_in_loop","play_once", "pause"],
+                            "default": "play"
+                        },
+                        "external_scripts": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {"type": "string"},
+                                    "path": {"type": "string"},
+                                    "enabled": {"type": "boolean"},
+                                    "args": {"type": "object"}
+                                },
+                                "required": ["name", "path", "enabled", "args"]
+                            },
+                            "default": []
+                        },
+                        "source_path": {"type":"string", "default":"sound/tada.mp3"},
+                        "device_output_index": {"type": "integer", "default": 5},
+                        "format": {"type": "integer", "default": 2},
+                        "channels": {"type": "integer", "default" : 1},
+                        "rate": {"type": "integer", "default" : 44100},
+                        "chunk": {"type": "integer", "default": 1024}
+                    },
+                    "required": ["show","audio_state","external_scripts","source_path","device_output_index","format", "channels", "rate", "chunk"]
+                }
+            },
+            "required": ["microphone","system_sound","sound"]
+        }
+    },
+    "required": ["virtual_camera", "video_sources", "virtual_audio", "audio_sources"]
+}

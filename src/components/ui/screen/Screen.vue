@@ -16,6 +16,7 @@ const props = defineProps({
     default: () => []
   }
 })
+console.log(props.sources)
 const emits = defineEmits(['changePositionScreen', 'resizeScreen'])
 const [widthResolution, heightResolution] = resolutionStore.resolution
 const parentWidth = ref(props.mainScreen.position.width + 'px')
@@ -48,7 +49,7 @@ const renderScreens = () => {
         outer: 'parent',
       }),
     ]
-    interact(`.${screen.selector}`).draggable({
+    interact(`.screen-add`).draggable({
       modifiers,
       listeners: {
         start(event) {
@@ -56,7 +57,7 @@ const renderScreens = () => {
           console.log(event.type, event.target)
         },
         move(event) {
-          emits('changePositionScreen', screen.id, {
+          emits('changePositionScreen', screen.name, {
             x: screen.positionApplication.x += event.dx,
             y: screen.positionApplication.y += event.dy
           })
@@ -110,8 +111,8 @@ const renderScreens = () => {
           target.style.transform = `translate(${newSize.x}px, ${newSize.y}px)`
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)
-          emits('resizeScreen', screen.id, {width: newSize.width, height: newSize.height})
-          emits('changePositionScreen', screen.id, {x: newSize.x, y: newSize.y})
+          emits('resizeScreen', screen.name, {width: newSize.width, height: newSize.height})
+          emits('changePositionScreen', screen.name, {x: newSize.x, y: newSize.y})
         },
       },
     })
@@ -144,13 +145,13 @@ onUpdated(async () => {
          :key="source.id"
          :class="['screen-add', source.selector]"
          :style="{
-          width: source.position.width + 'px',
-          height: source.position.height + 'px',
-          transform:`translate(${source.position.x}px, ${source.position.y}px)`
+          width: source.positionApplication.width + 'px',
+          height: source.positionApplication.height + 'px',
+          transform:`translate(${source.positionApplication.x}px, ${source.positionApplication.y}px)`
          }"
          :data-x="source.position.x"
          :data-y="source.position.y"
-         :data-type="source.type"
+         :data-type="source.name"
          :data-index="source['z-index']"
     >
       <!--      {{screen.title}}-->

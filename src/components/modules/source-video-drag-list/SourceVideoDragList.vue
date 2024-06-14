@@ -1,39 +1,37 @@
 <script setup>
 
-import {computed, onUpdated, ref, watch} from "vue";
+import {computed} from "vue";
 import {useScreenStore} from "@/store/screenStore.js";
-import {useSourceStore} from "@/store/sourceStore.js";
+import {useSourceGateway} from "@/store/sourceStore.js";
 import ListDragable from "@/components/ui/list-dragable/ListDragable.vue";
+import ServerConfig from '@/enitites/config/index.js'
 import wsService from "@/API/wsService/wsService.js";
+import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
+import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 
 const screenStore = useScreenStore()
-const sourceStore = useSourceStore()
-const sources = computed(() => screenStore.screens)
+const sourceGateway = useSourceGateway()
+const sources = computed(() => sourceGateway.getVideoSources())
 
 const changeList = (list) => {
-  screenStore.updateScreenList(list)
-  screenStore.screens.reduce((acc, value) => {
-    if (acc.type === 'webcam' && value.type === 'screen') {
-      sourceStore.changeZIndex(acc.type, 1)
-      sourceStore.changeZIndex(value.type, 0)
-
-      screenStore.changeZIndexScreen(acc.id, 1)
-      screenStore.changeZIndexScreen(value.id, 0)
-    }
-    if (acc.type === 'screen' && value.type === 'webcam') {
-      sourceStore.changeZIndex(acc.type, 1)
-      sourceStore.changeZIndex(value.type, 0)
-
-      screenStore.changeZIndexScreen(acc.id, 1)
-      screenStore.changeZIndexScreen(value.id, 0)
-    }
-    return value
-  })
-  sourceStore.updateType('full')
-  wsService.sendMessage(sourceStore.getConfig())
-
+  const copyList = [...list]
+  const reverseList = copyList.reverse()
+  reverseList.forEach((source, index) => source['z-index'] = index)
+  const convertList = reverseList.reverse()
+  sourceGateway.changeList(convertList, 'video')
+  updateConfig()
 }
 
+const updateConfig = () => {
+  ServerConfig.changeUpdateAspects(['webcam', 'screen'])
+  ServerConfig.changeUpdateType('full')
+  ServerConfig.addVirtualCamera(new VirtualCamera())
+  ServerConfig.addVirtualAudio(new VirtualAudio())
+  ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
+  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
+  console.log(ServerConfig)
+  wsService.sendMessage(ServerConfig)
+}
 </script>
 
 <template>

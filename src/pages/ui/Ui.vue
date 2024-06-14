@@ -115,16 +115,9 @@ const onChangeSize = (size) => {
     <div class="page-list">
       <h3>Cards :</h3>
       <ScreenTargetCard/>
+      <CameraTargetCard />
+      <ScreenTargetCard  />
       <CameraTargetCard/>
-      <ScreenTargetCard/>
-      <CameraTargetCard/>
-    </div>
-    <div class="page-list">
-      <h3>Script Cards :</h3>
-      <ScriptTargetCard :source="{type:'camera', component:IconCard}"/>
-      <ScriptTargetCard :source="{type:'screen', component:IconCard}"/>
-      <ScriptTargetCard :source="{type:'sound', component:IconCard}"/>
-
     </div>
     <div class="page-list">
       <h3>Buttons :</h3>
@@ -137,10 +130,6 @@ const onChangeSize = (size) => {
       <SourceAudioSpace :actions="[PlusButton, DeleteButton]"/>
       <SourceVideoSpace :actions="[PlusButton, DeleteButton]"/>
       <SourceScriptsSpace :actions="[PlusButton, DeleteButton]"/>
-    </div>
-    <div class="page-list">
-      <h3>Screen Spaces :</h3>
-      <Screen/>
     </div>
     <div class="page-list">
       <h3>Select Source Spaces :</h3>

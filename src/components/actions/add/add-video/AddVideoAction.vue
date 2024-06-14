@@ -2,19 +2,16 @@
 
 import {computed, ref} from "vue";
 import {useScreenStore} from "@/store/screenStore.js";
-import {useSourceStore} from "@/store/sourceStore.js";
 import {useResolutionStore} from "@/store/resolutionStore.js";
-import {ScreenFactory} from "@/factory/screen-factory/index.js";
 import PlusButton from "../../../ui/buttons/plus/PlusButton.vue";
 import Screen from "../../../icons/Screen.vue";
 import Camera from "../../../icons/Camera.vue";
 import wsService from "@/API/wsService/wsService.js";
+import SourceFactory from "@/factory/source-factory/index.js";
 
-const screenStore = useScreenStore()
-const sourceStore = useSourceStore()
 const resolutionApplication = useResolutionStore()
 const isActive = ref(false)
-const haveScreens = computed(() => screenStore.getTypeScreens())
+const haveScreens = computed(() => [])
 
 const onActive = () => {
   isActive.value = !isActive.value
@@ -27,44 +24,15 @@ const addCapture = (event) => {
     const {capture} = targetElement.dataset
     if (!capture) return
     if (capture === 'empty') return onClose()
-    const screenOption = buildScreenOption(capture)
-    const screen = ScreenFactory.getSource(capture, screenOption)
-    const source = sourceStore.getSource(capture)
-    Object.assign(screen.position, source.position)
-    const config = setOptionSourceConfig(screen, screenOption.zIndex, capture).getConfig()
-    wsService.sendMessage(config)
-    sourceStore.deleteAspect(capture)
+    const source = SourceFactory.getSource(capture)
+    console.log(source)
   }
   onClose()
 }
 
-const computedZIndex = () => {
-  return haveScreens.value.length
-}
-const setOptionSourceConfig = (screen, zIndex, capture) => {
-  screenStore.addScreen(screen, capture)
-  screenStore.updateScreenListIndex()
-  sourceStore.addAspect(capture)
-  sourceStore.changeZIndex(capture, zIndex)
-  sourceStore.updateShow(capture, true)
-  sourceStore.updateType('full')
-  return {
-    getConfig: () => sourceStore.getConfig()
-  }
-}
 
 
-const buildScreenOption = (capture) => {
-  const configSources = sourceStore.sources
-  return {
-    position: configSources?.video_sources[capture]?.position,
-    positionApplication: screenStore.mainScreen.position,
-    resolution: configSources?.video_sources[capture]?.resolution,
-    region: configSources?.video_sources[capture]?.region,
-    resolutionApplication: resolutionApplication.resolution,
-    zIndex: computedZIndex()
-  }
-}
+
 </script>
 
 <template>

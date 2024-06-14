@@ -1,27 +1,26 @@
 <script setup>
-import {computed, onMounted, onUpdated, ref, shallowRef, watch, watchEffect} from "vue";
+import {onMounted, ref, shallowRef,} from "vue";
 import {useStateStore} from "../../../../store/stateStore.js";
-import {CardScriptFactory} from "@/factory/card-script-factory/index.js";
+import CardFactory from "@/factory/card-script-factory/index.js";
 import Popup from "../../../ui/popup/Popup.vue";
 import SelectSource from "../../../ui/select-source/SelectSource.vue";
 import ConfirmButton from "../../../ui/buttons/confirm/ConfirmButton.vue";
 import Source from "../../../ui/source/Source.vue";
-import {useScriptStore} from "@/store/scriptStore.js";
-import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
+import {useScriptGateway} from "@/store/scriptStore.js";
 import Camera from "@/components/icons/Camera.vue";
-import {useSourceStore} from "@/store/sourceStore.js";
 import wsService from "@/API/wsService/wsService.js";
 import {ERRORS} from "@/configs/errors.config.js";
 import {WARNINGS} from "@/configs/warnings.config.js";
+import {AudioScript} from "@/enitites/script/audio-script/index.js";
+import {VideoScript} from "@/enitites/script/video-script/index.js";
 
 
 const ACTION_TYPES = ['script', 'source']
 const ASPECT_TYPE = 'scripts'
 
 const stateStore = useStateStore()
-const scriptStore = useScriptStore()
-const sourceStore = useSourceStore()
-const cardScriptFactory = new CardScriptFactory()
+const scriptStore = useScriptGateway()
+
 
 const sourcesForUse = ref([
   {
@@ -142,12 +141,13 @@ const loadScript = async (file) => {
     const fileName = file.name.split('.zip')[0]
     const {targetSourceForUse, targetSourceForCapture} = getSources()
     if (!targetSourceForUse || !targetSourceForCapture) return
-    const script = buildScriptDto(fileName, targetSourceForUse, targetSourceForCapture)
-    const scriptSource = buildSourceDto(fileName)
+    const script = targetSourceForUse.type === 'sound'
+        ? new AudioScript(fileName, '', {}, false, targetSourceForCapture)
+        : new VideoScript(fileName, '', {}, false, targetSourceForCapture)
     const formData = buildFormData(file, targetSourceForCapture.type, 'load')
     const {config} = await sourceStore.loadScript(formData)
     sourceStore.sources = config
-    sourceStore.addScript(scriptSource, targetSourceForCapture.type)
+    sourceStore.addScript(script, script.capture)
     scriptStore.addScript(script)
     clearModalOption()
     closeModal()
@@ -159,23 +159,6 @@ const loadScript = async (file) => {
     stateStore.modals.message.error.onShow(error.message)
   }
 
-}
-
-const buildScriptDto = (fileName, targetSourceForUse, targetSourceForCapture) => {
-  return new ScriptDto({
-    name: fileName,
-    targetForUse: targetSourceForUse,
-    targetForCapture: targetSourceForCapture,
-    card: cardScriptFactory.getScriptCard(targetSourceForCapture.type)
-  }).getScript()
-}
-
-const buildSourceDto = (fileName) => {
-  return new ScriptSourceDto({
-    args: {},
-    name: fileName,
-    enabled: false,
-  })
 }
 
 const buildFormData = (file, source, action) => {

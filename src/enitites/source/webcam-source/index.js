@@ -1,10 +1,9 @@
-import {Source} from "@/enitites/source/index.js";
+import {VideoSource} from "@/enitites/source/index.js";
 
 
-export class Webcam extends Source {
+export class Webcam extends VideoSource {
     constructor() {
-        super();
-        this.id = 2
+        super(2);
         this.name  =  "webcam"
         this.resolution = {
             width: 1280,
@@ -16,5 +15,8 @@ export class Webcam extends Source {
 
     changeResolution(resolution) {
         this.resolution = resolution
+    }
+    changePosition(position) {
+        super.changePosition(position);
     }
 }

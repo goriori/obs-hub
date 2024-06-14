@@ -2,13 +2,13 @@
 
 import DeleteButton from "@/components/ui/buttons/delete/DeleteButton.vue";
 import {useStateStore} from "@/store/stateStore.js";
-import {useScriptStore} from "@/store/scriptStore.js";
+import {useScriptGateway} from "@/store/scriptStore.js";
 import {computed} from "vue";
 
 const stateStore = useStateStore()
-const scriptStore = useScriptStore()
+const scriptGateway = useScriptGateway()
 const focusScripts = computed(() => {
-  return scriptStore.scripts.filter(script => script.isFocus).length > 0
+  return scriptGateway.getScripts().filter(script => script.isFocus).length > 0
 })
 
 const onClick = () => {

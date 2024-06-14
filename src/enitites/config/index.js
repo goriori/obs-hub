@@ -1,16 +1,38 @@
-export class Config {
+class ServerConfig {
+    #updateTypes
+
     constructor() {
-        this.config = null
-        this.requiredFields = ['virtual_camera', 'video_sources']
+        this.#updateTypes = ['fast', 'full']
+        this.update_aspects = []
+        this.update_type = 'fast'
+        this.config = {}
     }
 
-    getConfig() {
-        return this.config
+    addVideSources(videoSources) {
+        this.config.video_sources = videoSources
     }
 
-    buildConfig(config) {
-        if (!this.requiredFields[0] in config) return false
-        if (!this.requiredFields[1] in config) return false
-        this.config = config
+    addAudioSources(audioSource) {
+        this.config.audio_sources = audioSource
     }
+
+    addVirtualCamera(virtualCamera) {
+        this.config.virtual_camera = virtualCamera
+    }
+
+    addVirtualAudio(virtualAudio) {
+        this.config.virtual_audio = virtualAudio
+    }
+
+    changeUpdateType(type) {
+        if (this.#updateTypes.includes(type)) this.update_type = type
+    }
+
+    changeUpdateAspects(aspects) {
+        this.update_aspects = aspects
+    }
+
+
 }
+
+export default new ServerConfig()

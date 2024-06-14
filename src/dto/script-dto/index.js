@@ -31,8 +31,6 @@ class ScriptItem {
         this.isFocus = false
         this.isActive = isActive
     }
-
-
 }
 
 export class ScriptDto {

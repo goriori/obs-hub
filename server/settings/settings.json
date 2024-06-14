@@ -1,0 +1,91 @@
+{
+    "virtual_camera": {
+        "external_scripts": [],
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "backend": "unitycapture",
+        "device": "Unity Video Capture"
+    },
+    "video_sources": {
+        "webcam": {
+            "show": true,
+            "external_scripts": [
+                {
+                    "name": "mask",
+                    "path": "external_scripts/mask/script.py",
+                    "enabled": false,
+                    "args": {}
+                }
+            ],
+            "device_index": 0,
+            "resolution": {
+                "width": 3840,
+                "height": 2160
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "width": 320,
+                "height": 180
+            },
+            "z-index": 1,
+            "dshow_settings": false
+        },
+        "screen": {
+            "show": true,
+            "external_scripts": [],
+            "monitor_index": 1,
+            "region": {
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "width": 1920,
+                "height": 1080
+            },
+            "z-index": 0
+        }
+    },
+    "virtual_audio": {
+        "input_device_name": "CABLE Input",
+        "output_device_name": "CABLE Output"
+    },
+    "audio_sources": {
+        "microphone": {
+            "show": false,
+            "external_scripts": [],
+            "device_input_index": 1,
+            "device_output_index": 5,
+            "format": 2,
+            "channels": 1,
+            "rate": 44100,
+            "chunk": 1024
+        },
+        "system_sound": {
+            "show": false,
+            "external_scripts": [],
+            "device_input_index": -1,
+            "device_output_index": 5,
+            "format": 3,
+            "channels": 2,
+            "rate": 48000,
+            "chunk": 2048
+        },
+        "sound": {
+            "show": false,
+            "audio_state": "play",
+            "external_scripts": [],
+            "source_path": "sound/tada.mp3",
+            "device_output_index": 5,
+            "format": 2,
+            "channels": 1,
+            "rate": 44100,
+            "chunk": 1024
+        }
+    }
+}

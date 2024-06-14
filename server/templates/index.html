@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+    <script src="{{ url_for('static', path='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', path='script.js') }}"></script>
+    <title>Config</title>
+</head>
+<body>
+    <br><br>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="fileUpload">Upload your Python script zip file:</label>
+        <input type="file" id="fileUpload" name="script_archive">
+        <input type="text" id="formSource" name="source" value="webcam">
+        <input type="text" id="formAction" name="action" value="load">
+        <input type="text" id="script_name" name="script_name" value="mask">
+        <input type="submit" value="Upload Script">
+    </form>
+    <br><br><br><br>
+    <textarea id="configData" rows="20" cols="50"></textarea>
+    <button id="sendButton">Send</button>
+    <video autoplay playsinline></video>
+</body>
+</html>

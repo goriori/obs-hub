@@ -7,12 +7,12 @@ import {computed} from "vue";
 
 const stateStore = useStateStore()
 const screenStore = useScreenStore()
-const focusScreens = computed(() => {
-  return screenStore.screens.filter(screen => screen.isFocus).length > 0
-})
-const onClick = () => {
-  if (focusScreens.value) stateStore.modals.delete.deleteSourceVideo.show = true
-}
+// const focusScreens = computed(() => {
+//   return screenStore.screens.filter(screen => screen.isFocus).length > 0
+// })
+// const onClick = () => {
+//   if (focusScreens.value) stateStore.modals.delete.deleteSourceVideo.show = true
+// }
 </script>
 
 <template>

@@ -3,15 +3,8 @@
 import SourceAudio from "../../components/modules/source-audio/SourceAudio.vue";
 import SourceVideo from "../../components/modules/source-video/SourceVideo.vue";
 import SourceScripts from "../../components/modules/source-scripts/SourceScripts.vue";
-import SizeSwitch from "../../components/modules/size-switch/SizeSwitch.vue";
 import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
-import {onMounted} from "vue";
-import wsService from "@/API/wsService/wsService.js";
-import SourceFactory from "@/factory/source-factory/index.js";
-import {useSourceGateway} from "@/store/sourceStoreNew.js";
-import {useResolutionStore} from "@/store/resolutionStore.js";
-import {buildPositionApplication} from "@/utils/helpers/buildPositionApplication.js";
-import {useScreenStore} from "@/store/screenStore.js";
+
 
 
 

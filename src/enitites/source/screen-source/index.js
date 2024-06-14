@@ -1,10 +1,9 @@
-import {Source} from "@/enitites/source/index.js";
+import {VideoSource} from "@/enitites/source/index.js";
 
 
-export class Screen extends Source {
+export class Screen extends VideoSource {
     constructor() {
-        super();
-        this.id = 1
+        super(1);
         this.name  =  "screen"
         this.monitor_index = 1
         this.region = {
@@ -17,5 +16,9 @@ export class Screen extends Source {
 
     changeRegion(region)  {
         this.region = region
+    }
+
+    changePosition(position) {
+        super.changePosition(position)
     }
 }

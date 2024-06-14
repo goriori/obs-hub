@@ -1,31 +1,27 @@
 <script setup>
 
-import {computed, onUpdated, ref, watch} from "vue";
-import {useScriptStore} from "../../../store/scriptStore.js";
-import {useSourceStore} from "@/store/sourceStore.js";
+import {computed} from "vue";
+import {useScriptGateway} from "../../../store/scriptStore.js";
 import ListSource from "../../ui/list-source/ListSource.vue";
 import DragonDrop from "@/components/ui/dragondrop/DragonDrop.vue";
 import wsService from "@/API/wsService/wsService.js";
-import {ScriptDto, ScriptSourceDto} from "@/dto/script-dto/index.js";
 import {useStateStore} from "@/store/stateStore.js";
 
 const stateSource = useStateStore()
-const scriptStore = useScriptStore()
-const sourceStore = useSourceStore()
+const scriptGateway = useScriptGateway()
+
 const TYPES_UPDATE = ['active-script', 'disable-script']
 const ASPECT = 'scripts'
+
 const updates = {
   [TYPES_UPDATE[0]]: (data) => activeScript(data, true),
   [TYPES_UPDATE[1]]: (data) => activeScript(data, false)
 }
 
-const scripts = computed(() => scriptStore.scripts)
+const scripts = computed(() => scriptGateway.getScripts())
 const activeScript = (data, active = false) => {
-  sourceStore.updateActiveScript(data?.name, active)
-  sourceStore.updateType('full')
-  sourceStore.addAspect(ASPECT)
-  wsService.sendMessage(sourceStore.getConfig())
-  sourceStore.deleteAspect(ASPECT)
+  const {id, name} = data
+  active ? scriptGateway.activeScript(id) : scriptGateway.disableScript(id)
 }
 
 const loadScript = (script) => {
@@ -42,7 +38,7 @@ const onUpdateList = (updated) => {
 <template>
   <div class="source">
     <DragonDrop class="drop-list" v-if="scripts.length === 0" @load-file="loadScript" accept=".zip"/>
-    <ListSource :sources="scripts" @on-update="onUpdateList" v-if="scripts.length > 0" />
+    <ListSource :sources="scripts" @on-update="onUpdateList" v-if="scripts.length > 0"/>
   </div>
 
 </template>

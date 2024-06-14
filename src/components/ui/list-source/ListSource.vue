@@ -21,16 +21,11 @@ const onActive = (value, data, type) => {
 </script>
 
 <template>
-  <section class="list-sources" >
-    <div class="item" v-for="source in sources" :key="source" >
+  <section class="list-sources">
+    <div class="item" v-for="source in sources" :key="source">
       <component
-          v-model:isFocus="source.isFocus"
-          v-model:isActive="source.isActive"
-          :scriptId="source.id"
-          :is="source.component"
-          :name="source.name"
-          :targetType="source.capture?.type"
-          :source="source.use"
+          :script="source"
+          :is="source.card"
           @update:isActive="onActive"
       />
     </div>
@@ -49,7 +44,7 @@ const onActive = (value, data, type) => {
   flex-direction: column;
   overflow-y: scroll;
   gap: 20px;
-  max-height: 200px;
+  max-height: 220px;
   @include no-scroll();
 }
 </style>

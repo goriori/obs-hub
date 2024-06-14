@@ -8,6 +8,7 @@ const props = defineProps({
     default: () => []
   }
 })
+
 const emits = defineEmits(['onChangeList'])
 const enabled = ref(true)
 const dragging = ref(false)

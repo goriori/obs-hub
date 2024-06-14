@@ -1,0 +1,8 @@
+{
+    "type": "object",
+    "properties": {
+        "source_path": {"type":"string", "default":"external_scripts/assets/clap.mp3"},
+        "loop_time":{"type":"integer", "default":5}
+    },
+    "required": ["source_path","loop_time"]
+}

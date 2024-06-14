@@ -1,24 +1,13 @@
 <script setup>
 
-import {useScriptStore} from "@/store/scriptStore.js";
+import {useScriptGateway} from "@/store/scriptStore.js";
 import ConfirmButton from "@/components/ui/buttons/confirm/ConfirmButton.vue";
-import {useSourceStore} from "@/store/sourceStore.js";
 import wsService from "@/API/wsService/wsService.js";
 
 const emits = defineEmits(['onConfirmDelete'])
-const scriptStore = useScriptStore()
-const sourceStore = useSourceStore()
+const scriptStore = useScriptGateway()
 const deleteTargetScripts = () => {
-  const focusesScript = scriptStore.scripts.filter((script) => {
-    if (script.isFocus) return script
-  })
-  focusesScript.forEach(async script => {
-    const formData = buildFormData(script)
-    scriptStore.deleteScript(script.name)
-    sourceStore.deleteScript(script.name)
-    const {config} = await sourceStore.deleteScriptServer(formData)
-    sourceStore.sources = config
-  })
+
   emits('onConfirmDelete')
 }
 const buildFormData = (script) => {
