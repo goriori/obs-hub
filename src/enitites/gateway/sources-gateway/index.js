@@ -3,10 +3,9 @@ import CardFactory from "@/factory/card-factory/index.js";
 
 export class SourceGateway {
     constructor(sourceStore) {
-        this.applicationFields = ['component', 'type_source', 'positionApplication']
+        this.applicationFields = ['component', 'type_source', 'positionApplication', 'isFocus', 'name']
         this.sourceGateway = sourceStore;
     }
-
     addSource(source) {
         const sourceObject = new SourceDecorator(source)
         sourceObject.setComponent(CardFactory.getCard(source.name))
