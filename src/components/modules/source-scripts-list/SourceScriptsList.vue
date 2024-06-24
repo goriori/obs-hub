@@ -21,7 +21,8 @@ const updates = {
 const scripts = computed(() => scriptGateway.getScripts())
 const activeScript = (data, active = false) => {
   const {id, name} = data
-  active ? scriptGateway.activeScript(id) : scriptGateway.disableScript(id)
+  if(active) scriptGateway.activeScript(id)
+  else scriptGateway.disableScript(id)
 }
 
 const loadScript = (script) => {

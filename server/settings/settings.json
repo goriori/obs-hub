@@ -1,84 +1,89 @@
 {
     "virtual_camera": {
         "external_scripts": [],
-        "width": 1920,
-        "height": 1080,
+        "width": 1280,
+        "height": 720,
         "fps": 30,
         "backend": "unitycapture",
         "device": "Unity Video Capture"
     },
+    "virtual_audio": {
+        "input_device_name": "CABLE Input",
+        "output_device_name": "CABLE Output"
+    },
     "video_sources": {
-        "webcam": {
-            "show": true,
+        "screen": {
+            "id": 1,
             "external_scripts": [],
-            "device_index": 0,
-            "resolution": {
-                "width": 3840,
-                "height": 2160
-            },
+            "show": true,
+            "z-index": 1,
             "position": {
                 "x": 0,
                 "y": 0,
-                "width": 320,
-                "height": 180
+                "width": 647,
+                "height": 364
             },
-            "z-index": 1,
-            "dshow_settings": false
-        },
-        "screen": {
-            "show": true,
-            "external_scripts": [],
             "monitor_index": 1,
             "region": {
                 "x": 0,
                 "y": 0,
                 "width": 1920,
                 "height": 1080
-            },
+            }
+        },
+        "webcam": {
+            "id": 2,
+            "external_scripts": [],
+            "show": true,
+            "z-index": 0,
             "position": {
                 "x": 0,
                 "y": 0,
-                "width": 1920,
-                "height": 1080
+                "width": 262,
+                "height": 147
             },
-            "z-index": 0
+            "resolution": {
+                "width": 1280,
+                "height": 720
+            },
+            "dshow_settings": true,
+            "device_index": 0
         }
-    },
-    "virtual_audio": {
-        "input_device_name": "CABLE Input",
-        "output_device_name": "CABLE Output"
     },
     "audio_sources": {
         "microphone": {
-            "show": false,
+            "id": 1,
             "external_scripts": [],
-            "device_input_index": 1,
-            "device_output_index": 5,
+            "show": false,
+            "rate": 44100,
+            "chunk": 1024,
             "format": 2,
             "channels": 1,
-            "rate": 44100,
-            "chunk": 1024
+            "device_input_index": 1,
+            "device_output_index": 5
         },
         "system_sound": {
-            "show": false,
+            "id": 2,
             "external_scripts": [],
-            "device_input_index": -1,
-            "device_output_index": 5,
+            "show": false,
+            "rate": 48000,
+            "chunk": 2048,
             "format": 3,
             "channels": 2,
-            "rate": 48000,
-            "chunk": 2048
+            "device_input_index": -1,
+            "device_output_index": 5
         },
         "sound": {
-            "show": false,
-            "audio_state": "play",
+            "id": 3,
             "external_scripts": [],
-            "source_path": "sound/tada.mp3",
-            "device_output_index": 5,
+            "show": false,
+            "rate": 44100,
+            "chunk": 1024,
             "format": 2,
             "channels": 1,
-            "rate": 44100,
-            "chunk": 1024
+            "audio_state": "play_once",
+            "source_path": "sound/tada.mp3",
+            "device_output_index": 5
         }
     }
 }

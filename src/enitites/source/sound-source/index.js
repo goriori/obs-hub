@@ -5,7 +5,7 @@ export class SoundSource extends AudioSource {
     constructor() {
         super(3);
         this.name  =  "sound"
-        this.audio_state = 'play'
+        this.audio_state = 'play_once'
         this.source_path = 'sound/tada.mp3'
         this.device_output_index = 5
         super.changeRate(44100)

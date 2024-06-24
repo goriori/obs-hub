@@ -15,8 +15,8 @@ class SourceFactory {
         }
     }
 
-    getSource(source) {
-        return this.sources[source]()
+    getSource(sourceName) {
+        return this.sources[sourceName]()
     }
 }
 
