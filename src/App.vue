@@ -31,7 +31,6 @@ const initVideoSources = async () => {
     const positionApplication = screenStore.mainScreen.position
     const positionResolution = resolutionStore.resolution
     const computedPositionApplication = buildPositionApplication(position, positionApplication, positionResolution)
-
     source.changePosition(position)
     source.changeZIndex(videoSources[source.name]['z-index'])
     source.changePositionApplication(computedPositionApplication)

@@ -17,6 +17,28 @@ const props = defineProps({
   }
 })
 console.log(props.sources)
+const modifiersDraggable = [
+  interact.modifiers.restrictRect({
+    restriction: 'parent',
+  }),
+  interact.modifiers.restrictEdges({
+    outer: 'parent',
+  }),
+]
+const modifiersResizable = [
+  interact.modifiers.aspectRatio({
+    ratio: 1.7777,
+    modifiers: [
+      interact.modifiers.restrictEdges({outer: 'parent'}),
+    ],
+  }),
+  interact.modifiers.restrictEdges({
+    outer: 'parent',
+  }),
+  interact.modifiers.restrictSize({
+    min: {width: 100, height: 56}
+  })
+]
 const emits = defineEmits(['changePositionScreen', 'resizeScreen'])
 const [widthResolution, heightResolution] = resolutionStore.resolution
 const parentWidth = ref(props.mainScreen.position.width + 'px')
@@ -40,51 +62,23 @@ const setZIndexElements = () => {
   })
 }
 const renderScreens = () => {
-  props.sources.forEach((screen, index) => {
-    const modifiers = [
-      interact.modifiers.restrictRect({
-        restriction: 'parent',
-      }),
-      interact.modifiers.restrictEdges({
-        outer: 'parent',
-      }),
-    ]
+  props.sources.forEach((source) => {
     interact(`.screen-add`).draggable({
-      modifiers,
+      modifiers: modifiersDraggable,
       listeners: {
-        start(event) {
-          console.log('start dragable event')
-          console.log(event.type, event.target)
-        },
         move(event) {
-          emits('changePositionScreen', screen.name, {
-            x: screen.positionApplication.x += event.dx,
-            y: screen.positionApplication.y += event.dy
+          const {type, applicationX, applicationY} = event.target.dataset
+          emits('changePositionScreen', type, {
+            x: Number(applicationX) + Number(event.dx),
+            y: Number(applicationY) + Number(event.dy)
           })
-          event.target.style.transform = `translate(${screen.positionApplication.x}px, ${screen.positionApplication.y}px)`
-          event.target.setAttribute('data-x', screen.positionApplication.x)
-          event.target.setAttribute('data-y', screen.positionApplication.y)
+          event.target.style.transform = `translate(${applicationX}px, ${applicationY}px)`
+          event.target.setAttribute('data-x', applicationX)
+          event.target.setAttribute('data-y', applicationY)
         },
-        end(event) {
-
-        }
-
       },
     }).resizable({
-      modifiers: [
-        interact.modifiers.aspectRatio({
-          ratio: 1.7777,
-          modifiers: [
-            interact.modifiers.restrictEdges({outer: 'parent'}),
-          ],
-        }),
-        interact.modifiers.restrictEdges({
-          outer: 'parent',
-        }),
-        interact.modifiers.restrictSize({
-          min: {width: 100, height: 56}
-        })
-      ],
+      modifiers: modifiersResizable,
       edges: {
         top: true,
         left: true,
@@ -94,34 +88,39 @@ const renderScreens = () => {
       listeners: {
         move(event) {
           const target = event.target
+          const {type} = event.target.dataset
+
           let x = parseFloat(target.getAttribute('data-x')) || 0
           let y = parseFloat(target.getAttribute('data-y')) || 0
+          x += event.deltaRect.left
+          y += event.deltaRect.top
+
           target.style.width = event.rect.width + 'px'
           target.style.height = event.rect.height + 'px'
 
-          x += event.deltaRect.left
-          y += event.deltaRect.top
+          console.log(x, event.deltaRect.left)
+          console.log(y, event.deltaRect.top)
+
           const newSize = {
             x,
             y,
-            width: `${event.rect.width}px`,
-            height: `${event.rect.height}px`
+            width: target.style.width,
+            height: target.style.height
           }
+
           console.log(newSize)
-          target.style.transform = `translate(${newSize.x}px, ${newSize.y}px)`
+
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)
-          emits('resizeScreen', screen.name, {width: newSize.width, height: newSize.height})
-          emits('changePositionScreen', screen.name, {x: newSize.x, y: newSize.y})
+          target.style.transform = `translate(${newSize.x}px, ${newSize.y}px)`
+          emits('resizeScreen', type, {width: newSize.width, height: newSize.height})
+          emits('changePositionScreen', type, {x: newSize.x, y: newSize.y})
         },
       },
     })
   })
 }
 onMounted(async () => {
-  if (screensRef.value) {
-    console.log('screens ref: ', screensRef.value)
-  }
   initVideoElement()
   renderScreens()
   setZIndexElements()
@@ -137,9 +136,14 @@ onUpdated(async () => {
 
 <template>
   <section class="screen">
-    <video :data-title="mainScreen?.title" :class="mainScreen?.selector" :width="mainScreen.position.width"
-           :height="mainScreen.position.height" class="screen-main"
-           id="main-screen"></video>
+    <video
+        :data-title="mainScreen?.title"
+        :class="mainScreen?.selector"
+        :width="mainScreen.position.width"
+        :height="mainScreen.position.height" class="screen-main"
+        id="main-screen">
+    </video>
+
     <div v-for="(source, index) in sources"
          ref="screensRef"
          :key="source.id"
@@ -149,6 +153,8 @@ onUpdated(async () => {
           height: source.positionApplication.height + 'px',
           transform:`translate(${source.positionApplication.x}px, ${source.positionApplication.y}px)`
          }"
+         :data-application-x="source.positionApplication.x"
+         :data-application-y="source.positionApplication.y"
          :data-x="source.position.x"
          :data-y="source.position.y"
          :data-type="source.name"

@@ -21,15 +21,15 @@ const videoElement = ref(null)
 const videoStream = new VideoStream()
 
 const onChangePositionScreen = (sourceName, coordinates) => {
+  console.log('change position screen: ', sourceName, coordinates)
   const source = gatewaySources.getSource(sourceName)
-  const computedCoordinates = rebuildPosition(source, videoElement.value)
   source.changePositionApplication(coordinates)
-  source.changePosition(computedCoordinates)
+  source.changePosition(rebuildPosition(source, videoElement.value))
   updateConfigServer()
 }
 
-const rebuildPosition = (screen, videoSize) => {
-  const {x, y} = screen.positionApplication
+const rebuildPosition = (source, videoSize) => {
+  const {x, y} = source.positionApplication
   const [widthResolution, heightResolution] = resolutionStore.resolution
   const {width: videoWidth, height: videoHeight} = videoSize
   return computedCoordinates(x, y, widthResolution, heightResolution, videoWidth, videoHeight)
@@ -42,6 +42,8 @@ const computedCoordinates = (x, y, widthResolution, heightResolution, videoWidth
   // console.log('reComputedX: ', (computedX * videoWidth) / widthResolution)
   // ========== Логи оригинальных и вычисляемых значений ===================
   const computedY = Math.floor(y / videoHeight * heightResolution)
+  console.log('origin coordinates: ', x, y)
+  console.log('computed coordinates', {computedX, computedY})
   return {x: computedX, y: computedY}
 }
 
@@ -73,7 +75,6 @@ const updateConfigServer = () => {
   ServerConfig.addVirtualCamera(new VirtualCamera())
   ServerConfig.addVirtualAudio(new VirtualAudio())
   wsService.sendMessage(ServerConfig)
-  console.log(ServerConfig)
 }
 const loadVideoStream = async () => {
   const videoElement = document.getElementsByTagName('video')[0]

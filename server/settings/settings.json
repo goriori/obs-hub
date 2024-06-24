@@ -10,14 +10,7 @@
     "video_sources": {
         "webcam": {
             "show": true,
-            "external_scripts": [
-                {
-                    "name": "mask",
-                    "path": "external_scripts/mask/script.py",
-                    "enabled": false,
-                    "args": {}
-                }
-            ],
+            "external_scripts": [],
             "device_index": 0,
             "resolution": {
                 "width": 3840,
