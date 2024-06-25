@@ -4,19 +4,21 @@ import DeleteButton from "@/components/ui/buttons/delete/DeleteButton.vue";
 import {useStateStore} from "@/store/stateStore.js";
 import {useScreenStore} from "@/store/screenStore.js";
 import {computed} from "vue";
+import {useSourceGateway} from "@/store/sourceStore.js";
 
 const stateStore = useStateStore()
-const screenStore = useScreenStore()
-// const focusScreens = computed(() => {
-//   return screenStore.screens.filter(screen => screen.isFocus).length > 0
-// })
-// const onClick = () => {
-//   if (focusScreens.value) stateStore.modals.delete.deleteSourceVideo.show = true
-// }
+const sourceGateway = useSourceGateway()
+
+const focusSource = computed(() => {
+    return sourceGateway.getVideoSources().filter(source=> source.isFocus).length > 0
+})
+const onClick = () => {
+  if (focusSource.value) stateStore.modals.delete.deleteSourceVideo.show = true
+}
 </script>
 
 <template>
-  <DeleteButton @click="onClick" :disabled="!focusScreens"/>
+  <DeleteButton @click="onClick" :disabled="!focusSource"/>
 </template>
 
 <style scoped lang="scss">

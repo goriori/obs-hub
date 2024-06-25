@@ -11,14 +11,13 @@ import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 
 const screenStore = useScreenStore()
 const sourceGateway = useSourceGateway()
-const sources = computed(() => sourceGateway.getVideoSources())
+const sources = computed(() => sourceGateway.getVideoSources().filter(source => source.show))
 
 const changeList = (list) => {
   const copyList = [...list]
   const reverseList = copyList.reverse()
   reverseList.forEach((source, index) => source['z-index'] = index)
-  const convertList = reverseList.reverse()
-  sourceGateway.changeList(convertList, 'video')
+  sourceGateway.changeList(reverseList.reverse(), 'video')
   updateConfig()
 }
 
@@ -29,7 +28,6 @@ const updateConfig = () => {
   ServerConfig.addVirtualAudio(new VirtualAudio())
   ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
   ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
-  console.log(ServerConfig)
   wsService.sendMessage(ServerConfig)
 }
 </script>

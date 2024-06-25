@@ -1,27 +1,41 @@
 {
-    "virtual_camera": {
-        "external_scripts": [],
-        "width": 1280,
-        "height": 720,
-        "fps": 30,
-        "backend": "unitycapture",
-        "device": "Unity Video Capture"
-    },
-    "virtual_audio": {
-        "input_device_name": "CABLE Input",
-        "output_device_name": "CABLE Output"
-    },
     "video_sources": {
-        "screen": {
-            "id": 1,
-            "external_scripts": [],
+        "webcam": {
+            "id": 2,
+            "external_scripts": [
+                {
+                    "name": "testScript",
+                    "path": "external_scripts/testScript/script.py",
+                    "enabled": false,
+                    "args": {},
+                    "sourceName": "webcam"
+                }
+            ],
             "show": true,
             "z-index": 1,
             "position": {
                 "x": 0,
                 "y": 0,
-                "width": 647,
-                "height": 364
+                "width": 200,
+                "height": 112
+            },
+            "resolution": {
+                "width": 1280,
+                "height": 720
+            },
+            "dshow_settings": true,
+            "device_index": 0
+        },
+        "screen": {
+            "id": 1,
+            "external_scripts": [],
+            "show": true,
+            "z-index": 0,
+            "position": {
+                "x": 0,
+                "y": 0,
+                "width": 827,
+                "height": 465
             },
             "monitor_index": 1,
             "region": {
@@ -30,24 +44,6 @@
                 "width": 1920,
                 "height": 1080
             }
-        },
-        "webcam": {
-            "id": 2,
-            "external_scripts": [],
-            "show": true,
-            "z-index": 0,
-            "position": {
-                "x": 0,
-                "y": 0,
-                "width": 262,
-                "height": 147
-            },
-            "resolution": {
-                "width": 1280,
-                "height": 720
-            },
-            "dshow_settings": true,
-            "device_index": 0
         }
     },
     "audio_sources": {
@@ -85,5 +81,17 @@
             "source_path": "sound/tada.mp3",
             "device_output_index": 5
         }
+    },
+    "virtual_camera": {
+        "external_scripts": [],
+        "width": 1280,
+        "height": 720,
+        "fps": 30,
+        "backend": "unitycapture",
+        "device": "Unity Video Capture"
+    },
+    "virtual_audio": {
+        "input_device_name": "CABLE Input",
+        "output_device_name": "CABLE Output"
     }
 }

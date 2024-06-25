@@ -17,9 +17,14 @@ const sourceStore = defineStore('sources', () => {
     const changeList = (newList) => {
         sources.value = newList
     }
-
-    const removeSource = (source) => {
-        sources.value = sources.value.filter(s => s.id !== source.id)
+    const hiddenSource = (sourceName) => {
+        sources.value.find(source => source.name === sourceName).onHidden()
+    }
+    const showSource = (sourceName) => {
+        sources.value.find(source => source.name === sourceName).onShow()
+    }
+    const removeSource = (sourceName) => {
+        sources.value = sources.value.filter(source => source.name !== sourceName)
     }
 
 
@@ -27,6 +32,8 @@ const sourceStore = defineStore('sources', () => {
         sources,
         getSource,
         getSources,
+        hiddenSource,
+        showSource,
         addSource,
         changeList,
         removeSource,

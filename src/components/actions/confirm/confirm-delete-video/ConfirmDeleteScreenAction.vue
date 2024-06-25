@@ -1,19 +1,29 @@
 <script setup>
 
-import {useScreenStore} from "@/store/screenStore.js";
-import {SourceDto} from "@/dto/source-dto/index.js";
+import {useSourceGateway} from "@/store/sourceStore.js";
 import ConfirmButton from "@/components/ui/buttons/confirm/ConfirmButton.vue";
+import ServerConfig from '@/enitites/config'
+import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
+import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 import wsService from "@/API/wsService/wsService.js";
-
 const emits = defineEmits(['onConfirmDelete'])
-const screenStore = useScreenStore()
+const sourceGateway = useSourceGateway()
 const deleteTargetScreens = () => {
-  const focusesScreen = screenStore.screens.filter(screen => screen.isFocus ? screen : false)
-  const sources = focusesScreen.map(screen => new SourceDto(screen))
-  const sourcesDelete = sources.map(source => Object.keys(source)[0])
+  const focusesSource = sourceGateway.getVideoSources().filter(source => source.isFocus )
+  focusesSource.map(source=> sourceGateway.hiddenVideoSource(source.name))
+  updateServerConfig()
   emits('onConfirmDelete')
 }
 
+const updateServerConfig = () => {
+  ServerConfig.changeUpdateAspects(['webcam', 'screen'])
+  ServerConfig.changeUpdateType('full')
+  ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
+  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
+  ServerConfig.addVirtualCamera(new VirtualCamera())
+  ServerConfig.addVirtualAudio(new VirtualAudio())
+  wsService.sendMessage(ServerConfig)
+}
 </script>
 
 <template>

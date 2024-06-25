@@ -18,6 +18,14 @@ export class VideoSource {
         this.external_scripts.push(script);
     }
 
+    activeScript(nameScript) {
+        this.external_scripts.find(script => script.name === nameScript).enabled = true
+    }
+
+    disabledScript(nameScript) {
+        this.external_scripts.find(script => script.name === nameScript).enabled = false
+    }
+
     onShow() {
         this.show = true;
     }

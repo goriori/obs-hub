@@ -6,6 +6,7 @@ export class SourceGateway {
         this.applicationFields = ['component', 'type_source', 'positionApplication', 'isFocus', 'name']
         this.sourceGateway = sourceStore;
     }
+
     addSource(source) {
         const sourceObject = new SourceDecorator(source)
         sourceObject.setComponent(CardFactory.getCard(source.name))
@@ -50,6 +51,26 @@ export class SourceGateway {
         }
         const rebuildList = [...list, ...listType[type]]
         this.sourceGateway.changeList(rebuildList)
+    }
+
+    activeSourceScript(sourceName, nameScript) {
+        this.sourceGateway.getSource(sourceName).activeScript(nameScript)
+    }
+
+    disabledSourceScript(sourceName, nameScript) {
+        this.sourceGateway.getSource(sourceName).disabledScript(nameScript)
+    }
+
+    hiddenVideoSource(sourceName) {
+        this.sourceGateway.hiddenSource(sourceName)
+    }
+
+    showVideoSource(sourceName) {
+        this.sourceGateway.showSource(sourceName)
+    }
+
+    removeSource(sourceName) {
+        this.sourceGateway.removeSource(sourceName)
     }
 
     #clearFieldsApplication(source) {

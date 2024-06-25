@@ -17,8 +17,8 @@ export class ScriptGateway extends Gateway {
     }
 
     addScript(script) {
-        const {name, args, path, enabled} = script
-        const scriptObject = new ScriptDecorator(new VideoScript(name, path, args, enabled))
+        const {name, args, path, sourceName, enabled} = script
+        const scriptObject = new ScriptDecorator(new VideoScript(name, path, args, sourceName, enabled))
         scriptObject.setUse('Захват веб-камеры', 'camera', shallowRef(Source))
         scriptObject.setCapture('Захват веб-камеры', 'webcam', shallowRef(CaptureCamera))
         scriptObject.setCard(shallowRef(ScriptTargetCard))
@@ -29,11 +29,13 @@ export class ScriptGateway extends Gateway {
     activeScript(id) {
         const script = this.scriptsStore.getScript(id)
         script.enabled = true
+        return {sourceName: script.sourceName, scriptName: script.name}
     }
 
     disableScript(id) {
         const script = this.scriptsStore.getScript(id)
         script.enabled = false
+        return {sourceName: script.sourceName, scriptName: script.name}
     }
 
     deleteScript(name) {

@@ -56,6 +56,7 @@ const initScripts = async () => {
     if (videoSources[sourceName].external_scripts.length > 0) {
       const scripts = videoSources[sourceName].external_scripts
       const source = sourceGateway.getSource(sourceName)
+      scripts.forEach(script => script.sourceName = sourceName)
       scripts.forEach(script => source.addScript(script))
       return scripts
     }

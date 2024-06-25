@@ -25,7 +25,7 @@ const onChangePositionScreen = (sourceName, coordinates) => {
   const source = gatewaySources.getSource(sourceName)
   source.changePositionApplication(coordinates)
   source.changePosition(rebuildPosition(source, videoElement.value))
-  updateConfigServer()
+  updateFastConfigServer()
 }
 
 const rebuildPosition = (source, videoSize) => {
@@ -64,11 +64,11 @@ const onResizeScreen = (sourceName, size) => {
   // ========== Логи оригинальных и вычисляемых значений ===================
   const numberHeight = Math.floor(sizeHeight / videoHeight * heightResolution)
   source.changePosition({width: numberWidth, height: numberHeight})
-  updateConfigServer()
+  updateFastConfigServer()
 }
 
 
-const updateConfigServer = () => {
+const updateFastConfigServer = () => {
   ServerConfig.changeUpdateType('fast')
   ServerConfig.addVideSources(gatewaySources.getVideoSourcesObject())
   ServerConfig.addAudioSources(gatewaySources.getAudioSourcesObject())
