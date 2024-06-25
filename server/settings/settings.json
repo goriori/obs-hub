@@ -9,6 +9,12 @@
                     "enabled": false,
                     "args": {},
                     "sourceName": "webcam"
+                },
+                {
+                    "name": "mask",
+                    "path": "external_scripts/mask/script.py",
+                    "enabled": false,
+                    "args": {}
                 }
             ],
             "show": true,

@@ -13,6 +13,7 @@ import {ERRORS} from "@/configs/errors.config.js";
 import {WARNINGS} from "@/configs/warnings.config.js";
 import {AudioScript} from "@/enitites/script/audio-script/index.js";
 import {VideoScript} from "@/enitites/script/video-script/index.js";
+import ScriptService from "@/API/scriptService/scriptService.js";
 
 
 const ACTION_TYPES = ['script', 'source']
@@ -138,17 +139,9 @@ const getSources = () => {
 
 const loadScript = async (file) => {
   try {
-    const fileName = file.name.split('.zip')[0]
     const {targetSourceForUse, targetSourceForCapture} = getSources()
     if (!targetSourceForUse || !targetSourceForCapture) return
-    const script = targetSourceForUse.type === 'sound'
-        ? new AudioScript(fileName, '', {}, false, targetSourceForCapture)
-        : new VideoScript(fileName, '', {}, false, targetSourceForCapture)
-    const formData = buildFormData(file, targetSourceForCapture.type, 'load')
-    const {config} = await sourceStore.loadScript(formData)
-    sourceStore.sources = config
-    sourceStore.addScript(script, script.capture)
-    scriptStore.addScript(script)
+    await ScriptService.loadScript(buildFormData(file, targetSourceForCapture.type, 'load'))
     clearModalOption()
     closeModal()
   } catch (e) {
