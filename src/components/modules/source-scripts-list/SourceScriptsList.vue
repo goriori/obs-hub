@@ -46,6 +46,7 @@ const onUpdateList = (updated) => {
 }
 
 const updateServerConfig = () => {
+  ServerConfig.changeUpdateAspects([])
   ServerConfig.changeUpdateType('fast')
   ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
   ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())

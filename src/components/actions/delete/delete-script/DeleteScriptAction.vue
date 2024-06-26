@@ -8,7 +8,7 @@ import {computed} from "vue";
 const stateStore = useStateStore()
 const scriptGateway = useScriptGateway()
 const focusScripts = computed(() => {
-  return scriptGateway.getScripts().filter(script => script.isFocus).length > 0
+  return scriptGateway.getScripts()?.filter(script => script.focused).length > 0
 })
 
 const onClick = () => {

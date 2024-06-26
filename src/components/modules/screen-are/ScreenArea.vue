@@ -69,6 +69,7 @@ const onResizeScreen = (sourceName, size) => {
 
 
 const updateFastConfigServer = () => {
+  ServerConfig.changeUpdateAspects([])
   ServerConfig.changeUpdateType('fast')
   ServerConfig.addVideSources(gatewaySources.getVideoSourcesObject())
   ServerConfig.addAudioSources(gatewaySources.getAudioSourcesObject())

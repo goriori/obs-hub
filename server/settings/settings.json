@@ -14,7 +14,8 @@
                     "name": "mask",
                     "path": "external_scripts/mask/script.py",
                     "enabled": false,
-                    "args": {}
+                    "args": {},
+                    "sourceName": "webcam"
                 }
             ],
             "show": true,

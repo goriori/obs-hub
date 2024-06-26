@@ -7,17 +7,19 @@ import Screen from "../../../icons/Screen.vue";
 import Sound from "../../../icons/Sound.vue";
 
 const props = defineProps({
+
   script: {
     type: Object,
     default: () => {
     }
-
   }
 })
 
 
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
-const onFocus = () => emits('update:isFocus', !props.script.focused)
+const onFocus = () => {
+  emits('update:isFocus', !props.script.focused)
+}
 const onActiveScript = () => {
   emits('update:isActive', true, {
     id: props.script.id,

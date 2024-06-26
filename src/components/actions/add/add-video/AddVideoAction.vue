@@ -8,7 +8,12 @@ import Screen from "../../../icons/Screen.vue";
 import Camera from "../../../icons/Camera.vue";
 import wsService from "@/API/wsService/wsService.js";
 import SourceFactory from "@/factory/source-factory/index.js";
+import {useSourceGateway} from "@/store/sourceStore.js";
+import ServerConfig from "@/enitites/config/index.js";
+import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
+import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 
+const sourceGateway = useSourceGateway()
 const resolutionApplication = useResolutionStore()
 const isActive = ref(false)
 const haveScreens = computed(() => [])
@@ -24,14 +29,22 @@ const addCapture = (event) => {
     const {capture} = targetElement.dataset
     if (!capture) return
     if (capture === 'empty') return onClose()
-    const source = SourceFactory.getSource(capture)
-    console.log(source)
+    sourceGateway.getSource(capture).onShow()
   }
+  updateFastConfigServer()
   onClose()
 }
 
 
-
+const updateFastConfigServer = () => {
+  ServerConfig.changeUpdateAspects(['webcam', 'screen'])
+  ServerConfig.changeUpdateType('full')
+  ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
+  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
+  ServerConfig.addVirtualCamera(new VirtualCamera())
+  ServerConfig.addVirtualAudio(new VirtualAudio())
+  wsService.sendMessage(ServerConfig)
+}
 
 </script>
 

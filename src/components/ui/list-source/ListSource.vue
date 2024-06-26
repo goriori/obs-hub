@@ -13,6 +13,7 @@ const updateData = ref({
 })
 const emits = defineEmits(['onUpdate'])
 const onActive = (value, data, type) => {
+  console.log(value,data,type)
   updateData.value.type = type
   updateData.value.data = data
   emits('onUpdate', updateData.value)
@@ -25,6 +26,8 @@ const onActive = (value, data, type) => {
     <div class="item" v-for="source in sources" :key="source">
       <component
           :script="source"
+          :isActive="source.enabled"
+          :isFocus="source.focused"
           :is="source.card"
           @update:isActive="onActive"
       />

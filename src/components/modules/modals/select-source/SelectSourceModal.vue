@@ -23,7 +23,7 @@ const stateStore = useStateStore()
 const scriptStore = useScriptGateway()
 
 
-const sourcesForUse = ref([
+const sourcesUse = ref([
   {
     id: 1,
     'icon-type': 'sound',
@@ -42,7 +42,7 @@ const sourcesForUse = ref([
   },
 ])
 
-const sourcesForCapture = ref([
+const sourcesCapture = ref([
   {
     id: 1,
     'icon-type': 'screen',
@@ -76,7 +76,7 @@ const actions = [
     type: ACTION_TYPES[0],
     action: ConfirmButton,
     onClick: function () {
-      const targetUse = sourcesForUse.value.filter(source => source.isActive)
+      const targetUse = sourcesUse.value.filter(source => source.isActive)
       if (targetUse.length > 0) steps.value = ACTION_TYPES[1]
       else stateStore.modals.message.warning.onShow(WARNINGS.NOTE_TARGET_CAPTURE)
 
@@ -87,7 +87,7 @@ const actions = [
     type: ACTION_TYPES[1],
     action: ConfirmButton,
     onClick: function () {
-      const targetCapture = sourcesForCapture.value.filter(source => source.isActive)
+      const targetCapture = sourcesCapture.value.filter(source => source.isActive)
       if (targetCapture.length > 0) {
         if (!stateStore.modals.selectSource.targetFile) generateLoadFileInput().then(loadScript)
         else loadScript(stateStore.modals.selectSource.targetFile)
@@ -98,14 +98,16 @@ const actions = [
 
 const activeSourceCapture = (id) => {
   if (!id) return
-  sourcesForCapture.value.forEach(source => source.isActive = false)
-  sourcesForCapture.value.find(source => source.id === id).isActive = true
+  sourcesCapture.value.forEach(source => source.isActive = false)
+  sourcesCapture.value.find(source => source.id === id).isActive = true
 }
+
 const activeSourceUse = (id) => {
   if (!id) return
-  sourcesForUse.value.forEach(source => source.isActive = false)
-  sourcesForUse.value.find(source => source.id === id).isActive = true
+  sourcesUse.value.forEach(source => source.isActive = false)
+  sourcesUse.value.find(source => source.id === id).isActive = true
 }
+
 const onUpdateSelect = (updateObject) => {
   const {type, data} = updateObject
   const updateHandlers = {
@@ -132,8 +134,8 @@ const generateLoadFileInput = () => {
 }
 
 const getSources = () => {
-  const targetSourceForUse = sourcesForUse.value.find(source => source.isActive)
-  const targetSourceForCapture = sourcesForCapture.value.find((source => source.isActive))
+  const targetSourceForUse = sourcesUse.value.find(source => source.isActive)
+  const targetSourceForCapture = sourcesCapture.value.find((source => source.isActive))
   return {targetSourceForUse, targetSourceForCapture}
 }
 
@@ -178,19 +180,25 @@ const closeModal = () => {
   stateStore.modals.selectSource.targetFile = null
   stateStore.modals.selectSource.show = false
 }
+
 const clearModalOption = () => {
   stateStore.modals.selectSource.use = null
 }
+
 const onKeypress = (event) => {
   const keys = {
     'Escape': () => closeModal()
   }
   if (keys[event.key]) return keys[event.key].call()
 }
+
+const checkModalSetting = () => {
+  const sourceUse = stateStore.modals.selectSource.use
+  if (sourceUse) sourcesUse.value.find(source => source.type === sourceUse).isActive = true
+}
+
 onMounted(() => {
-  if (stateStore.modals.selectSource.use) {
-    sourcesForUse.value.find(source => source.type === stateStore.modals.selectSource.use).isActive = true
-  }
+  checkModalSetting()
   window.addEventListener('keydown', onKeypress);
 })
 
