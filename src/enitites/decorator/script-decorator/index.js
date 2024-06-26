@@ -25,5 +25,11 @@ export class ScriptDecorator extends Decorator {
 
     setFocused() {
         this.script.focused = false
+        this.script.focusScript = function () {
+            this.focused = true
+        }
+        this.script.unFocusScript = function () {
+            this.focused = false
+        }
     }
 }

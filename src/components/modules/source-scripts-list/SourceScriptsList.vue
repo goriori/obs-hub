@@ -14,12 +14,14 @@ import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 const stateSource = useStateStore()
 const scriptGateway = useScriptGateway()
 const sourceGateway = useSourceGateway()
-const TYPES_UPDATE = ['active-script', 'disable-script']
+const TYPES_UPDATE = ['active-script', 'disable-script', 'focus-script', 'un-focus-script']
 const ASPECT = 'scripts'
 
 const updates = {
   [TYPES_UPDATE[0]]: (data) => activeOrDisableScript(data, true),
-  [TYPES_UPDATE[1]]: (data) => activeOrDisableScript(data, false)
+  [TYPES_UPDATE[1]]: (data) => activeOrDisableScript(data, false),
+  [TYPES_UPDATE[2]]: (data) => focusScript(data, true),
+  [TYPES_UPDATE[3]]: (data) => focusScript(data, false)
 }
 
 const scripts = computed(() => scriptGateway.getScripts())
@@ -33,6 +35,15 @@ const activeOrDisableScript = (data, active = false) => {
     sourceGateway.disabledSourceScript(sourceName, scriptName)
   }
   updateServerConfig()
+}
+
+const focusScript = (data, active = false) => {
+  const {id, name} = data
+  if (active) {
+    scriptGateway.focusScript(id)
+  } else {
+    scriptGateway.unFocusScript(id)
+  }
 }
 
 const loadScript = (script) => {

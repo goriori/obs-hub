@@ -38,6 +38,16 @@ export class ScriptGateway extends Gateway {
         return {sourceName: script.sourceName, scriptName: script.name}
     }
 
+    focusScript(id) {
+       const script =  this.scriptsStore.getScript(id)
+        script.focusScript()
+        console.log(script)
+    }
+
+    unFocusScript(id) {
+        this.scriptsStore.getScript(id).unFocusScript()
+    }
+
     deleteScript(name) {
         this.scriptsStore.deleteScript(name)
     }
