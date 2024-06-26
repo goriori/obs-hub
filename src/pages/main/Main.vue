@@ -4,7 +4,7 @@ import SourceAudio from "../../components/modules/source-audio/SourceAudio.vue";
 import SourceVideo from "../../components/modules/source-video/SourceVideo.vue";
 import SourceScripts from "../../components/modules/source-scripts/SourceScripts.vue";
 import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
-
+import {onUpdated} from "vue";
 
 
 

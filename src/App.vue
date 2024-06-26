@@ -59,7 +59,7 @@ const initScripts = async () => {
       scripts.forEach(script => script.sourceName = sourceName)
       scripts.forEach(script => source.addScript(script))
       return scripts
-    }
+    } 
     return []
   })
   const scriptsVirtualCamera = virtualCamera.external_scripts

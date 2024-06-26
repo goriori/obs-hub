@@ -16,6 +16,10 @@ export class ScriptGateway extends Gateway {
         return this.scriptsStore.scripts
     }
 
+    getFocusedScript() {
+        return this.scriptsStore.scripts.map(script => script.focused ? script : false).filter(script => script)
+    }
+
     addScript(script) {
         const {name, args, path, sourceName, enabled} = script
         const scriptObject = new ScriptDecorator(new VideoScript(name, path, args, sourceName, enabled))
@@ -39,7 +43,7 @@ export class ScriptGateway extends Gateway {
     }
 
     focusScript(id) {
-       const script =  this.scriptsStore.getScript(id)
+        const script = this.scriptsStore.getScript(id)
         script.focusScript()
         console.log(script)
     }

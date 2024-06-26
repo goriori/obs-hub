@@ -20,7 +20,7 @@ const ACTION_TYPES = ['script', 'source']
 const ASPECT_TYPE = 'scripts'
 
 const stateStore = useStateStore()
-const scriptStore = useScriptGateway()
+const scriptGateway = useScriptGateway()
 
 
 const sourcesUse = ref([
@@ -143,7 +143,13 @@ const loadScript = async (file) => {
   try {
     const {targetSourceForUse, targetSourceForCapture} = getSources()
     if (!targetSourceForUse || !targetSourceForCapture) return
-    await ScriptService.loadScript(buildFormData(file, targetSourceForCapture.type, 'load'))
+    console.log(file, targetSourceForCapture)
+    const fileName = file.name.split('.zip')[0]
+    const path = `external_scripts/${fileName}/script.py`
+    const sourceName = targetSourceForCapture.type
+    const script = new VideoScript(fileName, path, {}, sourceName, false)
+    await ScriptService.loadScript(buildFormData(file, sourceName, 'load'))
+    scriptGateway.addScript(script)
     clearModalOption()
     closeModal()
   } catch (e) {
@@ -209,10 +215,10 @@ onMounted(() => {
   <Popup>
     <template #window>
       <section class="select-source">
-        <SelectSource v-if="steps === ACTION_TYPES[0]" type="sound" title="Выберите источник" :sources="sourcesForUse"
+        <SelectSource v-if="steps === ACTION_TYPES[0]" type="sound" title="Выберите источник" :sources="sourcesUse"
                       :actions="actionsScripts" @update="onUpdateSelect"/>
         <SelectSource v-if="steps === ACTION_TYPES[1]" type="video" title="Выберите источник"
-                      :sources="sourcesForCapture"
+                      :sources="sourcesCapture"
                       :actions="actionsSource" @update="onUpdateSelect"/>
       </section>
 
