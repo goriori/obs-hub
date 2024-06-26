@@ -18,6 +18,9 @@ const onActive = (value, data, type) => {
   updateData.value.data = data
   emits('onUpdate', updateData.value)
 }
+const onFocus = (source, value, ) => {
+  console.log(source, value)
+}
 
 </script>
 
@@ -27,9 +30,10 @@ const onActive = (value, data, type) => {
       <component
           :script="source"
           :isActive="source.enabled"
-          :isFocus="source.focused"
+          :isFocus="source?.focused"
           :is="source.card"
           @update:isActive="onActive"
+          @update:isFocus="onFocus"
       />
     </div>
   </section>

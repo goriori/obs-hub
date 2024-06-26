@@ -7,4 +7,12 @@ export class Script {
         this.sourceName = sourceName
         this.enabled = enabled
     }
+
+    activeScript() {
+        this.enabled = true
+    }
+
+    disableScript() {
+        this.enabled = false
+    }
 }

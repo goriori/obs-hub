@@ -28,13 +28,13 @@ export class ScriptGateway extends Gateway {
 
     activeScript(id) {
         const script = this.scriptsStore.getScript(id)
-        script.enabled = true
+        script.activeScript()
         return {sourceName: script.sourceName, scriptName: script.name}
     }
 
     disableScript(id) {
         const script = this.scriptsStore.getScript(id)
-        script.enabled = false
+        script.disableScript()
         return {sourceName: script.sourceName, scriptName: script.name}
     }
 

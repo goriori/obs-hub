@@ -15,10 +15,10 @@ const props = defineProps({
   }
 })
 
-
+console.log(props.script)
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
 const onFocus = () => {
-  emits('update:isFocus', !props.script.focused)
+  emits('update:isFocus', !props.script?.focused, props.script)
 }
 const onActiveScript = () => {
   emits('update:isActive', true, {
@@ -38,7 +38,7 @@ const onDisableScript = () => {
   <Card class="script"
         is-script
         :is-active="script.enabled"
-        :is-focus="script.focuesed"
+        :is-focus="script.focused"
         @on-focus="onFocus"
         @on-active-script="onActiveScript"
         @on-disable-script="onDisableScript"
