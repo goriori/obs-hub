@@ -13,6 +13,10 @@ export class AudioGateway extends Gateway {
         return this.audioStore.audioSources
     }
 
+    getFocusedAudio() {
+        return this.getAudioSources().map(source => source.focused ? source : false).filter(source => source)
+    }
+
     addAudioSource(audioSource) {
         const audioObject = new AudioDecorator(audioSource)
         audioObject.setFocus()

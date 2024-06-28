@@ -22,8 +22,16 @@ export class SourceGateway {
         return this.sourceGateway.getSources('video');
     }
 
+    getNameVideoSources() {
+        return this.sourceGateway.getSources('video').map(source => source.name)
+    }
+
     getAudioSources() {
         return this.sourceGateway.getSources('audio')
+    }
+
+    getNameAudioSources() {
+        return this.sourceGateway.getSources('audio').map(source => source.name)
     }
 
     getVideoSourcesObject() {

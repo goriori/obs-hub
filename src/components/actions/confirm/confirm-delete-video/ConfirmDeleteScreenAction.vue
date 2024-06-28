@@ -9,14 +9,14 @@ import wsService from "@/API/wsService/wsService.js";
 const emits = defineEmits(['onConfirmDelete'])
 const sourceGateway = useSourceGateway()
 const deleteTargetScreens = () => {
-  const focusesSource = sourceGateway.getVideoSources().filter(source => source.isFocus )
+  const focusesSource = sourceGateway.getVideoSources().filter(source => source.focused )
   focusesSource.map(source=> sourceGateway.hiddenVideoSource(source.name))
   updateServerConfig()
   emits('onConfirmDelete')
 }
 
 const updateServerConfig = () => {
-  ServerConfig.changeUpdateAspects(['webcam', 'screen'])
+  ServerConfig.changeUpdateAspects(sourceGateway.getNameVideoSources())
   ServerConfig.changeUpdateType('full')
   ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
   ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())

@@ -41,7 +41,7 @@ const changeList = (list) => {
 }
 
 const updateConfig = () => {
-  ServerConfig.changeUpdateAspects(['webcam', 'screen'])
+  ServerConfig.changeUpdateAspects(sourceGateway.getNameVideoSources())
   ServerConfig.changeUpdateType('full')
   ServerConfig.addVirtualCamera(new VirtualCamera())
   ServerConfig.addVirtualAudio(new VirtualAudio())

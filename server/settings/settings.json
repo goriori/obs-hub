@@ -7,7 +7,8 @@
                     "name": "testScript",
                     "path": "external_scripts/testScript/script.py",
                     "enabled": false,
-                    "args": {}
+                    "args": {},
+                    "sourceName": "webcam"
                 }
             ],
             "show": true,
@@ -15,15 +16,16 @@
             "position": {
                 "x": 0,
                 "y": 0,
-                "width": 200,
-                "height": 112
+                "width": 354,
+                "height": 200
             },
             "resolution": {
-                "width": 1280,
-                "height": 720
+                "width": 1920,
+                "height": 1080
             },
             "dshow_settings": true,
-            "device_index": 0
+            "device_index": 0,
+            "focused": false
         },
         "screen": {
             "id": 1,
@@ -42,7 +44,8 @@
                 "y": 0,
                 "width": 1920,
                 "height": 1080
-            }
+            },
+            "focused": false
         }
     },
     "audio_sources": {
@@ -55,7 +58,8 @@
             "format": 2,
             "channels": 1,
             "device_input_index": 1,
-            "device_output_index": 5
+            "device_output_index": 5,
+            "focused": true
         },
         "system_sound": {
             "id": 2,
@@ -66,19 +70,21 @@
             "format": 3,
             "channels": 2,
             "device_input_index": -1,
-            "device_output_index": 5
+            "device_output_index": 5,
+            "focused": false
         },
         "sound": {
             "id": 3,
             "external_scripts": [],
-            "show": false,
+            "show": true,
             "rate": 44100,
             "chunk": 1024,
             "format": 2,
             "channels": 1,
-            "audio_state": "play_once",
+            "audio_state": "pause",
             "source_path": "sound/tada.mp3",
-            "device_output_index": 5
+            "device_output_index": 5,
+            "focused": false
         }
     },
     "virtual_camera": {
