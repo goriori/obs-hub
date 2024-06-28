@@ -1,17 +1,17 @@
 <script setup>
 
-import {useAudioStore} from "@/store/audioStore.js";
+import {useAudioGateway} from "@/store/audioStore.js";
 import PlusButton from "@/components/ui/buttons/plus/PlusButton.vue";
 import SoundTargetCard from "@/components/ui/card/sound-target/SoundTargetCard.vue";
 import {shallowRef} from "vue";
 
-const audioStore = useAudioStore()
+const audioGateway = useAudioGateway()
 const addAudio = () => {
-  audioStore.addAudioSource({
+  audioGateway.addAudioSource({
     id: Math.floor(Math.random() * 1000),
     title: 'audio source',
     isFocus: false,
-    component: shallowRef(SoundTargetCard)
+    card: shallowRef(SoundTargetCard)
   })
 }
 </script>

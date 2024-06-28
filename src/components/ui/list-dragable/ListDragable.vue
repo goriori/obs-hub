@@ -9,9 +9,11 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['onChangeList'])
+const emits = defineEmits(['onChangeList', 'onUpdate'])
 const enabled = ref(true)
 const dragging = ref(false)
+const list = computed(() => [...props.sources.filter(source => source.component !== null)])
+
 const dragOptions = {
   animation: 200,
   group: "description",
@@ -19,7 +21,17 @@ const dragOptions = {
   ghostClass: "ghost"
 };
 
-const list = computed(() => [...props.sources.filter(source => source.component !== null)])
+const updateData = ref({
+  type: 'active-source',
+  data: {}
+})
+
+const onUpdate = (value, data, type) => {
+  console.log(value, data, type)
+  updateData.value.type = type
+  updateData.value.data = data
+  emits('onUpdate', updateData.value)
+}
 
 const updateList = (e) => {
   dragging.value = false
@@ -42,7 +54,13 @@ const updateList = (e) => {
   >
     <template #item="{element}">
       <div class="item">
-        <component :is="element.component" v-model:isFocus="element.isFocus"/>
+        <component
+            :is="element.component"
+            v-model:isFocus="element.focused"
+            :source="element"
+            @update:isActive="onUpdate"
+            @update:isFocus="onUpdate"
+        />
       </div>
     </template>
   </draggable>

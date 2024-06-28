@@ -11,12 +11,25 @@ const props = defineProps({
   isFocus: {
     type: Boolean,
     default: false
+  },
+  source: {
+    type: Object,
+    default: () => {
+    }
   }
+
 })
 const emits = defineEmits(['update:isFocus'])
+
 const onFocus = () => {
-  console.log('onFocusCard')
-  emits('update:isFocus', !props.isFocus)
+  if (!props.isFocus) emits('update:isFocus', true, {
+    id: props.source.id,
+    name: props.source.name
+  }, 'focus-source')
+  else emits('update:isFocus', false, {
+    id: props.source.id,
+    name: props.source.name
+  }, 'un-focus-source')
 }
 </script>
 

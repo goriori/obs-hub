@@ -11,10 +11,25 @@ const props = defineProps({
   isFocus: {
     type: Boolean,
     default: false
+  },
+  source: {
+    type: Object,
+    default: () => {
+    }
   }
 })
 const emits = defineEmits(['update:isFocus'])
-const onFocus = () => emits('update:isFocus', !props.isFocus)
+
+const onFocus = () => {
+  if (!props.isFocus) emits('update:isFocus', true, {
+    id: props.source.id,
+    name: props.source.name
+  }, 'focus-audio')
+  else emits('update:isFocus', false, {
+    id: props.source.id,
+    name: props.source.name
+  }, 'un-focus-audio')
+}
 </script>
 
 <template>
@@ -22,7 +37,7 @@ const onFocus = () => emits('update:isFocus', !props.isFocus)
     <template #icon>
       <IconCard icon-type="sound"/>
     </template>
-    <template #title>Захват экрана</template>
+    <template #title>{{ source.name }}</template>
   </Card>
 </template>
 

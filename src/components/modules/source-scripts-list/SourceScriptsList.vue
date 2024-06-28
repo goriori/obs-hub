@@ -15,7 +15,7 @@ const stateSource = useStateStore()
 const scriptGateway = useScriptGateway()
 const sourceGateway = useSourceGateway()
 const TYPES_UPDATE = ['active-script', 'disable-script', 'focus-script', 'un-focus-script']
-const ASPECT = 'scripts'
+
 
 const updates = {
   [TYPES_UPDATE[0]]: (data) => activeOrDisableScript(data, true),
@@ -26,7 +26,7 @@ const updates = {
 
 const scripts = computed(() => scriptGateway.getScripts())
 const activeOrDisableScript = (data, active = false) => {
-  const {id, name} = data
+  const {id} = data
   if (active) {
     const {sourceName, scriptName} = scriptGateway.activeScript(id)
     sourceGateway.activeSourceScript(sourceName, scriptName)
@@ -38,12 +38,9 @@ const activeOrDisableScript = (data, active = false) => {
 }
 
 const focusScript = (data, active = false) => {
-  const {id, name} = data
-  if (active) {
-    scriptGateway.focusScript(id)
-  } else {
-    scriptGateway.unFocusScript(id)
-  }
+  const {id} = data
+  if (active) scriptGateway.focusScript(id)
+  else scriptGateway.unFocusScript(id)
 }
 
 const loadScript = (script) => {
@@ -76,7 +73,6 @@ const updateServerConfig = () => {
 </template>
 
 <style scoped lang="scss">
-
 
 .source {
   height: 240px;

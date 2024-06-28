@@ -49,7 +49,7 @@
         "microphone": {
             "id": 1,
             "external_scripts": [],
-            "show": false,
+            "show": true,
             "rate": 44100,
             "chunk": 1024,
             "format": 2,
@@ -60,7 +60,7 @@
         "system_sound": {
             "id": 2,
             "external_scripts": [],
-            "show": false,
+            "show": true,
             "rate": 48000,
             "chunk": 2048,
             "format": 3,

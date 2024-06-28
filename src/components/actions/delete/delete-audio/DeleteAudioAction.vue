@@ -1,16 +1,17 @@
 <script setup>
 
-import DeleteButton from "@/components/ui/buttons/delete/DeleteButton.vue";
-import {useStateStore} from "@/store/stateStore.js";
-import {useAudioStore} from "@/store/audioStore.js";
 import {computed} from "vue";
+import {useStateStore} from "@/store/stateStore.js";
+import {useAudioGateway} from "@/store/audioStore.js";
+import DeleteButton from "@/components/ui/buttons/delete/DeleteButton.vue";
 
 const stateStore = useStateStore()
-const audioStore = useAudioStore()
+const audioGateway = useAudioGateway()
 
 const focusAudio = computed(() => {
-  return audioStore.audioSource.filter(audio => audio.isFocus).length > 0
+  return audioGateway.getAudioSources().filter(audio => audio.focused).length > 0
 })
+
 const onClick = () => {
   if (focusAudio.value) stateStore.modals.delete.deleteAudio.show = true
 }

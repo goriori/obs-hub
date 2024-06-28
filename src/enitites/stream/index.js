@@ -1,7 +1,8 @@
 
 
 export class Stream {
-    constructor() {
+    constructor(type) {
+        this.type = type
         this.streams = new Map();
     }
 

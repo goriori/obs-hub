@@ -7,7 +7,7 @@ import DeleteVideoAction from "@/components/actions/delete/delete-video/DeleteSc
 import {useSourceGateway} from "@/store/sourceStore.js";
 
 const sourcesGateway = useSourceGateway()
-const clearFocus = () => sourcesGateway.getVideoSources().forEach(source => source.isFocus = false)
+const clearFocus = () => sourcesGateway.getVideoSources().forEach(source => source.focused = false)
 const clickOutside = () => clearFocus()
 </script>
 

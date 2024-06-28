@@ -13,6 +13,25 @@ const screenStore = useScreenStore()
 const sourceGateway = useSourceGateway()
 const sources = computed(() => sourceGateway.getVideoSources().filter(source => source.show))
 
+const TYPES_UPDATE = ['focus-source', 'un-focus-source']
+
+const updates = {
+  [TYPES_UPDATE[0]]: (data) => focusSource(data, true),
+  [TYPES_UPDATE[1]]: (data) => focusSource(data, false),
+}
+
+
+const focusSource = (data, active = false) => {
+  const {name} = data
+  if (active) sourceGateway.focusSource(name)
+  else sourceGateway.unFocusSource(name)
+}
+
+const onUpdateList = (updated) => {
+  const {type, data} = updated
+  return updates[type].call(this, data)
+}
+
 const changeList = (list) => {
   const copyList = [...list]
   const reverseList = copyList.reverse()
@@ -33,7 +52,7 @@ const updateConfig = () => {
 </script>
 
 <template>
-  <ListDragable :sources="sources" @on-change-list="changeList"/>
+  <ListDragable :sources="sources" @on-change-list="changeList" @on-update="onUpdateList"/>
 </template>
 
 <style scoped lang="scss">

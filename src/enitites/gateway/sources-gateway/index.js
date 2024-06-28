@@ -61,6 +61,14 @@ export class SourceGateway {
         this.sourceGateway.getSource(sourceName).disabledScript(nameScript)
     }
 
+    focusSource(id) {
+        this.sourceGateway.getSource(id).focusSource()
+    }
+
+    unFocusSource(id) {
+        this.sourceGateway.getSource(id).unFocusSource()
+    }
+
     hiddenVideoSource(sourceName) {
         this.sourceGateway.hiddenSource(sourceName)
     }

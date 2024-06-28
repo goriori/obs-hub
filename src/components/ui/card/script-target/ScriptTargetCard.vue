@@ -15,37 +15,37 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  script: {
+  source: {
     type: Object,
     default: () => {
     }
   }
 })
 
-console.log(props.script, props.isFocus, props.isActive)
+console.log(props.source, props.isFocus, props.isActive)
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
 
 const onFocus = () => {
   if (!props.isFocus) emits('update:isFocus', true, {
-    id: props.script.id,
-    name: props.script.name
+    id: props.source.id,
+    name: props.source.name
   }, 'focus-script')
   else emits('update:isFocus', false, {
-    id: props.script.id,
-    name: props.script.name
+    id: props.source.id,
+    name: props.source.name
   }, 'un-focus-script')
 }
 
 const onActiveScript = () => {
   emits('update:isActive', true, {
-    id: props.script.id,
-    name: props.script.name
+    id: props.source.id,
+    name: props.source.name
   }, 'active-script')
 }
 const onDisableScript = () => {
   emits('update:isActive', false, {
-    id: props.script.id,
-    name: props.script.name
+    id: props.source.id,
+    name: props.source.name
   }, 'disable-script')
 }
 </script>
@@ -53,21 +53,21 @@ const onDisableScript = () => {
 <template>
   <Card class="script"
         is-script
-        :is-active="script.enabled"
-        :is-focus="script.focused"
+        :is-active="source.enabled"
+        :is-focus="source.focused"
         @on-focus="onFocus"
         @on-active-script="onActiveScript"
         @on-disable-script="onDisableScript"
   >
     <template #icon>
-      <component :icon-type="script.use?.type" :is="script.use?.component"/>
+      <component :icon-type="source.use?.type" :is="source.use?.component"/>
     </template>
     <template #title>
       <div class="script-content">
-        <h3>{{ script.name }}</h3>
+        <h3>{{ source.name }}</h3>
         <div class="script-type">
-          <component :is="script.capture.component" :color="script.capture.color"/>
-          <p> {{ script.capture.title }}</p>
+          <component :is="source.capture.component" :color="source.capture.color"/>
+          <p> {{ source.capture.title }}</p>
         </div>
       </div>
     </template>

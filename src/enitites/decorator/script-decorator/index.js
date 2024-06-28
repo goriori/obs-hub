@@ -19,8 +19,8 @@ export class ScriptDecorator extends Decorator {
         this.script.capture = {title, type, component}
     }
 
-    setCard(card) {
-        this.script.card = card
+    setComponent(card) {
+        this.script.component = card
     }
 
     setFocused() {

@@ -11,10 +11,26 @@ const props = defineProps({
   isFocus: {
     type: Boolean,
     default: false
+  },
+  source: {
+    type: Object,
+    default: () => {
+    }
   }
 })
 const emits = defineEmits(['update:isFocus'])
-const onFocus = () => emits('update:isFocus', !props.isFocus)
+
+const onFocus = () => {
+  if (!props.isFocus) emits('update:isFocus', true, {
+    id: props.source.id,
+    name: props.source.name
+  }, 'focus-source')
+  else emits('update:isFocus', false, {
+    id: props.source.id,
+    name: props.source.name
+  }, 'un-focus-source')
+
+}
 </script>
 
 <template>

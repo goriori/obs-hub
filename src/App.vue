@@ -4,23 +4,26 @@ import {onMounted, onUpdated} from "vue";
 import {useStateStore} from '@/store/stateStore'
 import {useResolutionStore} from "@/store/resolutionStore.js";
 import {useScreenStore} from "@/store/screenStore.js";
+import {useStreamStore} from "@/store/streamStore.js";
+import {useAudioGateway} from "@/store/audioStore.js";
 import {useScriptGateway} from "@/store/scriptStore.js";
 import {useSourceGateway} from "@/store/sourceStore.js";
 import {buildPositionApplication} from "@/utils/helpers/buildPositionApplication.js";
+import {AudioStream} from "@/enitites/stream/audio-stream/index.js";
 import VLoader from '@/components/VLoader.vue'
 import Modals from "@/components/modules/modals/Modals.vue";
 import wsService from "@/API/wsService/wsService.js";
 import SourceFactory from "@/factory/source-factory/index.js";
-import CardFactory from "@/factory/card-factory/index.js";
-import CardScriptFactory from "@/factory/card-script-factory/index.js";
 
 const route = useRoute()
 const stateStore = useStateStore()
+const streamStore = useStreamStore()
 const scriptGateway = useScriptGateway()
 const resolutionStore = useResolutionStore()
 const screenStore = useScreenStore()
-
 const sourceGateway = useSourceGateway()
+const audioGateway = useAudioGateway()
+
 const initVideoSources = async () => {
   await wsService.initConnect()
   const serverConfig = await wsService.getConfig()
@@ -43,8 +46,17 @@ const initAudioSources = async () => {
   const serverConfig = await wsService.getConfig()
   const audioSources = serverConfig.audio_sources
   const sources = Object.keys(audioSources).map(sourceName => SourceFactory.getSource(sourceName))
-  sources.forEach(source => source.component = CardFactory.getCard(source.name))
-  sources.forEach(source => sourceGateway.addSource(source))
+  sources.forEach(source => {
+    if(audioSources[source.name].show) source.onShow()
+    audioGateway.addAudioSource(source)
+    sourceGateway.addSource(source)
+  })
+}
+
+const initAudioStream = async () => {
+  const audioStream = new AudioStream()
+  await audioStream.init()
+  streamStore.addStream(audioStream)
 }
 
 const initScripts = async () => {
@@ -59,7 +71,7 @@ const initScripts = async () => {
       scripts.forEach(script => script.sourceName = sourceName)
       scripts.forEach(script => source.addScript(script))
       return scripts
-    } 
+    }
     return []
   })
   const scriptsVirtualCamera = virtualCamera.external_scripts
@@ -71,6 +83,8 @@ onMounted(async () => {
   await initVideoSources()
   await initAudioSources()
   await initScripts()
+  await initAudioStream()
+
 })
 onUpdated(async () => console.log('update app'))
 

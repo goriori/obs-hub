@@ -5,13 +5,15 @@ import {computed, onMounted, onUpdated, ref} from "vue";
 import {useResolutionStore} from "@/store/resolutionStore.js";
 import {useSourceGateway} from "@/store/sourceStore.js";
 import {VideoStream} from "@/enitites/stream/video-stream/index.js";
+import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
+import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 import Screen from "../../ui/screen/Screen.vue";
 import wsService from "@/API/wsService/wsService.js";
-import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
 import ServerConfig from "@/enitites/config/index.js";
-import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
+import {useStreamStore} from "@/store/streamStore.js";
 
 
+const streamStore = useStreamStore()
 const screenStore = useScreenStore()
 const resolutionStore = useResolutionStore()
 const gatewaySources = useSourceGateway()
@@ -81,6 +83,7 @@ const loadVideoStream = async () => {
   const videoElement = document.getElementsByTagName('video')[0]
   videoElement.srcObject = await videoStream.init()
   videoElement.play();
+  streamStore.addStream(videoStream)
 }
 
 const initVideoElement = () => videoElement.value = document.getElementById('main-screen')
@@ -93,6 +96,8 @@ onMounted(async () => {
 onUpdated(async () => {
   if (otherScreens.value.length === 0) await videoStream.stopStream()
   else await loadVideoStream()
+
+
 })
 
 </script>

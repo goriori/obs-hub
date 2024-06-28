@@ -15,6 +15,12 @@ export class SourceDecorator extends Decorator {
     }
 
     setFocus() {
-        this.source.isFocus = false
+        this.source.focused = false
+        this.source.focusSource = function () {
+            this.focused = true
+        }
+        this.source.unFocusSource = function () {
+            this.focused = false
+        }
     }
 }

@@ -1,17 +1,23 @@
 import {defineStore} from 'pinia'
 import {ref} from 'vue'
+import {AudioGateway} from "@/enitites/gateway/audio-gateway/index.js";
 
-export const useAudioStore = defineStore('audioStore', () => {
-    const audioSource = ref([])
+ const useAudioStore = defineStore('audioStore', () => {
+    const audioSources = ref([])
     const addAudioSource = (audio) => {
-        audioSource.value.push(audio)
+        audioSources.value.push(audio)
     }
     const deleteAudioSource = (id) => {
-        audioSource.value = audioSource.value.filter(audio => audio.id !== id)
+        audioSources.value = audioSources.value.filter(audio => audio.id !== id)
     }
     return {
-        audioSource,
+        audioSources,
         addAudioSource,
         deleteAudioSource
     }
 })
+
+
+export const useAudioGateway = () => {
+    return new AudioGateway(useAudioStore())
+}

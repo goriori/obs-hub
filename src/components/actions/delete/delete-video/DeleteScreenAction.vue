@@ -10,7 +10,7 @@ const stateStore = useStateStore()
 const sourceGateway = useSourceGateway()
 
 const focusSource = computed(() => {
-    return sourceGateway.getVideoSources().filter(source=> source.isFocus).length > 0
+    return sourceGateway.getVideoSources().filter(source=> source.focused).length > 0
 })
 const onClick = () => {
   if (focusSource.value) stateStore.modals.delete.deleteSourceVideo.show = true

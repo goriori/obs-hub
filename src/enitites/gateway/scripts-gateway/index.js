@@ -1,10 +1,10 @@
 import {Gateway} from "@/enitites/gateway/index.js";
 import {VideoScript} from "@/enitites/script/video-script/index.js";
 import {shallowRef} from "vue";
-import Source from "@/components/ui/source/Source.vue";
 import ScriptTargetCard from "@/components/ui/card/script-target/ScriptTargetCard.vue";
 import CaptureCamera from "@/components/icons/CaptureCamera.vue";
 import {ScriptDecorator} from "@/enitites/decorator/script-decorator/index.js";
+import IconCard from "@/components/ui/icon-card/IconCard.vue";
 
 export class ScriptGateway extends Gateway {
     constructor(scriptsStore) {
@@ -23,9 +23,9 @@ export class ScriptGateway extends Gateway {
     addScript(script) {
         const {name, args, path, sourceName, enabled} = script
         const scriptObject = new ScriptDecorator(new VideoScript(name, path, args, sourceName, enabled))
-        scriptObject.setUse('Захват веб-камеры', 'camera', shallowRef(Source))
+        scriptObject.setUse('Захват веб-камеры', 'camera', shallowRef(IconCard))
         scriptObject.setCapture('Захват веб-камеры', 'webcam', shallowRef(CaptureCamera))
-        scriptObject.setCard(shallowRef(ScriptTargetCard))
+        scriptObject.setComponent(shallowRef(ScriptTargetCard))
         scriptObject.setFocused()
         this.scriptsStore.addScript(scriptObject.getScript())
     }

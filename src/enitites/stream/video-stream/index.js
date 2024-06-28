@@ -3,7 +3,7 @@ import {Stream} from "@/enitites/stream/index.js";
 
 export class VideoStream extends Stream {
     constructor() {
-        super();
+        super('video');
         this.targetStreamName = 'Streamer'
         this.streamId = null;
     }

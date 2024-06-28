@@ -8,7 +8,7 @@ import {useScriptGateway} from "@/store/scriptStore.js";
 
 const scriptGateway = useScriptGateway()
 const clearFocus = () => {
-  scriptGateway.getScripts().forEach(script => script.isFocus = false)
+  scriptGateway.getScripts().forEach(script => script.focused = false)
 
 }
 const clickOutside = () => clearFocus()
