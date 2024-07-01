@@ -23,7 +23,6 @@ const videoElement = ref(null)
 const videoStream = new VideoStream()
 
 const onChangePositionScreen = (sourceName, coordinates) => {
-  console.log('change position screen: ', sourceName, coordinates)
   const source = gatewaySources.getSource(sourceName)
   source.changePositionApplication(coordinates)
   source.changePosition(rebuildPosition(source, videoElement.value))
@@ -39,19 +38,12 @@ const rebuildPosition = (source, videoSize) => {
 
 const computedCoordinates = (x, y, widthResolution, heightResolution, videoWidth, videoHeight) => {
   const computedX = Math.round(x / videoWidth * widthResolution)
-  // ========== Логи оригинальных и вычисляемых значений ===================
-  // console.log('computedX:', computedX, x)
-  // console.log('reComputedX: ', (computedX * videoWidth) / widthResolution)
-  // ========== Логи оригинальных и вычисляемых значений ===================
   const computedY = Math.round(y / videoHeight * heightResolution)
-  console.log('origin coordinates: ', x, y)
-  console.log('computed coordinates', {computedX, computedY})
   return {x: computedX, y: computedY}
 }
 
 
 const onResizeScreen = (sourceName, size) => {
-  console.log('resize screen')
   const {width, height} = size
   const sizeWidth = +width.toString().replace('px', '')
   const sizeHeight = +height.toString().replace('px', '')
@@ -60,10 +52,6 @@ const onResizeScreen = (sourceName, size) => {
   const videoWidth = videoElement.value.width
   const videoHeight = videoElement.value.height
   const numberWidth = Math.floor(sizeWidth / videoWidth * widthResolution)
-  // ========== Логи оригинальных и вычисляемых значений ===================
-  // console.log('Resize Number Width:', numberWidth, sizeWidth)
-  // console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
-  // ========== Логи оригинальных и вычисляемых значений ===================
   const numberHeight = Math.floor(sizeHeight / videoHeight * heightResolution)
   source.changePositionApplication({width: sizeWidth, height: sizeHeight})
   source.changePosition({width: numberWidth, height: numberHeight})

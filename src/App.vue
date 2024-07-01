@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute} from 'vue-router'
-import {onMounted, onUpdated} from "vue";
+import {onMounted} from "vue";
 import {useStateStore} from '@/store/stateStore'
 import {useResolutionStore} from "@/store/resolutionStore.js";
 import {useScreenStore} from "@/store/screenStore.js";
@@ -86,7 +86,6 @@ onMounted(async () => {
   await initAudioStream()
 
 })
-onUpdated(async () => console.log('update app'))
 
 </script>
 
