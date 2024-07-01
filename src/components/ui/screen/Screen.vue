@@ -60,17 +60,21 @@ const setZIndexElements = () => {
     screen.style.zIndex = index
   })
 }
+
 const renderScreens = () => {
   props.sources.forEach((source) => {
     interact(`.screen-add`).draggable({
       modifiers: modifiersDraggable,
       listeners: {
         move(event) {
+
           const {type, x, y} = event.target.dataset
+
           emits('changePositionScreen', type, {
             x: Number(x) + Number(event.dx),
             y: Number(y) + Number(event.dy)
           })
+
           event.target.style.transform = `translate(${x}px, ${y}px)`
           event.target.setAttribute('data-x', x)
           event.target.setAttribute('data-y', y)
@@ -86,6 +90,7 @@ const renderScreens = () => {
       },
       listeners: {
         move(event) {
+
           const target = event.target
           const {type} = event.target.dataset
 
@@ -97,16 +102,12 @@ const renderScreens = () => {
           target.style.width = event.rect.width + 'px'
           target.style.height = event.rect.height + 'px'
 
-          console.log(x, event.deltaRect.left)
-          console.log(y, event.deltaRect.top)
-
           const newSize = {
             x,
             y,
             width: target.style.width,
             height: target.style.height
           }
-
 
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)

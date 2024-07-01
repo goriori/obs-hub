@@ -5,7 +5,6 @@ import Popup from "@/components/ui/popup/Popup.vue";
 import ConfirmDeleteVideoAction from "@/components/actions/confirm/confirm-delete-video/ConfirmDeleteScreenAction.vue";
 
 const stateStore = useStateStore()
-
 const onDeleted = () => stateStore.modals.delete.deleteSourceVideo.show = false
 </script>
 

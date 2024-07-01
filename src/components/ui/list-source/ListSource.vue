@@ -13,7 +13,6 @@ const updateData = ref({
 })
 const emits = defineEmits(['onUpdate'])
 const onUpdate = (value, data, type) => {
-  console.log(value, data, type)
   updateData.value.type = type
   updateData.value.data = data
   emits('onUpdate', updateData.value)

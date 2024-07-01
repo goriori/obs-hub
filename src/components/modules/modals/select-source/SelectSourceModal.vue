@@ -143,7 +143,6 @@ const loadScript = async (file) => {
   try {
     const {targetSourceForUse, targetSourceForCapture} = getSources()
     if (!targetSourceForUse || !targetSourceForCapture) return
-    console.log(file, targetSourceForCapture)
     const fileName = file.name.split('.zip')[0]
     const path = `external_scripts/${fileName}/script.py`
     const sourceName = targetSourceForCapture.type

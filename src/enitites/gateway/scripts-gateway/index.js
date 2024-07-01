@@ -45,7 +45,6 @@ export class ScriptGateway extends Gateway {
     focusScript(id) {
         const script = this.scriptsStore.getScript(id)
         script.focusScript()
-        console.log(script)
     }
 
     unFocusScript(id) {

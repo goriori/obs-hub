@@ -22,7 +22,6 @@ const props = defineProps({
   }
 })
 
-console.log(props.source, props.isFocus, props.isActive)
 const emits = defineEmits(['update:isFocus', 'update:isActive'])
 
 const onFocus = () => {
