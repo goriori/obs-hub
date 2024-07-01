@@ -16,7 +16,6 @@ const props = defineProps({
     default: () => []
   }
 })
-console.log(props.sources)
 const modifiersDraggable = [
   interact.modifiers.restrictRect({
     restriction: 'parent',
@@ -67,14 +66,14 @@ const renderScreens = () => {
       modifiers: modifiersDraggable,
       listeners: {
         move(event) {
-          const {type, applicationX, applicationY} = event.target.dataset
+          const {type, x, y} = event.target.dataset
           emits('changePositionScreen', type, {
-            x: Number(applicationX) + Number(event.dx),
-            y: Number(applicationY) + Number(event.dy)
+            x: Number(x) + Number(event.dx),
+            y: Number(y) + Number(event.dy)
           })
-          event.target.style.transform = `translate(${applicationX}px, ${applicationY}px)`
-          event.target.setAttribute('data-x', applicationX)
-          event.target.setAttribute('data-y', applicationY)
+          event.target.style.transform = `translate(${x}px, ${y}px)`
+          event.target.setAttribute('data-x', x)
+          event.target.setAttribute('data-y', y)
         },
       },
     }).resizable({
@@ -92,8 +91,8 @@ const renderScreens = () => {
 
           let x = parseFloat(target.getAttribute('data-x')) || 0
           let y = parseFloat(target.getAttribute('data-y')) || 0
-          x += event.deltaRect.left
-          y += event.deltaRect.top
+          // x += event.deltaRect.left
+          // y += event.deltaRect.top
 
           target.style.width = event.rect.width + 'px'
           target.style.height = event.rect.height + 'px'
@@ -108,7 +107,6 @@ const renderScreens = () => {
             height: target.style.height
           }
 
-          console.log(newSize)
 
           target.setAttribute('data-x', newSize.x)
           target.setAttribute('data-y', newSize.y)
@@ -153,10 +151,8 @@ onUpdated(async () => {
           height: source.positionApplication.height + 'px',
           transform:`translate(${source.positionApplication.x}px, ${source.positionApplication.y}px)`
          }"
-         :data-application-x="source.positionApplication.x"
-         :data-application-y="source.positionApplication.y"
-         :data-x="source.position.x"
-         :data-y="source.position.y"
+         :data-x="source.positionApplication.x"
+         :data-y="source.positionApplication.y"
          :data-type="source.name"
          :data-index="source['z-index']"
     >

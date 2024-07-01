@@ -31,9 +31,9 @@ const initVideoSources = async () => {
   const sources = Object.keys(videoSources).map(sourceName => SourceFactory.getSource(sourceName))
   sources.forEach(source => {
     const position = videoSources[source.name].position
-    const positionApplication = screenStore.mainScreen.position
     const positionResolution = resolutionStore.resolution
-    const computedPositionApplication = buildPositionApplication(position, positionApplication, positionResolution)
+    const mainScreenPosition = screenStore.mainScreen.position
+    const computedPositionApplication = buildPositionApplication(position, positionResolution,mainScreenPosition)
     if (videoSources[source.name].show) source.onShow()
     source.changePosition(position)
     source.changeZIndex(videoSources[source.name]['z-index'])

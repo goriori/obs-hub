@@ -38,12 +38,12 @@ const rebuildPosition = (source, videoSize) => {
 }
 
 const computedCoordinates = (x, y, widthResolution, heightResolution, videoWidth, videoHeight) => {
-  const computedX = Math.floor(x / videoWidth * widthResolution)
+  const computedX = Math.round(x / videoWidth * widthResolution)
   // ========== Логи оригинальных и вычисляемых значений ===================
   // console.log('computedX:', computedX, x)
   // console.log('reComputedX: ', (computedX * videoWidth) / widthResolution)
   // ========== Логи оригинальных и вычисляемых значений ===================
-  const computedY = Math.floor(y / videoHeight * heightResolution)
+  const computedY = Math.round(y / videoHeight * heightResolution)
   console.log('origin coordinates: ', x, y)
   console.log('computed coordinates', {computedX, computedY})
   return {x: computedX, y: computedY}
@@ -51,11 +51,11 @@ const computedCoordinates = (x, y, widthResolution, heightResolution, videoWidth
 
 
 const onResizeScreen = (sourceName, size) => {
+  console.log('resize screen')
   const {width, height} = size
   const sizeWidth = +width.toString().replace('px', '')
   const sizeHeight = +height.toString().replace('px', '')
   const source = gatewaySources.getSource(sourceName)
-  source.changePositionApplication({width: sizeWidth, height: sizeHeight})
   const [widthResolution, heightResolution] = resolutionStore.resolution
   const videoWidth = videoElement.value.width
   const videoHeight = videoElement.value.height
@@ -65,6 +65,7 @@ const onResizeScreen = (sourceName, size) => {
   // console.log('ReComputed Resize Number Width:', (numberWidth * videoWidth) / widthResolution)
   // ========== Логи оригинальных и вычисляемых значений ===================
   const numberHeight = Math.floor(sizeHeight / videoHeight * heightResolution)
+  source.changePositionApplication({width: sizeWidth, height: sizeHeight})
   source.changePosition({width: numberWidth, height: numberHeight})
   updateFastConfigServer()
 }

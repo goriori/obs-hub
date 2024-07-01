@@ -14,14 +14,14 @@
             "show": true,
             "z-index": 1,
             "position": {
-                "x": 0,
+                "x": 367,
                 "y": 0,
                 "width": 354,
                 "height": 200
             },
             "resolution": {
-                "width": 1920,
-                "height": 1080
+                "width": 1280,
+                "height": 720
             },
             "dshow_settings": true,
             "device_index": 0,
@@ -59,7 +59,7 @@
             "channels": 1,
             "device_input_index": 1,
             "device_output_index": 5,
-            "focused": true
+            "focused": false
         },
         "system_sound": {
             "id": 2,
@@ -81,7 +81,7 @@
             "chunk": 1024,
             "format": 2,
             "channels": 1,
-            "audio_state": "pause",
+            "audio_state": "play_once",
             "source_path": "sound/tada.mp3",
             "device_output_index": 5,
             "focused": false
@@ -89,8 +89,8 @@
     },
     "virtual_camera": {
         "external_scripts": [],
-        "width": 1280,
-        "height": 720,
+        "width": 1920,
+        "height": 1080,
         "fps": 30,
         "backend": "unitycapture",
         "device": "Unity Video Capture"
