@@ -56,6 +56,7 @@ const initAudioSources = async () => {
 const initAudioStream = async () => {
   const audioStream = new AudioStream()
   await audioStream.init()
+  console.log(audioStream.getAudioDevices())
   streamStore.addStream(audioStream)
 }
 

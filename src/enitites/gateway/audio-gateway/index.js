@@ -13,6 +13,10 @@ export class AudioGateway extends Gateway {
         return this.audioStore.audioSources
     }
 
+    getAudioSource(sourceName) {
+        return this.audioStore.getAudioSource(sourceName)
+    }
+
     getFocusedAudio() {
         return this.getAudioSources().map(source => source.focused ? source : false).filter(source => source)
     }
@@ -22,6 +26,10 @@ export class AudioGateway extends Gateway {
         audioObject.setFocus()
         audioObject.setComponent(shallowRef(SoundTargetCard))
         this.audioStore.addAudioSource(audioObject.getSource())
+    }
+
+    onShowAudioSource(sourceName) {
+        this.getAudioSource(sourceName).onShow()
     }
 
     deleteAudioSource(id) {

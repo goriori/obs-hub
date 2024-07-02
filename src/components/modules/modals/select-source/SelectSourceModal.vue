@@ -1,18 +1,15 @@
 <script setup>
 import {onMounted, ref, shallowRef,} from "vue";
+import {useScriptGateway} from "@/store/scriptStore.js";
+import {loadFile} from "@/utils/helpers/loadFile.js";
 import {useStateStore} from "../../../../store/stateStore.js";
-import CardFactory from "@/factory/card-script-factory/index.js";
+import {ERRORS} from "@/configs/errors.config.js";
+import {WARNINGS} from "@/configs/warnings.config.js";
+import {VideoScript} from "@/enitites/script/video-script/index.js";
 import Popup from "../../../ui/popup/Popup.vue";
 import SelectSource from "../../../ui/select-source/SelectSource.vue";
 import ConfirmButton from "../../../ui/buttons/confirm/ConfirmButton.vue";
 import Source from "../../../ui/source/Source.vue";
-import {useScriptGateway} from "@/store/scriptStore.js";
-import Camera from "@/components/icons/Camera.vue";
-import wsService from "@/API/wsService/wsService.js";
-import {ERRORS} from "@/configs/errors.config.js";
-import {WARNINGS} from "@/configs/warnings.config.js";
-import {AudioScript} from "@/enitites/script/audio-script/index.js";
-import {VideoScript} from "@/enitites/script/video-script/index.js";
 import ScriptService from "@/API/scriptService/scriptService.js";
 
 
@@ -89,7 +86,7 @@ const actions = [
     onClick: function () {
       const targetCapture = sourcesCapture.value.filter(source => source.isActive)
       if (targetCapture.length > 0) {
-        if (!stateStore.modals.selectSource.targetFile) generateLoadFileInput().then(loadScript)
+        if (!stateStore.modals.selectSource.targetFile) loadFile('.zip').then(loadScript)
         else loadScript(stateStore.modals.selectSource.targetFile)
       } else stateStore.modals.message.warning.onShow(WARNINGS.NOTE_TARGET_CAPTURE)
     }
@@ -117,21 +114,6 @@ const onUpdateSelect = (updateObject) => {
   return updateHandlers[type].call(this, data)
 }
 
-const generateLoadFileInput = () => {
-  return new Promise((resolve, reject) => {
-    let file
-    const formLoadElement = document.createElement('input')
-    formLoadElement.setAttribute('type', 'file')
-    formLoadElement.setAttribute('accept', '.zip')
-    formLoadElement.click()
-    const listenerId = formLoadElement.onchange = e => {
-      file = e.target.files[0]
-      if (!file) reject({error: 'file is undefined'})
-      resolve(file)
-      formLoadElement.removeEventListener('change', listenerId)
-    }
-  })
-}
 
 const getSources = () => {
   const targetSourceForUse = sourcesUse.value.find(source => source.isActive)

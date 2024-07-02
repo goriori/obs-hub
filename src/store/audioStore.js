@@ -8,12 +8,16 @@ const useAudioStore = defineStore('audioStore', () => {
         audioSources.value.push(audio)
     }
     const deleteAudioSource = (id) => {
-       audioSources.value.find(audioSource => audioSource.id === id).onHidden()
+        audioSources.value.find(audioSource => audioSource.id === id).onHidden()
+    }
+    const getAudioSource = (sourceName) => {
+       return  audioSources.value.find(source => source.name === sourceName)
     }
     return {
         audioSources,
         addAudioSource,
-        deleteAudioSource
+        deleteAudioSource,
+        getAudioSource
     }
 })
 

@@ -5,7 +5,10 @@ import SourceVideo from "../../components/modules/source-video/SourceVideo.vue";
 import SourceScripts from "../../components/modules/source-scripts/SourceScripts.vue";
 import ScreenArea from "../../components/modules/screen-are/ScreenArea.vue";
 import {onUpdated} from "vue";
-
+import Button from "@/components/ui/buttons/Button.vue";
+import Sound from "@/components/icons/Sound.vue";
+import Donwload from "@/components/icons/Donwload.vue";
+import DownloadSoundAction from "@/components/actions/donwload/sound/DownloadSoundAction.vue";
 
 
 </script>
@@ -16,6 +19,9 @@ import {onUpdated} from "vue";
       <!--      <section class="switcher">-->
       <!--        <SizeSwitch/>-->
       <!--      </section>-->
+      <section>
+        <DownloadSoundAction/>
+      </section>
       <section class="screen block">
         <ScreenArea/>
       </section>

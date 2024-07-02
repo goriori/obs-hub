@@ -16,7 +16,11 @@ import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 const sourceGateway = useSourceGateway()
 const resolutionApplication = useResolutionStore()
 const isActive = ref(false)
-const haveScreens = computed(() => [])
+const haveScreens = computed(() =>
+    sourceGateway.getVideoSources()
+        .map(source => source.show ? source.name : false)
+        .filter(source => source)
+)
 
 const onActive = () => {
   isActive.value = !isActive.value
@@ -60,7 +64,7 @@ const updateFastConfigServer = () => {
           <Camera color="#000"/>
           <p>Захват веб-камеры</p>
         </article>
-        <article class="list-item" data-capture='empty' v-if="haveScreens.length === 3">
+        <article class="list-item" data-capture='empty' v-if="haveScreens.length === 2">
           <p>Пусто</p>
         </article>
       </section>

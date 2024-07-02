@@ -169,42 +169,27 @@
                         "chunk": {"type": "integer", "default": 2048}
                     },
                     "required": ["show","external_scripts","device_input_index","device_output_index","format", "channels", "rate", "chunk"]
-                },
-                "sound": {
-                    "type": "object",
-                    "properties": {
-                        "show": {"type": "boolean", "default": false},
-                        "audio_state": {
-                            "type": "string",
-                            "enum": ["play_in_loop","play_once", "pause"],
-                            "default": "play"
-                        },
-                        "external_scripts": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {"type": "string"},
-                                    "path": {"type": "string"},
-                                    "enabled": {"type": "boolean"},
-                                    "args": {"type": "object"}
-                                },
-                                "required": ["name", "path", "enabled", "args"]
-                            },
-                            "default": []
-                        },
-                        "source_path": {"type":"string", "default":"sound/tada.mp3"},
-                        "device_output_index": {"type": "integer", "default": 5},
-                        "format": {"type": "integer", "default": 2},
-                        "channels": {"type": "integer", "default" : 1},
-                        "rate": {"type": "integer", "default" : 44100},
-                        "chunk": {"type": "integer", "default": 1024}
-                    },
-                    "required": ["show","audio_state","external_scripts","source_path","device_output_index","format", "channels", "rate", "chunk"]
                 }
             },
-            "required": ["microphone","system_sound","sound"]
+            "required": ["microphone","system_sound"]
+        },
+        "sound_player": {
+            "type": "object",
+            "properties": {
+                "audio_state": {
+                    "type": "string",
+                    "enum": ["play_in_loop","play_once", "pause"],
+                    "default": "play"
+                },
+                "source_path": {"type":"string", "default":"sound/tada.mp3"},
+                "device_output_index": {"type": "integer", "default": 5},
+                "format": {"type": "integer", "default": 2},
+                "channels": {"type": "integer", "default" : 1},
+                "rate": {"type": "integer", "default" : 44100},
+                "chunk": {"type": "integer", "default": 1024}
+            },
+            "required": ["audio_state","source_path","device_output_index","format", "channels", "rate", "chunk"]
         }
     },
-    "required": ["virtual_camera", "video_sources", "virtual_audio", "audio_sources"]
+    "required": ["virtual_camera", "video_sources", "virtual_audio", "audio_sources", "sound_player"]
 }

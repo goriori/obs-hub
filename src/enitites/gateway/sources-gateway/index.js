@@ -81,7 +81,7 @@ export class SourceGateway {
         this.sourceGateway.hiddenSource(sourceName)
     }
 
-    showVideoSource(sourceName) {
+    showSource(sourceName) {
         this.sourceGateway.showSource(sourceName)
     }
 

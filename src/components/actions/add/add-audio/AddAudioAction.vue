@@ -2,14 +2,23 @@
 
 import {useAudioGateway} from "@/store/audioStore.js";
 import PlusButton from "@/components/ui/buttons/plus/PlusButton.vue";
-import SoundTargetCard from "@/components/ui/card/sound-target/SoundTargetCard.vue";
-import {computed, ref, shallowRef} from "vue";
+import {computed, ref,} from "vue";
 import Screen from "@/components/icons/Screen.vue";
 import Camera from "@/components/icons/Camera.vue";
+import SourceFactory from "@/factory/source-factory/index.js";
+import ServerConfig from "@/enitites/config/index.js";
+import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
+import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
+import wsService from "@/API/wsService/wsService.js";
+import {useSourceGateway} from "@/store/sourceStore.js";
 
-const audioGateway = useAudioGateway()
+const sourceGateway = useSourceGateway()
 const isActive = ref(false)
-const haveScreens = computed(() => [])
+const haveScreens = computed(() =>
+    sourceGateway.getAudioSources()
+        .map(source => source.show ? source.name : false)
+        .filter(source => source)
+)
 const onActive = () => {
   isActive.value = !isActive.value
 }
@@ -20,24 +29,36 @@ const addCapture = (event) => {
     const {capture} = targetElement.dataset
     if (!capture) return
     if (capture === 'empty') return onClose()
+    const audioSource = SourceFactory.getSource(capture)
+    sourceGateway.showSource(audioSource.name)
+    updateFastConfigServer()
   }
   onClose()
 }
 
+const updateFastConfigServer = () => {
+  ServerConfig.changeUpdateAspects(['microphone', 'system_sound'])
+  ServerConfig.changeUpdateType('full')
+  ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
+  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
+  ServerConfig.addVirtualCamera(new VirtualCamera())
+  ServerConfig.addVirtualAudio(new VirtualAudio())
+  wsService.sendMessage(ServerConfig)
+}
 </script>
 
 <template>
   <Transition name="fade">
     <section class="action-list" v-if="isActive" @click="addCapture">
-      <article class="list-item" data-capture="microphone" v-if="!haveScreens.includes('screen')">
+      <article class="list-item" data-capture="microphone" v-if="!haveScreens.includes('microphone')">
         <Screen color="#000"/>
         <p>Захват микрофона</p>
       </article>
-      <article class="list-item" data-capture="system_sound" v-if="!haveScreens.includes('webcam')">
+      <article class="list-item" data-capture="system_sound" v-if="!haveScreens.includes('system_sound')">
         <Camera color="#000"/>
         <p>Захват системных звуков</p>
       </article>
-      <article class="list-item" data-capture='empty' v-if="haveScreens.length === 3">
+      <article class="list-item" data-capture='empty' v-if="haveScreens.length === 2">
         <p>Пусто</p>
       </article>
     </section>
@@ -47,6 +68,7 @@ const addCapture = (event) => {
 
 <style scoped lang="scss">
 @import '@/assets/scss/variables';
+
 .action {
 
 
