@@ -21,4 +21,16 @@ export class SoundPlayer extends Player {
         this.rate = 44100
         this.chunk = 1024
     }
+
+    changeState(state) {
+        this.audio_state = state
+    }
+
+    changeSourcePath(path) {
+        this.source_path = path
+    }
+
+    changeDeviceOutputIndex(index) {
+        this.device_output_index = index
+    }
 }
