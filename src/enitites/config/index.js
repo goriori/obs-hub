@@ -16,12 +16,12 @@ class ServerConfig {
         this.config.audio_sources = audioSource
     }
 
-    addVirtualCamera(virtualCamera) {
-        this.config.virtual_camera = virtualCamera
+    addPlayer(player) {
+        Object.assign(this.config, player)
     }
 
-    addVirtualAudio(virtualAudio) {
-        this.config.virtual_audio = virtualAudio
+    addVirtualObjects(objects) {
+        Object.assign(this.config, objects)
     }
 
     changeUpdateType(type) {

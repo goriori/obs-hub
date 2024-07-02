@@ -8,9 +8,13 @@ import ServerConfig from '@/enitites/config/index.js'
 import wsService from "@/API/wsService/wsService.js";
 import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
 import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
+import {useVirtualObjectsGateway} from "@/store/virtualObjectStore.js";
+import {usePlayerGateway} from "@/store/playerStore.js";
 
 const screenStore = useScreenStore()
 const sourceGateway = useSourceGateway()
+const virtualObjectGateway = useVirtualObjectsGateway()
+const playerGateway = usePlayerGateway()
 const sources = computed(() => sourceGateway.getVideoSources().filter(source => source.show))
 
 const TYPES_UPDATE = ['focus-source', 'un-focus-source']
@@ -43,10 +47,10 @@ const changeList = (list) => {
 const updateConfig = () => {
   ServerConfig.changeUpdateAspects(sourceGateway.getNameVideoSources())
   ServerConfig.changeUpdateType('full')
-  ServerConfig.addVirtualCamera(new VirtualCamera())
-  ServerConfig.addVirtualAudio(new VirtualAudio())
-  ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
-  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
+  ServerConfig.addVideSources(sourceGateway.getVideoSourcesConfigFormat())
+  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesConfigFormat())
+  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
+  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
   wsService.sendMessage(ServerConfig)
 }
 </script>

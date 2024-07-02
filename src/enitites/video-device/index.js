@@ -6,6 +6,9 @@ export class VideoDevice {
         this.fps = 0;
     }
 
+    setName(name) {
+        this.name = name
+    }
 
     addScript(script) {
         this.external_scripts.push(script);

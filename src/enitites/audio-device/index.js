@@ -4,11 +4,15 @@ export class AudioDevice {
         this.output_device_name = "CABLE Output"
     }
 
-    setInputDeviceName(deviceName){
+    setName(name) {
+        this.name = name
+    }
+
+    setInputDeviceName(deviceName) {
         this.input_device_name = deviceName
     }
 
-    setOutputDeviceName(deviceName){
+    setOutputDeviceName(deviceName) {
         this.output_device_name = deviceName
     }
 }

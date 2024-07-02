@@ -14,15 +14,21 @@ import VLoader from '@/components/VLoader.vue'
 import Modals from "@/components/modules/modals/Modals.vue";
 import wsService from "@/API/wsService/wsService.js";
 import SourceFactory from "@/factory/source-factory/index.js";
+import VirtualObjectFactory from "@/factory/virtual-object-factory/index.js";
+import {useVirtualObjectsGateway} from "@/store/virtualObjectStore.js";
+import {usePlayerGateway} from "@/store/playerStore.js";
+import {SoundPlayer} from "@/enitites/sound-player/index.js";
 
 const route = useRoute()
 const stateStore = useStateStore()
 const streamStore = useStreamStore()
-const scriptGateway = useScriptGateway()
 const resolutionStore = useResolutionStore()
 const screenStore = useScreenStore()
+const playerGateway = usePlayerGateway()
+const scriptGateway = useScriptGateway()
 const sourceGateway = useSourceGateway()
 const audioGateway = useAudioGateway()
+const virtualObjectGateway = useVirtualObjectsGateway()
 
 const initVideoSources = async () => {
   await wsService.initConnect()
@@ -33,7 +39,7 @@ const initVideoSources = async () => {
     const position = videoSources[source.name].position
     const positionResolution = resolutionStore.resolution
     const mainScreenPosition = screenStore.mainScreen.position
-    const computedPositionApplication = buildPositionApplication(position, positionResolution,mainScreenPosition)
+    const computedPositionApplication = buildPositionApplication(position, positionResolution, mainScreenPosition)
     if (videoSources[source.name].show) source.onShow()
     source.changePosition(position)
     source.changeZIndex(videoSources[source.name]['z-index'])
@@ -47,7 +53,7 @@ const initAudioSources = async () => {
   const audioSources = serverConfig.audio_sources
   const sources = Object.keys(audioSources).map(sourceName => SourceFactory.getSource(sourceName))
   sources.forEach(source => {
-    if(audioSources[source.name].show) source.onShow()
+    if (audioSources[source.name].show) source.onShow()
     audioGateway.addAudioSource(source)
     sourceGateway.addSource(source)
   })
@@ -56,8 +62,20 @@ const initAudioSources = async () => {
 const initAudioStream = async () => {
   const audioStream = new AudioStream()
   await audioStream.init()
-  console.log(audioStream.getAudioDevices())
   streamStore.addStream(audioStream)
+}
+
+const initSoundPlayer = async () => {
+  playerGateway.addPlayer(new SoundPlayer())
+}
+
+const initVirtualObjects = async () => {
+  const serverConfig = await wsService.getConfig()
+  const fieldsConfig = Object.keys(serverConfig)
+  const virtualNames = fieldsConfig.map(field => field.split('_').includes('virtual') ? field : false).filter(name => name)
+  const virtualObjects = virtualNames.map(name => VirtualObjectFactory.getVirtualObject(name))
+  virtualObjects.forEach(object => virtualObjectGateway.addVirtualObject(object))
+  virtualObjectGateway.getVirtualObjectsConfigFormat()
 }
 
 const initScripts = async () => {
@@ -81,10 +99,13 @@ const initScripts = async () => {
 }
 
 onMounted(async () => {
+
   await initVideoSources()
   await initAudioSources()
   await initScripts()
   await initAudioStream()
+  await initVirtualObjects()
+  await initSoundPlayer()
 
 })
 

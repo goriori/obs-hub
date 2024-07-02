@@ -7,12 +7,14 @@ import Screen from "@/components/icons/Screen.vue";
 import Camera from "@/components/icons/Camera.vue";
 import SourceFactory from "@/factory/source-factory/index.js";
 import ServerConfig from "@/enitites/config/index.js";
-import {VirtualCamera} from "@/enitites/video-device/virtual-camera/index.js";
-import {VirtualAudio} from "@/enitites/audio-device/virtual-audio/index.js";
 import wsService from "@/API/wsService/wsService.js";
 import {useSourceGateway} from "@/store/sourceStore.js";
+import {useVirtualObjectsGateway} from "@/store/virtualObjectStore.js";
+import {usePlayerGateway} from "@/store/playerStore.js";
 
 const sourceGateway = useSourceGateway()
+const playerGateway = usePlayerGateway()
+const virtualObjectGateway = useVirtualObjectsGateway()
 const isActive = ref(false)
 const haveScreens = computed(() =>
     sourceGateway.getAudioSources()
@@ -39,10 +41,10 @@ const addCapture = (event) => {
 const updateFastConfigServer = () => {
   ServerConfig.changeUpdateAspects(['microphone', 'system_sound'])
   ServerConfig.changeUpdateType('full')
-  ServerConfig.addVideSources(sourceGateway.getVideoSourcesObject())
-  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesObject())
-  ServerConfig.addVirtualCamera(new VirtualCamera())
-  ServerConfig.addVirtualAudio(new VirtualAudio())
+  ServerConfig.addVideSources(sourceGateway.getVideoSourcesConfigFormat())
+  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesConfigFormat())
+  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
+  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
   wsService.sendMessage(ServerConfig)
 }
 </script>

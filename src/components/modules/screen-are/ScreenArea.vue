@@ -11,12 +11,16 @@ import Screen from "../../ui/screen/Screen.vue";
 import wsService from "@/API/wsService/wsService.js";
 import ServerConfig from "@/enitites/config/index.js";
 import {useStreamStore} from "@/store/streamStore.js";
+import {useVirtualObjectsGateway} from "@/store/virtualObjectStore.js";
+import {usePlayerGateway} from "@/store/playerStore.js";
 
 
 const streamStore = useStreamStore()
 const screenStore = useScreenStore()
 const resolutionStore = useResolutionStore()
 const gatewaySources = useSourceGateway()
+const virtualObjectGateway = useVirtualObjectsGateway()
+const playerGateway = usePlayerGateway()
 const mainScreen = screenStore.mainScreen
 const otherScreens = computed(() => gatewaySources.getVideoSources())
 const videoElement = ref(null)
@@ -62,10 +66,10 @@ const onResizeScreen = (sourceName, size) => {
 const updateFastConfigServer = () => {
   ServerConfig.changeUpdateAspects([])
   ServerConfig.changeUpdateType('fast')
-  ServerConfig.addVideSources(gatewaySources.getVideoSourcesObject())
-  ServerConfig.addAudioSources(gatewaySources.getAudioSourcesObject())
-  ServerConfig.addVirtualCamera(new VirtualCamera())
-  ServerConfig.addVirtualAudio(new VirtualAudio())
+  ServerConfig.addVideSources(gatewaySources.getVideoSourcesConfigFormat())
+  ServerConfig.addAudioSources(gatewaySources.getAudioSourcesConfigFormat())
+  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
+  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
   wsService.sendMessage(ServerConfig)
 }
 const loadVideoStream = async () => {

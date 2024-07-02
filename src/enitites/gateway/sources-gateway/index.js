@@ -34,7 +34,7 @@ export class SourceGateway {
         return this.sourceGateway.getSources('audio').map(source => source.name)
     }
 
-    getVideoSourcesObject() {
+    getVideoSourcesConfigFormat() {
         const video_sources = {}
         const videoSources = this.sourceGateway.getSources('video');
         videoSources.forEach(source => {
@@ -43,7 +43,7 @@ export class SourceGateway {
         return video_sources
     }
 
-    getAudioSourcesObject() {
+    getAudioSourcesConfigFormat() {
         const audio_sources = {}
         const audioSources = this.sourceGateway.getSources('audio')
         audioSources.forEach(source => {

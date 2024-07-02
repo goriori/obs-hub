@@ -7,6 +7,7 @@ export class VirtualCamera extends VideoDevice {
         this.changeWidth(1920)
         this.changeHeight(1080)
         this.changeFPS(30)
+        this.setName('virtual_camera')
         this.backend = "unitycapture"
         this.device = "Unity Video Capture"
     }
