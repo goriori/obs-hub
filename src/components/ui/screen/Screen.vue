@@ -96,8 +96,9 @@ const renderScreens = () => {
 
           let x = parseFloat(target.getAttribute('data-x')) || 0
           let y = parseFloat(target.getAttribute('data-y')) || 0
-          // x += event.deltaRect.left
-          // y += event.deltaRect.top
+
+          x += event.deltaRect.left
+          y += event.deltaRect.top
 
           target.style.width = event.rect.width + 'px'
           target.style.height = event.rect.height + 'px'
