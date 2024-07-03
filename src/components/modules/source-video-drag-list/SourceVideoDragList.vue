@@ -41,18 +41,17 @@ const changeList = (list) => {
   const reverseList = copyList.reverse()
   reverseList.forEach((source, index) => source['z-index'] = index)
   sourceGateway.changeList(reverseList.reverse(), 'video')
-  updateConfig()
-}
-
-const updateConfig = () => {
-  ServerConfig.changeUpdateAspects(sourceGateway.getNameVideoSources())
-  ServerConfig.changeUpdateType('full')
-  ServerConfig.addVideSources(sourceGateway.getVideoSourcesConfigFormat())
-  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesConfigFormat())
-  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
-  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
+  ServerConfig.updateConfig(
+      sourceGateway.getNameVideoSources(),
+      'full',
+      sourceGateway.getVideoSourcesConfigFormat(),
+      sourceGateway.getAudioSourcesConfigFormat(),
+      virtualObjectGateway.getVirtualObjectsConfigFormat(),
+      playerGateway.getPlayersForConfigFormat()
+  )
   wsService.sendMessage(ServerConfig)
 }
+
 </script>
 
 <template>

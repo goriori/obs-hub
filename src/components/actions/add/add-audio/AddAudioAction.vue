@@ -1,6 +1,5 @@
 <script setup>
 
-import {useAudioGateway} from "@/store/audioStore.js";
 import PlusButton from "@/components/ui/buttons/plus/PlusButton.vue";
 import {computed, ref,} from "vue";
 import Screen from "@/components/icons/Screen.vue";
@@ -33,20 +32,19 @@ const addCapture = (event) => {
     if (capture === 'empty') return onClose()
     const audioSource = SourceFactory.getSource(capture)
     sourceGateway.showSource(audioSource.name)
-    updateFastConfigServer()
+    ServerConfig.updateConfig(
+        sourceGateway.getNameAudioSources(),
+        'full',
+        sourceGateway.getVideoSourcesConfigFormat(),
+        sourceGateway.getAudioSourcesConfigFormat(),
+        virtualObjectGateway.getVirtualObjectsConfigFormat(),
+        playerGateway.getPlayersForConfigFormat()
+    )
+    wsService.sendMessage(ServerConfig)
   }
   onClose()
 }
 
-const updateFastConfigServer = () => {
-  ServerConfig.changeUpdateAspects(['microphone', 'system_sound'])
-  ServerConfig.changeUpdateType('full')
-  ServerConfig.addVideSources(sourceGateway.getVideoSourcesConfigFormat())
-  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesConfigFormat())
-  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
-  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
-  wsService.sendMessage(ServerConfig)
-}
 </script>
 
 <template>

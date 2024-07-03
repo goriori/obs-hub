@@ -1,3 +1,4 @@
+
 class ServerConfig {
     #updateTypes
 
@@ -32,7 +33,14 @@ class ServerConfig {
         this.update_aspects = aspects
     }
 
-
+    updateConfig(aspects, type, videoSources, audioSources, virtualObjects, player) {
+        this.changeUpdateAspects(aspects)
+        this.changeUpdateType(type)
+        this.addVideSources(videoSources)
+        this.addAudioSources(audioSources)
+        this.addVirtualObjects(virtualObjects)
+        this.addPlayer(player)
+    }
 }
 
 export default new ServerConfig()

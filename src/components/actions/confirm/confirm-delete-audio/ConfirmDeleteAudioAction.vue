@@ -18,18 +18,18 @@ const playerGateway = usePlayerGateway()
 const deleteTargetAudio = () => {
   const focusesAudio = audioGateway.getFocusedAudio()
   focusesAudio.forEach(audio => audioGateway.deleteAudioSource(audio.id))
-  updateServerConfig()
+  ServerConfig.updateConfig(
+      sourceGateway.getNameAudioSources(),
+      'full',
+      sourceGateway.getVideoSourcesConfigFormat(),
+      sourceGateway.getAudioSourcesConfigFormat(),
+      virtualObjectsGateway.getVirtualObjectsConfigFormat(),
+      playerGateway.getPlayersForConfigFormat()
+  )
+  wsService.sendMessage(ServerConfig)
   emits('onConfirmDelete')
 }
-const updateServerConfig = () => {
-  ServerConfig.changeUpdateAspects(sourceGateway.getNameAudioSources())
-  ServerConfig.changeUpdateType('full')
-  ServerConfig.addVideSources(sourceGateway.getVideoSourcesConfigFormat())
-  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesConfigFormat())
-  ServerConfig.addVirtualObjects(virtualObjectsGateway.getVirtualObjectsConfigFormat())
-  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
-  wsService.sendMessage(ServerConfig)
-}
+
 </script>
 
 <template>

@@ -64,12 +64,14 @@ const onResizeScreen = (sourceName, size) => {
 
 
 const updateFastConfigServer = () => {
-  ServerConfig.changeUpdateAspects([])
-  ServerConfig.changeUpdateType('fast')
-  ServerConfig.addVideSources(gatewaySources.getVideoSourcesConfigFormat())
-  ServerConfig.addAudioSources(gatewaySources.getAudioSourcesConfigFormat())
-  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
-  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
+  ServerConfig.updateConfig(
+      [],
+      'fast',
+      gatewaySources.getVideoSourcesConfigFormat(),
+      gatewaySources.getAudioSourcesConfigFormat(),
+      virtualObjectGateway.getVirtualObjectsConfigFormat(),
+      playerGateway.getPlayersForConfigFormat()
+  )
   wsService.sendMessage(ServerConfig)
 }
 const loadVideoStream = async () => {

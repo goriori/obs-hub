@@ -39,20 +39,18 @@ const addCapture = (event) => {
     if (capture === 'empty') return onClose()
     sourceGateway.getSource(capture).onShow()
   }
-  updateFastConfigServer()
+  ServerConfig.updateConfig(
+      sourceGateway.getNameVideoSources(),
+      'full',
+      sourceGateway.getVideoSourcesConfigFormat(),
+      sourceGateway.getAudioSourcesConfigFormat(),
+      virtualObjectGateway.getVirtualObjectsConfigFormat(),
+      playerGateway.getPlayersForConfigFormat()
+  )
+  wsService.sendMessage(ServerConfig)
   onClose()
 }
 
-
-const updateFastConfigServer = () => {
-  ServerConfig.changeUpdateAspects(['webcam', 'screen'])
-  ServerConfig.changeUpdateType('full')
-  ServerConfig.addVideSources(sourceGateway.getVideoSourcesConfigFormat())
-  ServerConfig.addAudioSources(sourceGateway.getAudioSourcesConfigFormat())
-  ServerConfig.addVirtualObjects(virtualObjectGateway.getVirtualObjectsConfigFormat())
-  ServerConfig.addPlayer(playerGateway.getPlayersForConfigFormat())
-  wsService.sendMessage(ServerConfig)
-}
 
 </script>
 
