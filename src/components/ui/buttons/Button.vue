@@ -26,6 +26,7 @@ const props = defineProps({
 @import "@/assets/scss/variables";
 
 .button {
+  width: 100%;
   position: relative;
   overflow: hidden;
   padding: 10px;
@@ -36,7 +37,8 @@ const props = defineProps({
   background-color: $primary;
 
   &:disabled {
-    opacity: 0.7;
+    background-color: rgba(247, 151, 29, 0.32);
+    border: 1px solid $primary;
   }
 
 

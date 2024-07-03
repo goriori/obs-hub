@@ -46,7 +46,9 @@ const onClick = () => emits("update:isActive", !props.isActive)
 .source {
   max-width: 141px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 40px;
 
   &-card {
     width: 70px;

@@ -1,4 +1,6 @@
 <script setup>
+import {computed} from "vue";
+
 const props = defineProps({
   title: {
     type: String,
@@ -17,8 +19,9 @@ const props = defineProps({
     default: () => []
   }
 })
-const emits = defineEmits(['update'])
 
+const emits = defineEmits(['update'])
+const isTargetSource = computed(() => !props.sources.map(source => source.isActive).filter(state => state).length > 0)
 const onActiveSource = (source) => {
   const data = {
     type: props.type,
@@ -40,7 +43,7 @@ const onActiveSource = (source) => {
       </div>
     </section>
     <section class="select-actions">
-      <component :is="action.action" v-for="action in actions" :key="action.id" @click="action.onClick"
+      <component :is="action.action" v-for="action in actions" :key="action.id" @click="action.onClick" :disabled="isTargetSource"
       />
     </section>
   </article>

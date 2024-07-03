@@ -66,7 +66,13 @@ const initAudioStream = async () => {
 }
 
 const initSoundPlayer = async () => {
-  playerGateway.addPlayer(new SoundPlayer())
+  const serverConfig = await wsService.getConfig()
+  const soundPlayerConfig = serverConfig['sound_player']
+  const soundPlayer = new SoundPlayer()
+  soundPlayer.changeState(soundPlayerConfig.audio_state)
+  soundPlayer.changeSourcePath(soundPlayerConfig.source_path)
+  soundPlayer.changeDeviceOutputIndex(soundPlayerConfig.device_output_index)
+  playerGateway.addPlayer(soundPlayer)
 }
 
 const initVirtualObjects = async () => {

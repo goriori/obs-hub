@@ -9,6 +9,7 @@ import Button from "@/components/ui/buttons/Button.vue";
 import Sound from "@/components/icons/Sound.vue";
 import Donwload from "@/components/icons/Donwload.vue";
 import DownloadSoundAction from "@/components/actions/donwload/sound/DownloadSoundAction.vue";
+import PlaySoundAction from "@/components/actions/play/sound/PlaySoundAction.vue";
 
 
 </script>
@@ -19,8 +20,9 @@ import DownloadSoundAction from "@/components/actions/donwload/sound/DownloadSou
       <!--      <section class="switcher">-->
       <!--        <SizeSwitch/>-->
       <!--      </section>-->
-      <section>
+      <section class="sound-player">
         <DownloadSoundAction/>
+        <PlaySoundAction/>
       </section>
       <section class="screen block">
         <ScreenArea/>
@@ -71,5 +73,12 @@ header {
   @media(max-width: $md1 + px) {
     margin: 0 0 20px 0;
   }
+}
+
+.sound-player {
+  max-width: 100px;
+  max-height: 50px;
+  display: flex;
+  gap: 10px;
 }
 </style>

@@ -77,7 +77,7 @@ const updateFastConfigServer = () => {
 const loadVideoStream = async () => {
   const videoElement = document.getElementsByTagName('video')[0]
   videoElement.srcObject = await videoStream.init()
-  videoElement.play();
+  await videoElement.play();
   streamStore.addStream(videoStream)
 }
 

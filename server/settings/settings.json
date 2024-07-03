@@ -1,13 +1,40 @@
 {
     "video_sources": {
+        "webcam": {
+            "id": 2,
+            "external_scripts": [
+                {
+                    "name": "testScript (1)",
+                    "path": "external_scripts/testScript (1)/script.py",
+                    "enabled": false,
+                    "args": {},
+                    "sourceName": "webcam"
+                }
+            ],
+            "show": true,
+            "z-index": 1,
+            "position": {
+                "x": 110,
+                "y": 46,
+                "width": 701,
+                "height": 394
+            },
+            "resolution": {
+                "width": 1280,
+                "height": 720
+            },
+            "dshow_settings": true,
+            "device_index": 0,
+            "focused": false
+        },
         "screen": {
             "id": 1,
             "external_scripts": [],
             "show": true,
-            "z-index": 1,
+            "z-index": 0,
             "position": {
-                "x": 388,
-                "y": 594,
+                "x": 722,
+                "y": 293,
                 "width": 864,
                 "height": 486
             },
@@ -18,25 +45,6 @@
                 "width": 1920,
                 "height": 1080
             },
-            "focused": false
-        },
-        "webcam": {
-            "id": 2,
-            "external_scripts": [],
-            "show": true,
-            "z-index": 0,
-            "position": {
-                "x": 1153,
-                "y": 69,
-                "width": 292,
-                "height": 164
-            },
-            "resolution": {
-                "width": 1280,
-                "height": 720
-            },
-            "dshow_settings": true,
-            "device_index": 0,
             "focused": false
         }
     },
@@ -80,8 +88,8 @@
     },
     "sound_player": {
         "audio_state": "pause",
-        "source_path": "sound/tada.mp3",
-        "device_output_index": 4,
+        "source_path": "/sound/tada.mp3",
+        "device_output_index": 11,
         "format": 2,
         "channels": 2,
         "rate": 44100,
