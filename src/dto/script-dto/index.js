@@ -3,6 +3,7 @@ import {shallowRef} from "vue";
 import ScriptTargetCard from "@/components/ui/card/script-target/ScriptTargetCard.vue";
 import Source from "@/components/ui/source/Source.vue";
 import {generateRandomId} from "@/utils/helpers/randomId.js";
+import EditScriptAction from "@/components/actions/edit/edit-script/EditScriptAction.vue";
 
 
 export class ScriptSourceDto {
@@ -30,6 +31,7 @@ class ScriptItem {
         this.component = card
         this.isFocus = false
         this.isActive = isActive
+        this.action = shallowRef(EditScriptAction)
     }
 
 
